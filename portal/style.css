@@ -97,8 +97,12 @@ img {
     object-fit: contain;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 740px) {
     section {
         grid-template-columns: 1fr;
+    }
+
+    .background, .color {
+        display: none;
     }
 }
