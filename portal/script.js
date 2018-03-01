@@ -7,6 +7,7 @@ backgrounds
         localStorage.setItem('--color-main', background);
         backgrounds.forEach(background => background.classList.remove('active'));
         this.classList.add('active');
+        toggleColors();
     }));
 
 document.querySelectorAll('[data-color]')
@@ -25,3 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.getElementById('colorpicker').addEventListener('click', toggleColors);
+
+function toggleColors() {
+    document.querySelectorAll('[data-background], [data-color]')
+        .forEach(color => color.classList.toggle('show'));
+}
