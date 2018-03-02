@@ -56,6 +56,21 @@ header {
     border: 2px solid black;
 }
 
+[data-background], [data-color] {
+    opacity: 0;
+}
+
+[data-background].show, [data-color].show {
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
+
+#colorpicker {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
 main {
     display: grid;
     grid-gap: 20px;
@@ -83,6 +98,8 @@ section {
 .section__item:hover,
 .section__item:active {
     background-color: var(--color-main-dark);
+    transition: background-color 150ms ease-in;
+    border: none;
 }
 
 .section__heading {
@@ -100,9 +117,5 @@ img {
 @media (max-width: 740px) {
     section {
         grid-template-columns: 1fr;
-    }
-
-    .background, .color {
-        display: none;
     }
 }
