@@ -64,7 +64,15 @@ header {
     opacity: 1;
 }
 
-#colorpicker {
+#color-picker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#color-picker.active { background-color: var(--color-main); font-weight: bold; }
+
+#color-toggler {
     width: 30px;
     height: 30px;
     cursor: pointer;
@@ -110,4 +118,14 @@ img {
     width: 100px;
     height: 100px;
     object-fit: contain;
+}
+
+@media all and (max-width: 900px) {
+    header {
+        grid-auto-flow: unset;
+    }
+
+    .background, .color, #color-toggler {
+        display: none;
+    }
 }

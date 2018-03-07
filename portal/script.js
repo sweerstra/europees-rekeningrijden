@@ -9,9 +9,32 @@ const backgrounds = mainColors.filter(color => color.dataset.background);
 // only the colors
 const colors = mainColors.filter(color => color.dataset.color);
 
+// custom color pickers
+const colorPicker = document.getElementById('color-picker');
+
 backgrounds.forEach(el => el.addEventListener('click', function () {
     const { background } = this.dataset;
+    setBackground(this, background);
+}));
 
+colors.forEach(el => el.addEventListener('click', function () {
+    const { color } = this.dataset;
+    document.documentElement.style.setProperty('--color-tint', color);
+    localStorage.setItem('--color-tint', color);
+    toggleColorsVisibility();
+}));
+
+colorPicker.addEventListener('click', function () {
+    const background = prompt("Set hex color eg. #ffffff");
+
+    if (background) {
+        setBackground(this, background);
+    }
+});
+
+const toggleColorsVisibility = () => mainColors.forEach(color => color.classList.toggle('visible'));
+
+const setBackground = (el, background) => {
     // set CSS variable to selected background
     document.documentElement.style.setProperty('--color-main', background);
 
@@ -20,32 +43,26 @@ backgrounds.forEach(el => el.addEventListener('click', function () {
 
     // selected color will become active
     backgrounds.forEach(background => background.classList.remove('active'));
-    this.classList.add('active');
+    el.classList.add('active');
 
     // hide the colors after selection
-    toggleColors();
-}));
+    toggleColorsVisibility();
+};
 
-colors.forEach(el => el.addEventListener('click', function () {
-    const { color } = this.dataset;
-    document.documentElement.style.setProperty('--color-tint', color);
-    localStorage.setItem('--color-tint', color);
-}));
-
-const toggleColors = () => mainColors.forEach(color => color.classList.toggle('visible'));
-
-document.getElementById('colorpicker').addEventListener('click', toggleColors);
+document.getElementById('color-toggler').addEventListener('click', toggleColorsVisibility);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // set transition dynamically, based on index
+    // set transition based on index
     mainColors.forEach((color, index) => color.style.transition = `opacity ${index / 10}s ease-in-out`);
 
-    // loop through localStorage keys
+    // loop through localStorage
     Object.entries(localStorage).forEach(([key, value]) => {
         document.documentElement.style.setProperty(key, value);
 
         if (key === '--color-main') {
-            document.querySelector(`[data-background='${value}']`).classList.add('active');
+            // try to find the saved background element and toggle it active, else toggle the custom color picker
+            const selector = document.querySelector(`[data-background='${value}']`);
+            (selector || colorPicker).classList.add('active');
         }
     });
 });
