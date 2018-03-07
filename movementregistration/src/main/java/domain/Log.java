@@ -1,9 +1,15 @@
 package domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Log {
-
+    @Id
+    @GeneratedValue
+    private long id;
     private Date beginTime;
     private Date endTime;
     private int amountOfRequests;

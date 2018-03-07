@@ -1,7 +1,10 @@
 package domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Movement {
 
     private String authorisationCode;
@@ -11,13 +14,14 @@ public class Movement {
     private Date time;
     
     public Movement(String authorisationCode, String serialNumber, double longitude, double latitude, Date time){
-
         this.authorisationCode = authorisationCode;
         this.serialNumber = serialNumber;
         this.longitude = longitude;
         this.latitude = latitude;
         this.time = time;
     }
+
+    public Movement(){}
 
     public String getAuthorisationCode() {
         return authorisationCode;
