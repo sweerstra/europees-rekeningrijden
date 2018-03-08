@@ -56,6 +56,28 @@ header {
     border: 2px solid black;
 }
 
+[data-background], [data-color] {
+    opacity: 0;
+}
+
+[data-background].visible, [data-color].visible {
+    opacity: 1;
+}
+
+#color-picker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#color-picker.active { background-color: var(--color-main); font-weight: bold; }
+
+#color-toggler {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
 main {
     display: grid;
     grid-gap: 20px;
@@ -68,11 +90,16 @@ section {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
+.section__heading {
+    color: var(--color-tint);
+    border-bottom: 1px solid var(--color-tint);
+    grid-column: 1 / -1;
+}
+
 .section__item {
     padding: 10px;
     color: var(--color-tint);
     border: 1px solid var(--color-tint);
-    border-radius: 6px;
     text-decoration: none;
     display: flex;
     flex-direction: column;
@@ -83,12 +110,8 @@ section {
 .section__item:hover,
 .section__item:active {
     background-color: var(--color-main-dark);
-}
-
-.section__heading {
-    color: var(--color-tint);
-    border-bottom: 1px solid var(--color-tint);
-    grid-column: 1 / -1;
+    transition: background-color 150ms ease-in;
+    border: none;
 }
 
 img {
@@ -97,12 +120,12 @@ img {
     object-fit: contain;
 }
 
-@media (max-width: 740px) {
-    section {
-        grid-template-columns: 1fr;
+@media all and (max-width: 900px) {
+    header {
+        grid-auto-flow: unset;
     }
 
-    .background, .color {
+    .background, .color, #color-toggler {
         display: none;
     }
 }
