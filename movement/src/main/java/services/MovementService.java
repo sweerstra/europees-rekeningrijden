@@ -25,9 +25,6 @@ public class MovementService {
         return movementDao.findAll();
     }
 
-    public void delete(Movement movement) {
-        movementDao.delete(movement);
-    }
 
     public Movement search(String authorisationCode) {
         return movementDao.findbyAuthorisationcode(authorisationCode);

@@ -12,6 +12,6 @@ public interface IMovementDao {
 
     Movement create(Movement entity);
 
-    void delete(Movement entity);
+
 
 }
