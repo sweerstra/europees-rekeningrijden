@@ -10,8 +10,6 @@ public interface IMovementDao {
 
     Movement findbyAuthorisationcode(String authorisationCode);
 
-
-
     Movement create(Movement entity);
 
     void delete(Movement entity);

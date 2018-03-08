@@ -1,8 +1,12 @@
 package domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Movement {
+    @Id
     private String authorisationCode;
     private String serialNumber;
     private double longitude;

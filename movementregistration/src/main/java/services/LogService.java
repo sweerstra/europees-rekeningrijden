@@ -1,8 +1,7 @@
-package service;
+package services;
 
 import dao.ILogDao;
 import domain.Log;
-import domain.Tracker;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

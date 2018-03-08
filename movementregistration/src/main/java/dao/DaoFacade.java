@@ -1,7 +1,5 @@
 package dao;
 
-import domain.Log;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -9,38 +7,34 @@ import java.util.List;
 public abstract class DaoFacade<T> {
     private Class<T> entityClass;
 
-    @PersistenceContext(unitName = "KwetterPU")
-    private EntityManager entityManager;
+    @PersistenceContext(unitName = "MovementRegistrationPU")
+    private EntityManager em;
 
     public DaoFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
     public T create(T entity) {
-        entityManager.persist(entity);
+        em.persist(entity);
         return entity;
     }
 
     public T update(T entity) {
-        return entityManager.merge(entity);
+        return em.merge(entity);
     }
 
     public T findById(long id) {
-        return entityManager.find(entityClass, id);
-    }
-
-    public T findByauth(String auth) {
-        return entityManager.find(entityClass, auth);
+        return em.find(entityClass, id);
     }
 
     @SuppressWarnings("unchecked")
     public List<T> findAll() {
-        return entityManager.createQuery(String.format("FROM %s", this.entityClass.getName()))
+        return em.createQuery(String.format("FROM %s", this.entityClass.getName()))
                 .getResultList();
     }
 
     public void delete(T entity) {
-        entityManager.remove(entity);
+        em.remove(entity);
     }
 
     public void deleteById(long id) {

@@ -1,4 +1,4 @@
-package service;
+package services;
 
 import dao.IMovementDao;
 import domain.Movement;
@@ -9,31 +9,27 @@ import java.util.List;
 
 @Stateless
 public class MovementService {
-
     @Inject
     private IMovementDao movementDao;
 
-    public MovementService()
-    {
+    public MovementService() {
         super();
     }
 
-    public Movement create(Movement movement)  {
-     movement = movementDao.create(movement);
-     return movement;
+    public Movement addMovement(Movement movement) {
+        movement = movementDao.create(movement);
+        return movement;
     }
 
-    public List<Movement> findAll() {
+    public List<Movement> getAllMovements() {
         return movementDao.findAll();
     }
 
-    public void delete(Movement movement)  {
+    public void delete(Movement movement) {
         movementDao.delete(movement);
     }
 
     public Movement search(String authorisationCode) {
         return movementDao.findbyAuthorisationcode(authorisationCode);
     }
-
-
 }
