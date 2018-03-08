@@ -5,8 +5,8 @@ import domain.Tracker;
 import java.util.List;
 
 public interface ITrackerDao {
-    Tracker findById(long id);
 
+    Tracker findById(long id);
 
     List<Tracker> findAll();
 

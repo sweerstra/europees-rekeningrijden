@@ -28,4 +28,11 @@ public class Tracker {
         this.authorisationCode = authorisationCode;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

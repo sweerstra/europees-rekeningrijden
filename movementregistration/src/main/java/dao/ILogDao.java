@@ -5,6 +5,7 @@ import domain.Log;
 import java.util.List;
 
 public interface ILogDao {
+
     Log findById(long id);
 
     List<Log> findAll();
@@ -13,5 +14,4 @@ public interface ILogDao {
 
     void delete(Log entity);
 
-    void deleteById(long id);
 }
