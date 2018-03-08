@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 
 @RequestScoped
-@Path("/movement")
 @Produces(MediaType.APPLICATION_JSON)
 public class MovementController {
     @Inject
@@ -25,4 +24,6 @@ public class MovementController {
         Movement movement = new Movement("code123", "1234", 50.123, 5.430, new Date());
         return Response.ok(movement).build();
     }
+
+
 }
