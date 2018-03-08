@@ -20,19 +20,19 @@ public class Tracker {
 
     public Tracker() {}
 
-    public String getAuthorisationCode() {
-        return authorisationCode;
-    }
-
-    public void setAuthorisationCode(String authorisationCode) {
-        this.authorisationCode = authorisationCode;
-    }
-
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getAuthorisationCode() {
+        return authorisationCode;
+    }
+
+    public void setAuthorisationCode(String authorisationCode) {
+        this.authorisationCode = authorisationCode;
     }
 }

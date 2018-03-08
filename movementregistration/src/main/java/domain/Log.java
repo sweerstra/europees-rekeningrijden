@@ -14,14 +14,20 @@ public class Log {
     private Date endTime;
     private int amountOfRequests;
     private String message;
-    
-    public Log(Date beginTime, Date endTime, int amountOfrequests, String message)
-    {
+
+    public Log(Date beginTime, Date endTime, int amountOfrequests, String message) {
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.amountOfRequests = amountOfrequests;
-
         this.message = message;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Date getBeginTime() {
