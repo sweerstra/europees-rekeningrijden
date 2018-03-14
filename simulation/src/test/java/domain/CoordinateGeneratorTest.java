@@ -1,12 +1,34 @@
 package domain;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import domain.classes.Movement;
+import domain.classes.Tracker;
+import domain.support.Coordinate;
+import domain.support.CoordinateGenerator;
+import domain.support.HttpHelper;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 
 public class CoordinateGeneratorTest {
     private CoordinateGenerator coordinateGenerator;
+
+    // Generates a random coordinate every 2 seconds
+    private static long DELAY = 1000;
+    private static long INITIAL_DELAY = 1000;
+    private static int RADIUS_IN_METERS = 5000;
+    private static long PERIOD = 10000;
+    private static int PERIOD_COUNTER = 10;
+//    private String TIME_FORMAT = "yyyy-MM-dd HH:mm";
+
+    private String API_URL = "";
+
+    private static Coordinate startPosition = new Coordinate(51.5313105f, -0.1405928f);
 
     public CoordinateGeneratorTest() {
     }
@@ -25,5 +47,86 @@ public class CoordinateGeneratorTest {
             System.out.println(c.getLongitude());
             System.out.println(c.getLatitude());
         }
+    }
+
+//    @Test
+    public void timedCoordinateGeneratorTest() throws InterruptedException {
+//        tcc = new TimedCoordinateGenerator();
+        Timer timer = new Timer();
+        final CountDownLatch latch = new CountDownLatch(10);
+        TimerTask task = new TimerTask() {
+            long t0 = System.currentTimeMillis();
+            @Override
+            public void run() {
+                if (System.currentTimeMillis() - t0 > PERIOD) {
+                    cancel();
+                } else {
+                    System.out.println(coordinateGenerator.generateRandomCoordinate(startPosition, RADIUS_IN_METERS).toString());
+                }
+
+            }
+        };
+        timer.schedule(task, INITIAL_DELAY,DELAY);
+        latch.await();
+    }
+
+    @Test
+    public void countdownCoordinateGeneratorTest(){
+        final CountDownLatch latch = new CountDownLatch(PERIOD_COUNTER);
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                System.out.println(coordinateGenerator.generateRandomCoordinate(startPosition, RADIUS_IN_METERS).toString());
+                latch.countDown();
+            }
+        }, INITIAL_DELAY, DELAY);
+
+        try {
+            latch.await();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        timer.cancel();
+    }
+
+    @Test
+    public void postMovementTest(){
+        HttpHelper helper = new HttpHelper();
+        Gson gson = new Gson();
+
+        // Random coordinate generator
+        final CountDownLatch latch = new CountDownLatch(PERIOD_COUNTER);
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                // Random Coordinate
+                Coordinate newCoordinate = coordinateGenerator.generateRandomCoordinate(startPosition, RADIUS_IN_METERS);
+
+                // Creates a new movement
+                Movement newMovement = new Movement(new Tracker(), newCoordinate.getLongitude(), newCoordinate.getLatitude());
+
+                // Convert to readable Json and post
+                System.out.println(gson.toJson(newMovement));
+                if(!API_URL.equals("") && API_URL != null) {
+//                helper.post(API_URL, gson.toJson(newCoordinate));
+                }
+                latch.countDown();
+            }
+        }, INITIAL_DELAY, DELAY);
+
+        try {
+            latch.await();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        timer.cancel();
+
+        // End of generator
     }
 }

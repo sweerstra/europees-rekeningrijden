@@ -1,4 +1,4 @@
-package domain;
+package domain.support;
 
 public class Coordinate {
     private float longitude;
@@ -15,5 +15,10 @@ public class Coordinate {
 
     public float getLatitude() {
         return this.latitude;
+    }
+
+    @Override
+    public String toString(){
+        return "Lon: " + this.longitude + ", Lat: " + this.latitude;
     }
 }
