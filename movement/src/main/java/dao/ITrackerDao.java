@@ -12,6 +12,8 @@ public interface ITrackerDao {
 
     Tracker create(Tracker entity);
 
+    Tracker update(Tracker entity);
+
     void delete(Tracker entity);
 
     void deleteById(long id);

@@ -1,32 +1,53 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @Entity
+@XmlRootElement
 public class Movement {
     @Id
-    private String authorisationCode;
+    @GeneratedValue
+    private long id;
+
+    @ManyToOne
+    private Tracker tracker;
     private String serialNumber;
     private double longitude;
     private double latitude;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Date time;
 
-    public Movement(String authorisationCode, String serialNumber, double longitude, double latitude, Date time) {
-        this.authorisationCode = authorisationCode;
+    public Movement(String serialNumber, double longitude, double latitude, Date time) {
         this.serialNumber = serialNumber;
         this.longitude = longitude;
         this.latitude = latitude;
         this.time = time;
     }
 
-    public String getAuthorisationCode() {
-        return authorisationCode;
+    public Movement() {}
+
+    public long getId() {
+        return id;
     }
 
-    public void setAuthorisationCode(String authorisationCode) {
-        this.authorisationCode = authorisationCode;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Tracker getTracker() {
+        return tracker;
+    }
+
+    public void setTracker(Tracker tracker) {
+        this.tracker = tracker;
     }
 
     public String getSerialNumber() {

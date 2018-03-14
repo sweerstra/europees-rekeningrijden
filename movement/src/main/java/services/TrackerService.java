@@ -13,13 +13,12 @@ public class TrackerService {
     @Inject
     private ITrackerDao trackerDao;
 
-    public TrackerService()
-    {
+    public TrackerService() {
         super();
     }
 
-    public Tracker create(Tracker entity){
-        if(trackerDao.findById(entity.getId()) == null) {
+    public Tracker create(Tracker entity) {
+        if (trackerDao.findById(entity.getId()) == null) {
             return trackerDao.create(entity);
         }
         return null;
