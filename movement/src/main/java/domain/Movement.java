@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -32,7 +33,8 @@ public class Movement {
         this.time = time;
     }
 
-    public Movement() {}
+    public Movement() {
+    }
 
     public long getId() {
         return id;
@@ -78,7 +80,7 @@ public class Movement {
         return time;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTime() {
+        this.time = new Timestamp(System.currentTimeMillis());
     }
 }

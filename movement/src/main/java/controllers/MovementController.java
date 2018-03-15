@@ -34,10 +34,12 @@ public class MovementController {
     @GET
     @Path("/all")
     public Response getMovements() {
-        List<Movement> movements = new ArrayList<Movement>();
-        movements.add(new Movement("12345", 50.123, 5.456, new Date()));
+        List<Movement> movements = service.getAllMovements();
 
-        // List<Movement> movements = service.getAllMovements();
+        if (movements == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
         return Response.ok(movements).build();
     }
 }

@@ -15,6 +15,7 @@ public class HttpHelper {
 
             //add request header
             con.setRequestMethod(method);
+            con.setRequestProperty("Content-Type", "application/json");
 
             if (data != null) {
                 // Send request

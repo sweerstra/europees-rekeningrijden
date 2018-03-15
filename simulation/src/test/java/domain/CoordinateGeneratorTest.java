@@ -19,14 +19,14 @@ public class CoordinateGeneratorTest {
     private CoordinateGenerator coordinateGenerator;
 
     // Generates a random coordinate every 2 seconds
-    private static long DELAY = 1000;
+    private static long DELAY = 5000;
     private static long INITIAL_DELAY = 1000;
-    private static int RADIUS_IN_METERS = 5000;
+    private static int RADIUS_IN_METERS = 1000;
     private static long PERIOD = 10000;
-    private static int PERIOD_COUNTER = 10;
+    private static int PERIOD_COUNTER = 300;
 //    private String TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
-    private String API_URL = "";
+    private String API_URL = "http://localhost:8080/movement/api/movement";
 
     private static Coordinate startPosition = new Coordinate(51.5313105f, -0.1405928f);
 
@@ -49,13 +49,14 @@ public class CoordinateGeneratorTest {
         }
     }
 
-//    @Test
+    //    @Test
     public void timedCoordinateGeneratorTest() throws InterruptedException {
 //        tcc = new TimedCoordinateGenerator();
         Timer timer = new Timer();
         final CountDownLatch latch = new CountDownLatch(10);
         TimerTask task = new TimerTask() {
             long t0 = System.currentTimeMillis();
+
             @Override
             public void run() {
                 if (System.currentTimeMillis() - t0 > PERIOD) {
@@ -66,12 +67,12 @@ public class CoordinateGeneratorTest {
 
             }
         };
-        timer.schedule(task, INITIAL_DELAY,DELAY);
+        timer.schedule(task, INITIAL_DELAY, DELAY);
         latch.await();
     }
 
     @Test
-    public void countdownCoordinateGeneratorTest(){
+    public void countdownCoordinateGeneratorTest() {
         final CountDownLatch latch = new CountDownLatch(PERIOD_COUNTER);
 
         Timer timer = new Timer();
@@ -84,8 +85,7 @@ public class CoordinateGeneratorTest {
 
         try {
             latch.await();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
@@ -93,10 +93,9 @@ public class CoordinateGeneratorTest {
     }
 
     @Test
-    public void postMovementTest(){
-        HttpHelper helper = new HttpHelper();
+    public void postMovementTest() {
         Gson gson = new Gson();
-
+        Tracker tracker = new Tracker(1);
         // Random coordinate generator
         final CountDownLatch latch = new CountDownLatch(PERIOD_COUNTER);
 
@@ -107,21 +106,22 @@ public class CoordinateGeneratorTest {
                 Coordinate newCoordinate = coordinateGenerator.generateRandomCoordinate(startPosition, RADIUS_IN_METERS);
 
                 // Creates a new movement
-                Movement newMovement = new Movement(new Tracker(), newCoordinate.getLongitude(), newCoordinate.getLatitude());
+                Movement newMovement = new Movement(tracker, newCoordinate.getLongitude(), newCoordinate.getLatitude());
 
                 // Convert to readable Json and post
-                System.out.println(gson.toJson(newMovement));
-                if(!API_URL.equals("") && API_URL != null) {
-//                helper.post(API_URL, gson.toJson(newCoordinate));
-                }
+                String json = gson.toJson(newMovement);
+                System.out.println(json);
+
+                String response = HttpHelper.post(API_URL, gson.toJson(newCoordinate));
+                System.out.println(response);
+                startPosition = newCoordinate;
                 latch.countDown();
             }
         }, INITIAL_DELAY, DELAY);
 
         try {
             latch.await();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 

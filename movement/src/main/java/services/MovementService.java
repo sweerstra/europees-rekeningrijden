@@ -26,19 +26,25 @@ public class MovementService {
     }
 
     public Movement addMovement(Movement movement) {
-        Tracker tracker = trackerDao.findById(movement.getTracker().getId());
-        if (tracker == null) return null;
+        // Tracker tracker = trackerDao.findById(movement.getTracker().getId());
+        // if (tracker == null) return null;
 
-        tracker.addMovement(movement);
+        Tracker tracker = new Tracker();
+        tracker.setId(1);
+
+        movement.setSerialNumber("ENG3782");
+        movement.setTracker(tracker);
+        // movement.setTime();
+
+        return movementDao.create(movement);
+
+        /*tracker.addMovement(movement);
         trackerDao.update(tracker);
-        return movement;
+        return movement;*/
     }
 
     public List<Movement> getAllMovements() {
-        // return movementDao.findAll();
-        List<Movement> list = new ArrayList<Movement>();
-        list.add(new Movement("12345", 50.123, 5.456, new Date()));
-        return list;
+        return movementDao.findAll();
     }
 
 

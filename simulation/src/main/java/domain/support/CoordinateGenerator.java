@@ -10,11 +10,11 @@ public class CoordinateGenerator {
     public CoordinateGenerator() {
     }
 
-    public Coordinate generateRandomCoordinate(Coordinate startPosition, int radiusInMeters) {
+    public Coordinate generateRandomCoordinate(Coordinate startPosition, int radiusFromLastLocationInMeters) {
         double x0 = (double) startPosition.getLongitude();
         double y0 = (double) startPosition.getLatitude();
         Random random = new Random();
-        double radiusInDegrees = (double) ((float) radiusInMeters / 111320.0F);
+        double radiusInDegrees = (double) ((float) radiusFromLastLocationInMeters / 111320.0F);
         double u = random.nextDouble();
         double v = random.nextDouble();
         double w = radiusInDegrees * Math.sqrt(u);

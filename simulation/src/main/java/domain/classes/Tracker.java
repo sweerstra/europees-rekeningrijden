@@ -7,7 +7,11 @@ public class Tracker {
         this.id = id;
     }
 
-    public Tracker() {
-        id = (int)(Math.random()*900)+100;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
