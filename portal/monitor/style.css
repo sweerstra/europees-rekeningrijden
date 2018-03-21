@@ -1,0 +1,110 @@
+:root {
+    --color-main: #3F51B5;
+    --color-main-dark: rgba(0, 0, 0, .2);
+    --color-tint: #eeeeee;
+    --color-up: #1B5E20;
+    --color-up-light: #7FE283;
+    --color-down: #B71C1C;
+    --color-down-dark: #9E0303;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    margin: 0 0 40px;
+    background-color: var(--color-main);
+}
+
+header {
+    padding: 0 20px;
+    height: 100px;
+    color: var(--color-tint);
+    background-color: var(--color-main-dark);
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr;
+    align-items: center;
+    grid-auto-flow: column;
+}
+
+main {
+    display: grid;
+    grid-gap: 20px 30px;
+    margin: 0 40px;
+}
+
+section {
+    display: grid;
+    grid-gap: 10px;
+}
+
+.section__country {
+    margin-bottom: 10px;
+    color: var(--color-tint);
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-tint);
+}
+
+.section__country__flag {
+    width: 68px;
+    height: 40px;
+    border: 1px solid var(--color-tint);
+}
+
+.section__system {
+    padding: 10px;
+    color: var(--color-tint);
+    border: 1px solid var(--color-tint);
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section__system[data-status="up"] { background-color: var(--color-up); }
+
+.section__system[data-status="up"]:hover { background-color: var(--color-up-light); }
+
+.section__system[data-status="down"] { background-color: var(--color-down); }
+
+.section__system[data-status="down"]:hover { background-color: var(--color-down-dark); }
+
+.section__system:hover,
+.section__item:active {
+    transition: background-color 150ms ease-in;
+    border: 1px solid transparent;
+}
+
+.section__system__status {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--color-tint);
+}
+
+.section__system[data-status="up"] .section__system__status {
+    background-color: var(--color-up-light);
+}
+
+.section__system[data-status="down"] .section__system__status {
+    background-color: var(--color-down-dark);
+}
+
+@media (max-width: 600px) {
+    header {
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 800px) {
+    main {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+}
