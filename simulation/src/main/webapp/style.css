@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    background-color: var(--color-success);
+}
+
+main {
+    display: grid;
+    grid-template-columns: 6fr 4fr;
+}
+
+.map {
+    width: 100%;
+    height: 100vh;
+}
+
+.controls {
+    z-index: 2;
+    padding: 20px 40px;
+    box-shadow: -6px 0 10px 0 rgba(0, 0, 0, .50);
+}
+
+.simulation-button {
+    background: url(./images/play-circle.svg) no-repeat;
+}
+
+.simulation-button.playing {
+    background-image: url(./images/pause-circle.svg);
+}
+
+.image-button {
+    width: 60px;
+    height: 60px;
+    background-size: cover;
+    cursor: pointer;
+}
+
+.image-button:hover {
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+}
+
+.control {
+    margin: 20px 0;
+    width: 240px;
+}
+
+.control label {
+    font-weight: bold;
+}
+
+.control input {
+    width: 100%;
+    margin-top: 10px;
+}
+
+hr {
+    margin-top: 40px;
+    border: 1px solid var(--color-tint);
+}
+
+@media (max-width: 700px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+}

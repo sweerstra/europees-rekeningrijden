@@ -2,18 +2,20 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="./styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./theme.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
 
 <main>
-    <div class="map" id="googleMap"></div>
+    <div class="map" id="google-map"></div>
 
     <div class="controls">
         <h1>Simulatie</h1>
 
-        <div id="simulation-toggle" class="image-button play"></div>
+        <div id="simulation-toggle" class="simulation-button image-button"></div>
 
         <div class="control">
             <label for="amount">
@@ -23,11 +25,17 @@
         </div>
 
         <div class="control">
-            <input type="text" id="routeFrom" name="routeFrom" value="51.509865, -0.118092" placeholder="From"/>
+            <label for="from">
+                From
+                <input type="text" id="from" value="51.509865, -0.118092"/>
+            </label>
         </div>
 
         <div class="control">
-            <input type="text" id="routeTo" name="routeTo" value="52.489471, -1.898575" placeholder="To"/>
+            <label for="to">
+                To
+                <input type="text" id="to" value="52.489471, -1.898575"/>
+            </label>
         </div>
 
         <hr/>
@@ -47,24 +55,6 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7CDOHHmsCN9aelCcx2-viZERP0AVwCIc&callback=myMap"></script>
 <script src="./simulation.js"></script>
-
-<!--<script>
-    function myMap() {
-        var mapProp = {
-            center: new google.maps.LatLng(51.509865, -0.118092),
-            zoom: 12,
-        };
-        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-    }
-
-    const simulationToggle = document.getElementById('simulation-toggle');
-
-    document.addEventListener('DOMContentLoaded', () => {
-        simulationToggle.addEventListener('click', function () {
-            this.classList.toggle('active');
-        });
-    });
-</script>-->
 
 </body>
 </html>

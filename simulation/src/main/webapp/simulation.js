@@ -1,4 +1,4 @@
-const directionsDisplay = new google.maps.DirectionsRenderer({draggable: true});
+const directionsDisplay = new google.maps.DirectionsRenderer({ draggable: true });
 const directionsService = new google.maps.DirectionsService();
 let map;
 let line;
@@ -10,28 +10,22 @@ document.addEventListener('DOMContentLoaded', () => {
         center: new google.maps.LatLng(51.509865, -0.118092)
     };
 
-    map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+    map = new google.maps.Map(document.getElementById("google-map"), myOptions);
     directionsDisplay.setMap(map);
     // directionsDisplay.setPanel(document.getElementById("directions"));
 
     const simulationToggle = document.getElementById('simulation-toggle');
 
     simulationToggle.addEventListener('click', function () {
-        this.classList.toggle('active');
+        this.classList.toggle('playing');
         calcRoute();
     });
 });
 
 function calcRoute() {
-    /*const request = {
-        origin: $("#routeFrom").val(),
-        destination: $("#routeTo").val(),
-        travelMode: "DRIVING"
-    };*/
-
     const request = {
-        origin: document.getElementById('routeFrom').value,
-        destination: document.getElementById('routeTo').value,
+        origin: document.getElementById('from').value,
+        destination: document.getElementById('to').value,
         travelMode: 'DRIVING'
     };
 
