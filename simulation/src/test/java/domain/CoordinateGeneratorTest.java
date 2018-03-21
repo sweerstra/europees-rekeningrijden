@@ -110,10 +110,11 @@ public class CoordinateGeneratorTest {
 
                 // Convert to readable Json and post
                 String json = gson.toJson(newMovement);
-                System.out.println(json);
+                // System.out.println(json);
+                System.out.println(newMovement.getLongitude() + ", " + newMovement.getLatitude());
 
-                String response = HttpHelper.post(API_URL, gson.toJson(newCoordinate));
-                System.out.println(response);
+                // String response = HttpHelper.post(API_URL, gson.toJson(newCoordinate));
+                // System.out.println(response);
                 startPosition = newCoordinate;
                 latch.countDown();
             }

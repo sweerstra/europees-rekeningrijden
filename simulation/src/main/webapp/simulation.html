@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+
+<main>
+    <div class="map" id="googleMap"></div>
+
+    <div class="controls">
+        <h1>Simulatie</h1>
+
+        <div id="simulation-toggle" class="image-button play"></div>
+
+        <div class="control">
+            <label for="amount">
+                Amount of cars
+                <input id="amount" type="number" value="2"/>
+            </label>
+        </div>
+
+        <div class="control">
+            <input type="text" id="routeFrom" name="routeFrom" value="51.509865, -0.118092" placeholder="From"/>
+        </div>
+
+        <div class="control">
+            <input type="text" id="routeTo" name="routeTo" value="52.489471, -1.898575" placeholder="To"/>
+        </div>
+
+        <hr/>
+
+        <div class="control">
+            <label for="speed">
+                Speed (km/hr)
+                <input id="speed" type="number" value="50"/>
+            </label>
+        </div>
+
+        <div class="control">
+            <button class="btn">Generate</button>
+        </div>
+    </div>
+</main>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7CDOHHmsCN9aelCcx2-viZERP0AVwCIc&callback=myMap"></script>
+<script src="./simulation.js"></script>
+
+<!--<script>
+    function myMap() {
+        var mapProp = {
+            center: new google.maps.LatLng(51.509865, -0.118092),
+            zoom: 12,
+        };
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    }
+
+    const simulationToggle = document.getElementById('simulation-toggle');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        simulationToggle.addEventListener('click', function () {
+            this.classList.toggle('active');
+        });
+    });
+</script>-->
+
+</body>
+</html>
