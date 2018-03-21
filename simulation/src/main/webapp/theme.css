@@ -3,7 +3,7 @@
     --color-success: #4CAF50;
     --color-warning: #FFC107;
     --color-danger: #F44336;
-    --color-default: transparent;
+    --color-main: transparent;
     --color-tint: white;
     --color-disabled: #EBEBEB;
 }
@@ -23,7 +23,7 @@ html {
 .btn {
     padding: 8px 30px;
     color: var(--color-tint);
-    background-color: var(--color-default);
+    background-color: var(--color-main);
     border: 2px solid var(--color-tint);
     font-size: 16px;
     font-weight: bold;
@@ -48,7 +48,7 @@ input {
     font-size: 16px;
     color: var(--color-tint);
     font-weight: bold;
-    background-color: var(--color-default);
+    background-color: var(--color-main);
     border: 2px solid var(--color-tint);
     display: block;
 }
