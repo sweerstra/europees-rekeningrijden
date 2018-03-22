@@ -3,7 +3,6 @@ const directionsService = new google.maps.DirectionsService();
 const fromInput = document.getElementById('from');
 const toInput = document.getElementById('to');
 const speedInput = document.getElementById('speed');
-const addSimulationButton = document.getElementById('add-simulation');
 const generateRouteButton = document.getElementById('generate-route');
 
 const MOVEMENT_API_URL = 'localhost:8080/movement/api/movement';
@@ -33,8 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         calcRoute(fromInput.value, toInput.value, (result) => {
-            const method = result ? 'remove' : 'add';
-            addSimulationButton.classList[method]('warning');
+            console.log('Calc route result', result);
         });
     });
 
@@ -42,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const { value } = speedInput;
 
         if (value) {
-            speedInput.classList.remove('warning');
             // get two coordinates from simulation API based on speed value
             /* post(SIMULATION_API_URL, { speed: parseFloat(value) })
                 .then(resp => resp); */
@@ -52,11 +49,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (randomRoute === undefined) return;
 
             ROUTES.splice(randomIndex, 1);
-            calcRoute(randomRoute.from, randomRoute.to);
+            calcRoute(randomRoute.from, randomRoute.to, (result) => {
+                console.log('Generate route result', result);
+            });
         } else {
-            speedInput.classList.add('warning');
             console.warn('Please enter a speed value.');
         }
+    });
+
+    // add basic input attributes
+    document.querySelectorAll('input').forEach(input => {
+        input.setAttribute('autocomplete', 'off');
+        input.setAttribute('spellcheck', 'false');
     });
 
     // load theme colors from localStorage
@@ -78,7 +82,8 @@ function calcRoute(from, to, callback) {
     };
 
     directionsService.route(requestOptions, (response, status) => {
-        if (status === google.maps.DirectionsStatus.OK) {
+        const isOk = status === google.maps.DirectionsStatus.OK;
+        if (isOk) {
             const polyline = createPolyline(response);
             const [route] = response.routes;
             addSimulation(route, polyline);
@@ -88,11 +93,10 @@ function calcRoute(from, to, callback) {
             const lng = firstPath.lng();
 
             map.setCenter({ lat, lng });
-            callback(true);
         } else {
-            console.error('Coordinates were not found.');
-            callback(false);
+            console.error('Coordinates or location was not valid.');
         }
+        callback(isOk);
     });
 }
 
@@ -171,4 +175,3 @@ function animateStep(polyline, movementCount, pathLength) {
     polyline.set('icons', icons);
     polyline.movementId = movementCount;
 }
-
