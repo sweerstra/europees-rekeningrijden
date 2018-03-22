@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./theme.css">
     <link rel="stylesheet" href="./style.css">
+    <title>Traxit Simulation</title>
 </head>
 
 <body>
@@ -13,30 +14,32 @@
     <div class="map" id="google-map"></div>
 
     <div class="controls">
-        <h1>Simulatie</h1>
+        <h1>Traxit Simulation</h1>
 
-        <div id="simulation-toggle" class="simulation-button image-button"></div>
-
-        <div class="control">
+        <!--<div class="control">
             <label for="amount">
                 Amount of cars
                 <input id="amount" type="number" value="2"/>
             </label>
-        </div>
+        </div>-->
 
-        <div class="control">
-            <label for="from">
-                From
-                <input type="text" id="from" value="51.509865, -0.118092"/>
-            </label>
-        </div>
+        <form name="simulation">
+            <div class="control">
+                <label for="from">
+                    From
+                    <input type="text" id="from" value="51.509865, -0.118092"/>
+                </label>
+            </div>
 
-        <div class="control">
-            <label for="to">
-                To
-                <input type="text" id="to" value="52.489471, -1.898575"/>
-            </label>
-        </div>
+            <div class="control">
+                <label for="to">
+                    To
+                    <input type="text" id="to" value="52.489471, -1.898575"/>
+                </label>
+            </div>
+
+            <button id="add-simulation" class="btn">Add simulation</button>
+        </form>
 
         <hr/>
 

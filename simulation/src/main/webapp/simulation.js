@@ -3,7 +3,7 @@ const directionsService = new google.maps.DirectionsService();
 const fromInput = document.getElementById('from');
 const toInput = document.getElementById('to');
 const speedInput = document.getElementById('speed');
-const simulationToggleButton = document.getElementById('simulation-toggle');
+const addSimulationButton = document.getElementById('add-simulation');
 const generateRouteButton = document.getElementById('generate-route');
 
 const MOVEMENT_API_URL = 'localhost:8080/movement/api/movement';
@@ -29,15 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
 
-    simulationToggleButton.addEventListener('click', function () {
-        if (!this.classList.contains('playing')) {
-            // start simulation
-            calcRoute(fromInput.value, toInput.value);
-        } else {
-            // stop simulation
-        }
+    document.simulation.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-        this.classList.toggle('playing');
+        calcRoute(fromInput.value, toInput.value, (result) => {
+            const method = result ? 'remove' : 'add';
+            addSimulationButton.classList[method]('warning');
+        });
     });
 
     generateRouteButton.addEventListener('click', function () {
@@ -51,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const randomIndex = Math.floor(Math.random() * ROUTES.length);
             const randomRoute = ROUTES[randomIndex];
+            if (randomRoute === undefined) return;
+
             ROUTES.splice(randomIndex, 1);
             calcRoute(randomRoute.from, randomRoute.to);
         } else {
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function calcRoute(from, to) {
+function calcRoute(from, to, callback) {
     if (!from || !to) {
         console.warn('From or to coordinates were null or undefined.');
         return;
@@ -82,6 +82,16 @@ function calcRoute(from, to) {
             const polyline = createPolyline(response);
             const [route] = response.routes;
             addSimulation(route, polyline);
+
+            const [firstPath] = route.overview_path;
+            const lat = firstPath.lat();
+            const lng = firstPath.lng();
+
+            map.setCenter({ lat, lng });
+            callback(true);
+        } else {
+            console.error('Coordinates were not found.');
+            callback(false);
         }
     });
 }
@@ -155,10 +165,10 @@ function createPolyline(directionResult) {
     return line;
 }
 
-function animateStep(polyline, count, pathLength) {
+function animateStep(polyline, movementCount, pathLength) {
     const icons = polyline.get('icons');
-    icons[0].offset = ((count / pathLength) * 100) + '%';
+    icons[0].offset = ((movementCount / pathLength) * 100) + '%';
     polyline.set('icons', icons);
-    polyline.movementId = count;
+    polyline.movementId = movementCount;
 }
 

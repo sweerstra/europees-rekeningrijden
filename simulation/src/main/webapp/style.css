@@ -23,14 +23,6 @@ main {
     box-shadow: -6px 0 10px 0 rgba(0, 0, 0, .50);
 }
 
-.simulation-button {
-    background: url(./images/play-circle.svg) no-repeat;
-}
-
-.simulation-button.playing {
-    background-image: url(./images/pause-circle.svg);
-}
-
 .image-button {
     width: 60px;
     height: 60px;
@@ -57,7 +49,8 @@ main {
     margin-top: 10px;
 }
 
-.control input.warning {
+.warning {
+    color: var(--color-danger);
     border-color: var(--color-danger);
 }
 
