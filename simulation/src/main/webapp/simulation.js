@@ -1,63 +1,63 @@
 const directionsService = new google.maps.DirectionsService();
-
 const fromInput = document.getElementById('from');
 const toInput = document.getElementById('to');
 const speedInput = document.getElementById('speed');
-const generateRouteButton = document.getElementById('generate-route');
-
+const generateSimulationButton = document.getElementById('generate-simulation');
+const addSimulationButton = document.getElementById('add-simulation');
+const simulationAmountText = document.getElementById('simulation-amount');
 const MOVEMENT_API_URL = 'localhost:8080/movement/api/movement';
 const SIMULATION_API_URL = 'localhost:8080/simulation/api/generate';
-
 const defaultStrokeColor = localStorage.getItem('--color-main') || '#4CAF50';
 
 const ROUTES = [
-    { from: '51.538433, -0.14467214', to: '51.527092, -0.14466009' },
-    { from: '51.525867, -0.13448699', to: '51.529404, -0.14631915' },
-    { from: '51.533173, -0.14858663', to: '51.538433, -0.14467214' }
+    { from: 'Leicester', to: 'Peterborough' },
+    { from: 'Oxford', to: 'Swindon' },
+    { from: 'Bath', to: 'Southampton' }
 ];
 
-let trackerId = 1;
 let map;
+let currentTrackers = [];
+let trackerId = 1;
 
 document.addEventListener('DOMContentLoaded', () => {
     const mapOptions = {
-        zoom: 14,
+        zoom: 7,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        center: new google.maps.LatLng(51.509865, -0.118092)
+        center: new google.maps.LatLng(52.489471, -1.898575)
     };
 
     map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
 
-    document.simulation.addEventListener('submit', (e) => {
-        e.preventDefault();
+    generateSimulationButton.addEventListener('click', () => {
+        const speed = parseFloat(speedInput.value);
 
-        calcRoute(fromInput.value, toInput.value, (result) => {
-            console.log('Calc route result', result);
-        });
-    });
-
-    generateRouteButton.addEventListener('click', function () {
-        const { value } = speedInput;
-
-        if (value) {
+        if (speed) {
             // get two coordinates from simulation API based on speed value
-            /* post(SIMULATION_API_URL, { speed: parseFloat(value) })
+            /* post(SIMULATION_API_URL, { speed })
                 .then(resp => resp); */
 
             const randomIndex = Math.floor(Math.random() * ROUTES.length);
             const randomRoute = ROUTES[randomIndex];
             if (randomRoute === undefined) return;
 
+            console.log(randomRoute);
+
             ROUTES.splice(randomIndex, 1);
-            calcRoute(randomRoute.from, randomRoute.to, (result) => {
-                console.log('Generate route result', result);
-            });
+            calcRoute(randomRoute.from, randomRoute.to, speed);
         } else {
             console.warn('Please enter a speed value.');
         }
     });
 
-    // add basic input attributes
+    addSimulationButton.addEventListener('click', () => {
+        const speed = parseFloat(speedInput.value);
+
+        if (speed) {
+            calcRoute(fromInput.value, toInput.value, speed);
+        }
+    });
+
+    // add basic attributes to input
     document.querySelectorAll('input').forEach(input => {
         input.setAttribute('autocomplete', 'off');
         input.setAttribute('spellcheck', 'false');
@@ -69,9 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function calcRoute(from, to, callback) {
+function calcRoute(from, to, speed) {
     if (!from || !to) {
-        console.warn('From or to coordinates were null or undefined.');
+        console.warn('From coordinates, to coordinates or speed was null or undefined.');
         return;
     }
 
@@ -82,33 +82,33 @@ function calcRoute(from, to, callback) {
     };
 
     directionsService.route(requestOptions, (response, status) => {
-        const isOk = status === google.maps.DirectionsStatus.OK;
-        if (isOk) {
+        if (status === google.maps.DirectionsStatus.OK) {
             const polyline = createPolyline(response);
             const [route] = response.routes;
-            addSimulation(route, polyline);
+            addSimulation(route, polyline, speed);
 
             const [firstPath] = route.overview_path;
             const lat = firstPath.lat();
             const lng = firstPath.lng();
-
             map.setCenter({ lat, lng });
         } else {
             console.error('Coordinates or location was not valid.');
         }
-        callback(isOk);
     });
 }
 
-function addSimulation(route, polyline) {
+function addSimulation(route, polyline, speed) {
     const path = route.overview_path;
-    const { length } = path;
+    const pathLength = path.length;
+    const distance = route.legs[0].distance.value;
+    const stepSize = distance / pathLength;
+    const timeBetweenSteps = 1000 / ((speed / 3.6) / stepSize);
 
     let movementCount = 1;
 
     const interval = setInterval(() => {
-        if (movementCount <= length) {
-            animateStep(polyline, movementCount, length);
+        if (movementCount <= pathLength) {
+            animateStep(polyline, movementCount, pathLength);
 
             const { lat, lng } = path[movementCount - 1];
             const { trackerId, movementId, time } = polyline;
@@ -129,9 +129,15 @@ function addSimulation(route, polyline) {
                 }); */
         } else {
             clearInterval(interval);
+            polyline.setMap(null);
+            currentTrackers.splice(currentTrackers.indexOf(polyline.trackerId), 1);
+            simulationAmountText.textContent = currentTrackers.length.toString();
         }
         movementCount++;
-    }, 1000);
+    }, timeBetweenSteps);
+
+    currentTrackers.push(trackerId);
+    simulationAmountText.textContent = currentTrackers.length.toString();
 }
 
 function post(url, data) {
@@ -146,7 +152,7 @@ function post(url, data) {
 }
 
 function createPolyline(directionResult) {
-    const line = new google.maps.Polyline({
+    const polyline = new google.maps.Polyline({
         path: directionResult.routes[0].overview_path,
         strokeColor: '#F44336',
         strokeOpacity: 0.4,
@@ -164,9 +170,8 @@ function createPolyline(directionResult) {
         time: new Date()
     });
 
-    line.setVisible(true);
-    line.setMap(map);
-    return line;
+    polyline.setMap(map);
+    return polyline;
 }
 
 function animateStep(polyline, movementCount, pathLength) {

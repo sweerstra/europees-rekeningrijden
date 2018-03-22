@@ -16,40 +16,38 @@
     <div class="controls">
         <h1>Traxit Simulation</h1>
 
-        <form name="simulation">
-            <div class="control">
-                <label for="from">
-                    From
-                    <input type="text" id="from" value="51.509865, -0.118092"/>
-                </label>
-            </div>
-
-            <div class="control">
-                <label for="to">
-                    To
-                    <input type="text" id="to" value="52.489471, -1.898575"/>
-                </label>
-            </div>
-
-            <button id="add-simulation" class="btn">Add simulation</button>
-        </form>
-
-        <hr/>
-
         <div class="control">
             <label for="speed">
                 Speed (km/hr)
-                <input id="speed" type="number" value="50" placeholder="Cannot be empty"/>
+                <input id="speed" type="number" value="120" placeholder="Cannot be empty"/>
             </label>
         </div>
 
         <div class="control">
-            <button id="generate-route" class="btn">Generate</button>
+            <button id="generate-simulation" class="btn">Generate simulation</button>
         </div>
+
+        <div class="control">
+            <label for="from">
+                From
+                <input type="text" id="from" value="51.509865, -0.118092"/>
+            </label>
+        </div>
+
+        <div class="control">
+            <label for="to">
+                To
+                <input type="text" id="to" value="52.489471, -1.898575"/>
+            </label>
+        </div>
+
+        <button id="add-simulation" class="btn">Add simulation</button>
+
+        <h2>Trackers in motion: <span id="simulation-amount" style="text-decoration: underline;">0</span></h2>
     </div>
 </main>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7CDOHHmsCN9aelCcx2-viZERP0AVwCIc&callback=myMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7CDOHHmsCN9aelCcx2-viZERP0AVwCIc"></script>
 <script src="./simulation.js"></script>
 
 </body>
