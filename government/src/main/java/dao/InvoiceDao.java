@@ -1,6 +1,6 @@
 package dao;
 
-import Domain.Invoice;
+import domain.Invoice;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

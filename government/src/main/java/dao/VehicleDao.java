@@ -1,6 +1,6 @@
 package dao;
 
-import Domain.Vehicle;
+import domain.Vehicle;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,4 +15,7 @@ public class VehicleDao extends DaoFacade<Vehicle> implements IVehicleDao{
         super(Vehicle.class);
     }
 
+    public Vehicle findByLicenseplate(String licencePlate) {
+        return null;
+    }
 }

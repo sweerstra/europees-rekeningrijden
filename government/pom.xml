@@ -7,6 +7,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>government Maven Webapp</name>
     <url>http://maven.apache.org</url>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -52,7 +53,18 @@
             <version>2.9.4</version>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>government</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

@@ -1,7 +1,6 @@
 package dao;
 
-import Domain.Invoice;
-import Domain.Vehicle;
+import domain.Invoice;
 
 import java.util.List;
 

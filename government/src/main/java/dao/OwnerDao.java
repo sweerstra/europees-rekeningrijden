@@ -1,12 +1,10 @@
 package dao;
 
-import Domain.Owner;
+import domain.Owner;
 
 import javax.ejb.Stateless;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Stateless
 public class OwnerDao extends DaoFacade<Owner> implements IOwnerDao{

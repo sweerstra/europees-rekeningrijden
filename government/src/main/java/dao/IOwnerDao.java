@@ -1,7 +1,6 @@
 package dao;
 
-import Domain.Invoice;
-import Domain.Owner;
+import domain.Owner;
 
 import java.util.List;
 
