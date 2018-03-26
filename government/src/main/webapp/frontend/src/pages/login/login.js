@@ -10,6 +10,7 @@ class Login extends Component {
     const password = target.password.value;
 
     console.log(username, password);
+    this.props.history.push('/trackers');
   };
 
   render() {
