@@ -1,7 +1,17 @@
 package Domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@Entity
+@XmlRootElement
 public class Vehicle {
 
+    @Id
+    @GeneratedValue
+    private long id;
     private String trackerId;
     private int ownerId;
     private String licencePlate;
@@ -57,5 +67,13 @@ public class Vehicle {
 
     public void setEmissionCatagorie(String emissionCatagorie) {
         this.emissionCatagorie = emissionCatagorie;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

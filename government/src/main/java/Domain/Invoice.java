@@ -1,9 +1,17 @@
 package Domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
+@Entity
+@XmlRootElement
 public class Invoice {
 
+    @Id
+    @GeneratedValue
     private long id;
     private String trackerId;
     private double totalAmount;

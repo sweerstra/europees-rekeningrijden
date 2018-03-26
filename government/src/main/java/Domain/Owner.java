@@ -1,10 +1,18 @@
 package Domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
+@Entity
+@XmlRootElement
 public class Owner {
 
-    private int id;
+    @Id
+    @GeneratedValue
+    private long id;
     private boolean usesBillriderWebsite;
     private String firstName;
     private String lastName;
@@ -29,11 +37,11 @@ public class Owner {
 
     public Owner(){}
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
