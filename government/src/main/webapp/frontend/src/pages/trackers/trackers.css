@@ -1,7 +1,7 @@
 .trackers {
   display: grid;
-  grid-column-gap: 20px;
-  grid-template-columns: 1fr 1fr;
+  /*grid-column-gap: 20px;*/
+  grid-template-columns: 7fr 3fr;
   grid-template-rows: 80px 1fr;
   grid-template-areas: "nav nav" "table controls";
 }
@@ -11,24 +11,37 @@
   padding: 20px;
   display: flex;
   align-items: center;
-  border-bottom: 2px solid var(--color-danger);
+  border-bottom: 2px solid var(--color-tint);
 }
 
 .trackers__table {
   grid-area: table;
-  padding: 10px;
+  padding: 20px 0 10px 20px;
 }
 
-.trackers__table__search {
-  width: 100%;
-}
-
-.trackers__table__search input {
-  width: 100%;
-}
-
-.trackers__controls {
+.trackers__administration {
   grid-area: controls;
+  padding: 20px;
 }
 
+hr {
+  margin: 20px 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-tint);
+}
 
+.trackers__administration__controls {
+}
+
+.trackers__administration__controls input {
+  width: 100%;
+}
+
+.trackers__administration__history {
+}
+
+.history {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}

@@ -95,6 +95,13 @@ class Trackers extends Component {
       }
     ];
 
+    const history = [
+      { name: 'O. Bean', date: 'Now' },
+      { name: 'M. Smith', date: new Date('2017-09-09') },
+      { name: 'P. Andrea', date: new Date('2011-01-07') },
+      { name: 'C. Young', date: new Date('2002-06-04') }
+    ];
+
     const { trackers } = this.state;
     const search = this.state.search.toLowerCase();
 
@@ -114,17 +121,31 @@ class Trackers extends Component {
           <span className="h1">Traxit Trackers</span>
         </nav>
         <div className="trackers__table">
-          <div className="trackers__table__search">
-            <input placeholder="Search trackers..."
-                   onChange={e => this.setState({ search: e.target.value })}/>
-          </div>
           <ReactTable
             data={filtered}
             columns={columns}
             showPagination={false}
           />
         </div>
-        <div className="trackers__controls"></div>
+        <div className="trackers__administration">
+          <div className="trackers__administration__controls">
+            <input placeholder="Search trackers..."
+                   onChange={e => this.setState({ search: e.target.value })}/>
+            <hr/>
+            <button className="btn">Add tracker</button>
+          </div>
+          <div className="trackers__administration__history">
+            <h2>Tracker History</h2>
+            <div className="tracker-history">
+              {history.map(({ name, date }, index) =>
+                <div className="history" key={index}>
+                  <span>{name}</span>
+                  <span>{typeof date === 'object' ? date.toLocaleDateString() : date}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
