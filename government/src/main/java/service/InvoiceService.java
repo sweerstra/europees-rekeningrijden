@@ -25,4 +25,12 @@ public class InvoiceService {
         }
         return null;
     }
+
+    public Invoice findById(long id) {
+        return dao.findById(id);
+    }
+
+    public List<Invoice> findAll() {
+        return dao.findAll();
+    }
 }

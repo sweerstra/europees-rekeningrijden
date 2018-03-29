@@ -1,7 +1,8 @@
 package controller;
 
+import domain.Invoice;
 import domain.Vehicle;
-import service.VehicleService;
+import service.InvoiceService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -14,20 +15,20 @@ import java.util.List;
 
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/vehicles")
-public class VehiclesController {
+@Path("/invoices")
+public class InvoicesController {
 
     @Inject
-    private VehicleService service;
+    private InvoiceService service;
 
     @GET
-    public Response getVehicle() {
-        List<Vehicle> vehicles = service.findAll();
+    public Response getInvoices() {
+        List<Invoice> invoices = service.findAll();
 
-        if (vehicles == null) {
+        if (invoices == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.ok(vehicles).build();
+        return Response.ok(invoices).build();
     }
 }

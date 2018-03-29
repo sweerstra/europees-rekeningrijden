@@ -7,10 +7,7 @@ import service.VehicleService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -35,5 +32,16 @@ public class InvoiceController {
         return Response.ok(added).build();
     }
 
+    @GET
+    @Path("/{id}")
+    public Response getInvoice(@PathParam("id") long id) {
+        Invoice invoice = service.findById(id);
+
+        if (invoice == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(invoice).build();
+    }
 
 }

@@ -32,7 +32,7 @@ public class VehicleController {
 
     @GET
     @Path("/{id}")
-    public Response getVehicles(@PathParam("id") long id) {
+    public Response getVehicle(@PathParam("id") long id) {
         Vehicle vehicle = service.findById(id);
 
         if (vehicle == null) {
