@@ -31,14 +31,14 @@ public class VehicleController {
     }
 
     @GET
-    @Path("/all")
-    public Response getVehicle() {
-        List<Vehicle> vehicles = service.findAll();
+    @Path("/{id}")
+    public Response getVehicles(@PathParam("id") long id) {
+        Vehicle vehicle = service.findById(id);
 
-        if (vehicles == null) {
+        if (vehicle == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.ok(vehicles).build();
+        return Response.ok(vehicle).build();
     }
 }
