@@ -20,7 +20,6 @@ public class Invoice {
     private String trackerId;
     private double totalAmount;
 
-    @Column(name = "dateOfPayment")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date dateOfPayment;
     private PaymentStatus paid;
@@ -31,7 +30,6 @@ public class Invoice {
     public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCatagorie) {
         this.trackerId = trackerId;
         this.paid = paid;
-        this.dateOfPayment = new Date();
         this.totalAmount = totalAmount;
         this.billingMonth = billingMonth;
         this.distanceTravelled = distanceTravelled;
