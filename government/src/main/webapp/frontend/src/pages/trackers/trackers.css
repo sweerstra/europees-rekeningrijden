@@ -1,6 +1,5 @@
 .trackers {
   display: grid;
-  /*grid-column-gap: 20px;*/
   grid-template-columns: 7fr 3fr;
   grid-template-rows: 80px 1fr;
   grid-template-areas: "nav nav" "table controls";
@@ -37,11 +36,113 @@ hr {
   width: 100%;
 }
 
-.trackers__administration__history {
-}
+.trackers__administration__history { }
 
 .history {
-  padding: 10px 0;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  border: 2px solid var(--color-tint);
+  border-radius: var(--border-radius);
   display: flex;
   justify-content: space-between;
 }
+
+.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.ReactModal__Content.ReactModal__Content--after-open {
+  box-shadow: 0 5px 10px #000;
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal__header__close {
+  color: var(--color-tint);
+  font-size: 1.6em;
+}
+
+.modal__header__close:hover {
+  color: var(--color-disabled);
+  cursor: pointer;
+}
+
+.modal__form label {
+  font-weight: bold;
+}
+
+.modal__form input {
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.modal__form__tracker-id {
+  width: 100%;
+}
+
+.modal__form__emmission-category {
+  border-radius: 0;
+  border: 0;
+  border-bottom: 2px solid var(--color-tint);
+  cursor: auto;
+}
+
+.modal__form section {
+  margin-bottom: 20px;
+}
+
+.modal__form section.horizontal {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.modal__form section.vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal__form__owners {
+  border: 2px solid var(--color-tint);
+  border-radius: var(--border-radius);
+}
+
+.modal__form__owners input[type=text] {
+  margin: 0;
+  border: none;
+  border-bottom: 2px solid var(--color-tint);
+  border-radius: 0;
+}
+
+.modal__form__owners ul {
+  width: 100%;
+  height: 200px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.modal__form__owners ul li {
+  padding: 10px;
+  border-bottom: 1px solid black;
+}
+
+.modal__form__owners ul li:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal__form__save {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+

@@ -43,6 +43,17 @@ body {
 
 .btn:hover { box-shadow: 0 2px 4px rgba(0, 0, 0, .25); }
 
+.btn:disabled, input:disabled {
+  color: var(--color-disabled);
+  border-color: var(--color-disabled);
+}
+
+.btn:disabled:hover {
+  box-shadow: none;
+  background: none;
+  cursor: auto;
+}
+
 .btn.no-border { border: none; }
 
 .blue { background-color: var(--color-primary); }
@@ -83,6 +94,14 @@ input {
 input::placeholder {
   color: var(--color-disabled);
   font-weight: normal;
+}
+
+input.read-only {
+  border-radius: 0;
+  border: 0;
+  border-bottom: 2px solid var(--color-tint);
+  font-weight: normal;
+  cursor: auto;
 }
 
 button:focus, input:focus { outline: none; }
