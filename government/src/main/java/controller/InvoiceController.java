@@ -1,6 +1,8 @@
 package controller;
 
+import domain.Invoice;
 import domain.Vehicle;
+import service.InvoiceService;
 import service.VehicleService;
 
 import javax.enterprise.context.RequestScoped;
@@ -8,37 +10,38 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/vehicle")
-public class VehicleController {
+@Path("/invoice")
+public class InvoiceController {
 
     @Inject
-    private VehicleService service;
+    private InvoiceService service;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addVehicle(Vehicle vehicle) {
-        Vehicle added = service.create(vehicle);
+    public Response addInvoice(Invoice invoice) {
+       Invoice added = service.create(invoice);
+       invoice.setCurrentDateOfPayment();
 
         if (added == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.ok(vehicle).build();
+        return Response.ok(added).build();
     }
 
     @GET
     @Path("/{id}")
-    public Response getVehicle(@PathParam("id") long id) {
-        Vehicle vehicle = service.findById(id);
+    public Response getInvoice(@PathParam("id") long id) {
+        Invoice invoice = service.findById(id);
 
-        if (vehicle == null) {
+        if (invoice == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.ok(vehicle).build();
+        return Response.ok(invoice).build();
     }
+
 }

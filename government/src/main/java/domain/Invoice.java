@@ -1,9 +1,13 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -15,21 +19,25 @@ public class Invoice {
     private long id;
     private String trackerId;
     private double totalAmount;
-    private Date paid;
-    private int month;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+    private Date dateOfPayment;
+    private PaymentStatus paid;
+    private int billingMonth;
     private double distanceTravelled;
     private String emissionCatagorie;
 
-    public Invoice(String trackerId, double totalAmount, Date paid, int month, double distanceTravelled, String emissionCatagorie)
-    {
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCatagorie) {
         this.trackerId = trackerId;
+        this.paid = paid;
         this.totalAmount = totalAmount;
-        this.month = month;
+        this.billingMonth = billingMonth;
         this.distanceTravelled = distanceTravelled;
         this.emissionCatagorie = emissionCatagorie;
     }
 
-    public Invoice(){}
+    public Invoice() {
+    }
 
     public long getId() {
         return id;
@@ -55,22 +63,6 @@ public class Invoice {
         this.totalAmount = totalAmount;
     }
 
-    public Date getPaid() {
-        return paid;
-    }
-
-    public void setPaid(Date paid) {
-        this.paid = paid;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
     public double getDistanceTravelled() {
         return distanceTravelled;
     }
@@ -85,5 +77,39 @@ public class Invoice {
 
     public void setEmissionCatagorie(String emissionCatagorie) {
         this.emissionCatagorie = emissionCatagorie;
+    }
+
+    public PaymentStatus getPaid() {
+        return paid;
+    }
+
+    public void setPaid(PaymentStatus paid) {
+        this.paid = paid;
+    }
+
+    public Date getDateOfPayment() {
+        return dateOfPayment;
+    }
+
+    public void setDateOfPayment(Date dateOfPayment) {
+        this.dateOfPayment = dateOfPayment;
+    }
+
+    public void setCurrentDateOfPayment() {
+        this.dateOfPayment = new Timestamp(System.currentTimeMillis());
+    }
+
+    public int getBillingMonth() {
+        return billingMonth;
+    }
+
+    public void setBillingMonth(int billingMonth) {
+        this.billingMonth = billingMonth;
+    }
+
+    public enum PaymentStatus {
+        PAID,
+        OPEN,
+        CANCELLED
     }
 }

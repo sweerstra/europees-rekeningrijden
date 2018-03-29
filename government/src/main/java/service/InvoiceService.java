@@ -2,6 +2,7 @@ package service;
 
 import dao.IInvoiceDao;
 import domain.Invoice;
+import domain.Vehicle;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -18,5 +19,18 @@ public class InvoiceService {
         super();
     }
 
+    public Invoice create(Invoice entity) {
+        if (dao.findById(entity.getId()) == null) {
+            return dao.create(entity);
+        }
+        return null;
+    }
 
+    public Invoice findById(long id) {
+        return dao.findById(id);
+    }
+
+    public List<Invoice> findAll() {
+        return dao.findAll();
+    }
 }
