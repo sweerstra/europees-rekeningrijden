@@ -3,19 +3,28 @@ import ReactTable from 'react-table';
 import Modal from 'react-modal';
 import 'react-table/react-table.css';
 import './trackers.css';
+import AddTracker from '../../components/AddTracker/AddTracker';
 
 class Trackers extends Component {
-  onFormChange = (e) => {
-    const { name, value } = e.target;
+  onAddTracker = (e) => {
+    const { target } = e;
+    e.preventDefault();
 
-    if (name === 'licensePlate') {
-      if (value.match('^[A-Za-z]{2}-[0-9]{2}-[A-Za-z]{3}$')) {
-        this.setState({ errors: ['License Plate is not valid.'] });
-        return;
-      }
-    }
+    const trackerId = target.trackerId.value;
+    const licensePlate = target.licensePlate.value;
 
-    this.setState(state => ({ addTracker: { ...state.addTracker, [name]: value } }));
+    const tracker = {
+      trackerId, licensePlate,
+      vehicleId: trackerId,
+      trackerType: 'HP autotracker',
+      owner: {
+        name: 'H. Thompson',
+        usesBillriderWebsite: false
+      },
+      tariffCategory: 'Euro 1',
+    };
+
+    this.setState(state => ({ trackers: [...state.trackers, tracker] }))
   };
   openModal = () => {
     this.setState({ modalIsOpen: true });
@@ -38,7 +47,7 @@ class Trackers extends Component {
             usesBillriderWebsite: false
           },
           tariffCategory: 'Euro 1',
-          licencePlate: '22-AB-134',
+          licensePlate: '22-AB-134',
         },
         {
           trackerId: 2,
@@ -49,7 +58,7 @@ class Trackers extends Component {
             usesBillriderWebsite: true
           },
           tariffCategory: 'Euro 2',
-          licencePlate: '14-AB-133',
+          licensePlate: '14-AB-133',
         },
         {
           trackerId: 3,
@@ -60,7 +69,7 @@ class Trackers extends Component {
             usesBillriderWebsite: true
           },
           tariffCategory: 'Euro 3',
-          licencePlate: '20-AC-166',
+          licensePlate: '20-AC-166',
         },
         {
           trackerId: 4,
@@ -71,13 +80,12 @@ class Trackers extends Component {
             usesBillriderWebsite: true
           },
           tariffCategory: 'Euro 4',
-          licencePlate: '45-XY-487',
+          licensePlate: '45-XY-487',
         }
       ],
       search: '',
       modalIsOpen: false,
-      disableSave: true,
-      addTracker: {}
+      selectedRow: null
     };
   }
 
@@ -105,8 +113,8 @@ class Trackers extends Component {
             accessor: 'tariffCategory'
           },
           {
-            Header: 'Licence Plate',
-            accessor: 'licencePlate'
+            Header: 'License Plate',
+            accessor: 'licensePlate'
           }
         ]
       },
@@ -121,7 +129,7 @@ class Trackers extends Component {
           {
             Header: 'Uses Billriders',
             id: 'usesBillriderWebsite',
-            accessor: d => d.owner.usesBillriderWebsite ? 'X' : ''
+            accessor: d => d.owner.usesBillriderWebsite ? <span>&times;</span> : undefined
           }
         ]
       }
@@ -134,15 +142,14 @@ class Trackers extends Component {
       { name: 'C. Young', date: new Date('2002-06-04') }
     ];
 
-    const { trackers, addTracker } = this.state;
-    const saveIsDisabled = !addTracker.trackerId || !addTracker.licensePlate;
+    const { trackers, modalIsOpen, selectedRow } = this.state;
     const search = this.state.search.toLowerCase();
 
     const filtered = search
       ? trackers.filter(row => {
         return row.trackerType.toLowerCase().includes(search)
           || row.tariffCategory.toLowerCase().includes(search)
-          || row.licencePlate.toLowerCase().includes(search)
+          || row.licensePlate.toLowerCase().includes(search)
           || row.owner.name.toLowerCase().includes(search)
 
       })
@@ -170,6 +177,18 @@ class Trackers extends Component {
             data={filtered}
             columns={columns}
             showPagination={false}
+            getTrProps={(state, rowInfo) => {
+              const isSelected = rowInfo && rowInfo.index === selectedRow;
+              return {
+                onClick: () => {
+                  this.setState({ selectedRow: rowInfo.index })
+                },
+                style: {
+                  color: isSelected ? 'white' : 'black',
+                  backgroundColor: isSelected ? '#3F51B5' : 'white'
+                }
+              }
+            }}
           />
         </div>
         <div className="trackers__administration">
@@ -192,7 +211,7 @@ class Trackers extends Component {
           </div>
         </div>
         <Modal
-          isOpen={this.state.modalIsOpen}
+          isOpen={modalIsOpen}
           onRequestClose={this.closeModal}
           style={customStyles}
           contentLabel="Add Tracker Modal"
@@ -203,71 +222,8 @@ class Trackers extends Component {
                   onClick={this.closeModal}>&times;</span>
           </header>
 
-          <form className="modal__form">
-            <label>
-              Tracker ID
-              <input type="text"
-                     className="modal__form__tracker-id"
-                     onChange={this.onFormChange}
-                     name="trackerId"
-                     placeholder="Enter ID here"/>
-            </label>
+          <AddTracker onAddTracker={this.onAddTracker}/>
 
-            <section className="horizontal">
-              <label>
-                License Plate
-                <input type="text"
-                       onChange={this.onFormChange}
-                       name="licensePlate" placeholder="Enter Plate here"/>
-              </label>
-
-              <label>
-                Emission Category
-                <input type="text" className="read-only"
-                       readOnly="true" value={"Euro-1"}/>
-              </label>
-            </section>
-
-            <section className="horizontal">
-              <div className="modal__form__owners">
-                <input type="text" placeholder="Search Owner..."/>
-                <ul>
-                  <li>H. Thompson</li>
-                  <li>D. Jackson</li>
-                  <li>H. Thompson</li>
-                  <li>D. Jackson</li>
-                  <li>H. Thompson</li>
-                  <li>D. Jackson</li>
-                </ul>
-              </div>
-
-              <div className="modal__form__owner">
-                <label>
-                  Name
-                  <input type="text" className="read-only"
-                         readOnly="true" value={"H. Thompson"}/>
-                </label>
-
-                <label>
-                  Address
-                  <input type="text" className="read-only"
-                         readOnly="true" value={"Straatnaam 15, Goirle"}/>
-                </label>
-
-                <label>
-                  Birthdate
-                  <input type="text" className="read-only"
-                         readOnly="true" value={"1980-01-01"}/>
-                </label>
-              </div>
-            </section>
-
-            <section className="modal__form__save">
-              <button className="btn"
-                      disabled={saveIsDisabled}>Save
-              </button>
-            </section>
-          </form>
         </Modal>
       </div>
     );
