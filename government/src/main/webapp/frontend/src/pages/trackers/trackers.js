@@ -26,9 +26,15 @@ class Trackers extends Component {
 
     this.setState(state => ({ trackers: [...state.trackers, tracker] }))
   };
+
+  fetchPreviousOwner() {
+    this.setState(state => ({ history: state.history.slice(0, -1) }));
+  }
+
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
+
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
@@ -83,6 +89,12 @@ class Trackers extends Component {
           licensePlate: '45-XY-487',
         }
       ],
+      history: [
+        { name: 'O. Bean', date: 'Now' },
+        { name: 'M. Smith', date: new Date('2017-09-09') },
+        { name: 'P. Andrea', date: new Date('2011-01-07') },
+        { name: 'C. Young', date: new Date('2002-06-04') }
+      ],
       search: '',
       modalIsOpen: false,
       selectedRow: null
@@ -135,14 +147,7 @@ class Trackers extends Component {
       }
     ];
 
-    const history = [
-      { name: 'O. Bean', date: 'Now' },
-      { name: 'M. Smith', date: new Date('2017-09-09') },
-      { name: 'P. Andrea', date: new Date('2011-01-07') },
-      { name: 'C. Young', date: new Date('2002-06-04') }
-    ];
-
-    const { trackers, modalIsOpen, selectedRow } = this.state;
+    const { trackers, history, modalIsOpen, selectedRow } = this.state;
     const search = this.state.search.toLowerCase();
 
     const filtered = search
@@ -178,10 +183,11 @@ class Trackers extends Component {
             columns={columns}
             showPagination={false}
             getTrProps={(state, rowInfo) => {
-              const isSelected = rowInfo && rowInfo.index === selectedRow;
+              const isSelected = rowInfo && rowInfo.original.trackerId === selectedRow;
               return {
                 onClick: () => {
-                  this.setState({ selectedRow: rowInfo.index })
+                  this.fetchPreviousOwner(rowInfo.original);
+                  this.setState({ selectedRow: rowInfo.original.trackerId })
                 },
                 style: {
                   color: isSelected ? 'white' : 'black',

@@ -70,3 +70,8 @@ hr {
   color: var(--color-disabled);
   cursor: pointer;
 }
+
+/* react-table */
+[role="rowgroup"] {
+  cursor: pointer;
+}
