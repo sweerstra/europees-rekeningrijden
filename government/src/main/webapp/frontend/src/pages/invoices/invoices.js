@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './invoices.css';
 import ReactTable from 'react-table';
+import Navigation from "../../components/Navigation/Navigation";
 
 class Invoices extends Component {
   constructor(props) {
@@ -78,9 +79,7 @@ class Invoices extends Component {
 
     return (
       <div className="invoices">
-        <nav className="invoices__nav">
-          <h1>Traxit Invoices</h1>
-        </nav>
+        <Navigation heading="Traxit Invoices"/>
         <div className="invoices__table">
           <ReactTable
             data={this.state.invoices}

@@ -3,7 +3,9 @@ import ReactTable from 'react-table';
 import Modal from 'react-modal';
 import 'react-table/react-table.css';
 import './trackers.css';
+import Navigation from '../../components/Navigation/Navigation';
 import AddTracker from '../../components/AddTracker/AddTracker';
+import { Link } from "react-router-dom";
 
 class Trackers extends Component {
   onAddTracker = (e) => {
@@ -174,9 +176,7 @@ class Trackers extends Component {
 
     return (
       <div className="trackers">
-        <nav className="trackers__nav">
-          <h1>Traxit Trackers</h1>
-        </nav>
+        <Navigation heading="Traxit Trackers"/>
         <div className="trackers__table">
           <ReactTable
             data={filtered}
@@ -202,7 +202,10 @@ class Trackers extends Component {
             <input placeholder="Search trackers..."
                    onChange={e => this.setState({ search: e.target.value })}/>
             <hr/>
-            <button className="btn" onClick={this.openModal}>Add tracker</button>
+            <div className="trackers__navigation__buttons">
+              <button className="btn" onClick={this.openModal}>Add tracker</button>
+              <Link to="/invoices">View invoices</Link>
+            </div>
           </div>
           <div className="trackers__administration__history">
             <h2>Tracker History</h2>
