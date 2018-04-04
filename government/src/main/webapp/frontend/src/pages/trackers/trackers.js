@@ -176,7 +176,8 @@ class Trackers extends Component {
 
     return (
       <div className="trackers">
-        <Navigation heading="Traxit Trackers"/>
+        <Navigation heading="Traxit Trackers"
+                    onLogout={this.props.onLogout}/>
         <div className="trackers__table">
           <ReactTable
             data={filtered}

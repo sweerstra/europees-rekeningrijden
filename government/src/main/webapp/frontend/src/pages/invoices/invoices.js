@@ -79,7 +79,8 @@ class Invoices extends Component {
 
     return (
       <div className="invoices">
-        <Navigation heading="Traxit Invoices"/>
+        <Navigation heading="Traxit Invoices"
+                    onLogout={this.props.onLogout}/>
         <div className="invoices__table">
           <ReactTable
             data={this.state.invoices}

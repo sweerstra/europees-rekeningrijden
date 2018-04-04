@@ -9,8 +9,7 @@ class Login extends Component {
     const username = target.username.value;
     const password = target.password.value;
 
-    console.log(username, password);
-    this.props.history.push('/trackers');
+    this.props.onAuthenticate(username, password);
   };
 
   render() {

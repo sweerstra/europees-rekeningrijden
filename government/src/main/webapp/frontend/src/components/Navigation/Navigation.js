@@ -2,11 +2,13 @@ import React from 'react';
 import './Navigation.css';
 import { Link } from 'react-router-dom';
 
-const Navigation = ({ heading }) => (
+const Navigation = ({ heading, onLogout }) => (
   <nav className="nav">
     <h1>{heading}</h1>
     <div className="nav__logout">
-      <Link to="/login">Logout</Link>
+      <Link to="/login" onClick={onLogout}>
+        Logout
+      </Link>
     </div>
   </nav>
 );
