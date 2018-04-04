@@ -175,7 +175,7 @@ class Trackers extends Component {
     return (
       <div className="trackers">
         <nav className="trackers__nav">
-          <span className="h1">Traxit Trackers</span>
+          <h1>Traxit Trackers</h1>
         </nav>
         <div className="trackers__table">
           <ReactTable
