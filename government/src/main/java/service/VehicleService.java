@@ -30,6 +30,10 @@ public class VehicleService {
         dao.delete(entity);
     }
 
+    public void update() {
+
+    }
+
     public Vehicle findById(long id) {
         return dao.findById(id);
     }

@@ -1,33 +1,38 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @Entity
 @XmlRootElement
 public class Vehicle {
-
     @Id
     @GeneratedValue
     private long id;
     private String trackerId;
-    private int ownerId;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Ownership> ownerships;
+
     private String licensePlate;
     private String typeTracker;
     private String emissionCategory;
 
-    public Vehicle(String trackerId, int ownerId, String licensePlate, String typeTracker, String emissionCategory)
-    {
+    public Vehicle(String trackerId, String licensePlate, String typeTracker, String emissionCategory) {
         this.trackerId = trackerId;
-        this.ownerId = ownerId;
         this.licensePlate = licensePlate;
         this.typeTracker = typeTracker;
         this.emissionCategory = emissionCategory;
     }
 
-    public Vehicle(){}
+    public Vehicle() {}
 
     public String getTrackerId() {
         return trackerId;
@@ -37,12 +42,16 @@ public class Vehicle {
         this.trackerId = trackerId;
     }
 
-    public int getOwnerId() {
-        return ownerId;
+    public List<Ownership> getOwnerships() {
+        return ownerships;
     }
 
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+    public void addOwnership(Ownership ownership) {
+        this.ownerships.add(ownership);
+    }
+
+    public void setOwnerships(List<Ownership> ownerships) {
+        this.ownerships = ownerships;
     }
 
     public String getlicensePlate() {
