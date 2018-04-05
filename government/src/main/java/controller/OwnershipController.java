@@ -37,7 +37,6 @@ public class OwnershipController {
         return Response.ok(owners).build();
     }
 
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addOwner(Ownership ownership) {

@@ -13,14 +13,14 @@ class Invoices extends Component {
           invoiceId: 1,
           vehicleId: 1,
           name: 'H. Thompson',
-          total: 110.22,
+          totalAmount: 110.22,
           paid: true
         },
         {
           invoiceId: 2,
           vehicleId: 2,
           name: 'J. Smith',
-          total: 60,
+          totalAmount: 60,
           paid: false
         }
       ],
@@ -62,8 +62,8 @@ class Invoices extends Component {
         accessor: 'name'
       },
       {
-        Header: 'Total',
-        accessor: 'total'
+        Header: 'Total Amount',
+        accessor: 'totalAmount'
       },
       {
         Header: 'Paid',
