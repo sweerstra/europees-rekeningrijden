@@ -6,8 +6,14 @@ import './trackers.css';
 import Navigation from '../../components/Navigation/Navigation';
 import AddTracker from '../../components/AddTracker/AddTracker';
 import { Link } from "react-router-dom";
+import Api from '../../api';
 
 class Trackers extends Component {
+  componentDidMount() {
+    Api.ownership.getLatest()
+      .then(ownerships => this.setState({ trackers: ownerships }));
+  }
+
   onAddTracker = (e) => {
     const { target } = e;
     e.preventDefault();
@@ -29,8 +35,9 @@ class Trackers extends Component {
     this.setState(state => ({ trackers: [...state.trackers, tracker] }))
   };
 
-  fetchPreviousOwner() {
-    this.setState(state => ({ history: state.history.slice(0, -1) }));
+  fetchPreviousOwnership(owner) {
+    Api.ownership.getByOwner(owner.id)
+      .then(history => this.setState(state => ({ history })));
   }
 
   openModal = () => {
@@ -45,58 +52,8 @@ class Trackers extends Component {
     super(props);
 
     this.state = {
-      trackers: [
-        {
-          trackerId: 1,
-          vehicleId: 1,
-          trackerType: 'HP autotracker',
-          owner: {
-            name: 'H. Thompson',
-            usesBillriderWebsite: false
-          },
-          tariffCategory: 'Euro 1',
-          licensePlate: '22-AB-134',
-        },
-        {
-          trackerId: 2,
-          vehicleId: 2,
-          trackerType: 'Acer GPS system',
-          owner: {
-            name: 'B Thompson',
-            usesBillriderWebsite: true
-          },
-          tariffCategory: 'Euro 2',
-          licensePlate: '14-AB-133',
-        },
-        {
-          trackerId: 3,
-          vehicleId: 3,
-          trackerType: 'TomTom ATS',
-          owner: {
-            name: 'C. Thompson',
-            usesBillriderWebsite: true
-          },
-          tariffCategory: 'Euro 3',
-          licensePlate: '20-AC-166',
-        },
-        {
-          trackerId: 4,
-          vehicleId: 4,
-          trackerType: 'TomTom ATS',
-          owner: {
-            name: 'M. Smith',
-            usesBillriderWebsite: true
-          },
-          tariffCategory: 'Euro 4',
-          licensePlate: '45-XY-487',
-        }
-      ],
-      history: [
-        { name: 'O. Bean', date: 'Now' },
-        { name: 'M. Smith', date: new Date('2017-09-09') },
-        { name: 'P. Andrea', date: new Date('2011-01-07') },
-        { name: 'C. Young', date: new Date('2002-06-04') }
-      ],
+      trackers: [],
+      history: [],
       search: '',
       modalIsOpen: false,
       selectedRow: null
@@ -110,25 +67,28 @@ class Trackers extends Component {
         columns: [
           {
             Header: 'Tracker ID',
-            accessor: 'trackerId',
-            id: 'trackerId'
+            id: 'trackerId',
+            accessor: d => d.vehicle.trackerId
           },
           {
             Header: 'Vehicle ID',
-            accessor: 'vehicleId',
-            id: 'vehicleId'
+            id: 'vehicleId',
+            accessor: d => d.vehicle.id
           },
           {
             Header: 'Tracker Type',
-            accessor: 'trackerType'
+            id: 'trackerType',
+            accessor: d => d.vehicle.typeTracker
           },
           {
-            Header: 'Tariff Category',
-            accessor: 'tariffCategory'
+            Header: 'Emission Category',
+            id: 'emissionCategory',
+            accessor: d => d.vehicle.emissionCategory
           },
           {
             Header: 'License Plate',
-            accessor: 'licensePlate'
+            id: 'licensePlate',
+            accessor: d => d.vehicle.licensePlate
           }
         ]
       },
@@ -138,7 +98,7 @@ class Trackers extends Component {
           {
             Header: 'Name',
             id: 'name',
-            accessor: d => d.owner.name
+            accessor: d => d.owner.firstName + ' ' + d.owner.lastName
           },
           {
             Header: 'Uses Billriders',
@@ -154,11 +114,12 @@ class Trackers extends Component {
 
     const filtered = search
       ? trackers.filter(row => {
-        return row.trackerType.toLowerCase().includes(search)
-          || row.tariffCategory.toLowerCase().includes(search)
-          || row.licensePlate.toLowerCase().includes(search)
-          || row.owner.name.toLowerCase().includes(search)
-
+        return row.vehicle.trackerId.toLowerCase().includes(search)
+          || row.vehicle.typeTracker.toLowerCase().includes(search)
+          || row.vehicle.emissionCategory.toLowerCase().includes(search)
+          || row.vehicle.licensePlate.toLowerCase().includes(search)
+          || row.owner.firstName.toLowerCase().includes(search)
+          || row.owner.lastName.toLowerCase().includes(search)
       })
       : trackers;
 
@@ -184,11 +145,11 @@ class Trackers extends Component {
             columns={columns}
             showPagination={false}
             getTrProps={(state, rowInfo) => {
-              const isSelected = rowInfo && rowInfo.original.trackerId === selectedRow;
+              const isSelected = rowInfo && rowInfo.original.vehicle.trackerId === selectedRow;
               return {
                 onClick: () => {
-                  this.fetchPreviousOwner(rowInfo.original);
-                  this.setState({ selectedRow: rowInfo.original.trackerId })
+                  this.fetchPreviousOwnership(rowInfo.original.owner);
+                  this.setState({ selectedRow: rowInfo.original.vehicle.trackerId })
                 },
                 style: {
                   color: isSelected ? 'white' : 'black',
@@ -211,12 +172,17 @@ class Trackers extends Component {
           <div className="trackers__administration__history">
             <h2>Tracker History</h2>
             <div className="tracker-history">
-              {history.map(({ name, date }, index) =>
-                <div className="history" key={index}>
-                  <span>{name}</span>
-                  <span>{typeof date === 'object' ? date.toLocaleDateString() : date}</span>
-                </div>
-              )}
+              {
+                history.length > 0
+                  ? history.map(({ vehicle: { trackerId }, owner: { firstName, lastName }, startDate, endDate }, index) =>
+                    <div className="history" key={index}>
+                      <span>{trackerId}</span>
+                      <span className="history__date">{new Date(startDate).toLocaleDateString()}</span>
+                      <span className="history__date">{endDate ? new Date(endDate).toLocaleDateString() : 'Now'}</span>
+                    </div>
+                  )
+                  : <div>Select a tracker to see it's history</div>
+              }
             </div>
           </div>
         </div>

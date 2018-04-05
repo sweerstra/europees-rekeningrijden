@@ -44,4 +44,20 @@ public class OwnershipController {
 
         return Response.ok(createdOwnership).build();
     }
+
+    @GET
+    @Path("/latest")
+    public Response getLatest() {
+        List<Ownership> owners = service.getLatestOwnerships();
+
+        return Response.ok(owners).build();
+    }
+
+    @GET
+    @Path("/owner/{id}")
+    public Response getByOwner(@PathParam("id") long id) {
+        List<Ownership> owners = service.getOwnershipsByOwner(id);
+
+        return Response.ok(owners).build();
+    }
 }

@@ -41,8 +41,12 @@ hr {
   padding: 10px 20px;
   border: 2px solid var(--color-tint);
   border-radius: var(--border-radius);
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+.history__date {
+  text-align: center;
 }
 
 .ReactModal__Overlay.ReactModal__Overlay--after-open {
@@ -73,3 +77,12 @@ hr {
 [role="rowgroup"] {
   cursor: pointer;
 }
+
+[role="gridcell"] {
+  text-align: center;
+}
+
+[role="columnheader"] {
+  font-weight: bold;
+}
+

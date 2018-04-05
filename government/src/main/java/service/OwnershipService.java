@@ -27,4 +27,12 @@ public class OwnershipService {
     public List<Ownership> getAllOwnerships() {
         return dao.findAll();
     }
+
+    public List<Ownership> getLatestOwnerships() {
+        return dao.findLatest();
+    }
+
+    public List<Ownership> getOwnershipsByOwner(long id) {
+        return dao.findByOwner(id);
+    }
 }

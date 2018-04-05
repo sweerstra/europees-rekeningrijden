@@ -31,7 +31,8 @@ public class Owner {
     @JsonIgnore
     private List<Ownership> ownerships;
 
-    public Owner(String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth) {
+    public Owner(boolean usesBillriderWebsite, String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth) {
+        this.usesBillriderWebsite = usesBillriderWebsite;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
