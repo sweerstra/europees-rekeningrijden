@@ -16,23 +16,23 @@ public class Owner {
     private boolean usesBillriderWebsite;
     private String firstName;
     private String lastName;
-    private String adresse;
-    private String postCode;
+    private String address;
+    private String postalCode;
     private String city;
     private String phone;
     private String email;
-    private Date dateofBirth;
+    private Date dateOfBirth;
 
-    public Owner(String firstName, String lastName, String adresse, String postCode, String city, String phone, String email, Date dateofBirth)
+    public Owner(String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth)
     {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.adresse = adresse;
-        this.postCode = postCode;
+        this.address = address;
+        this.postalCode = postalCode;
         this.city = city;
         this.phone = phone;
         this.email = email;
-        this.dateofBirth = dateofBirth;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Owner(){}
@@ -70,19 +70,19 @@ public class Owner {
     }
 
     public String getAdresse() {
-        return adresse;
+        return address;
     }
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
+    public void setAdresse(String address) {
+        this.address = address;
     }
 
-    public String getPostCode() {
-        return postCode;
+    public String getpostalCode() {
+        return postalCode;
     }
 
-    public void setPostCode(String postCode) {
-        this.postCode = postCode;
+    public void setpostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getCity() {
@@ -109,11 +109,11 @@ public class Owner {
         this.email = email;
     }
 
-    public Date getDateofBirth() {
-        return dateofBirth;
+    public Date getdateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDateofBirth(Date dateofBirth) {
-        this.dateofBirth = dateofBirth;
+    public void setdateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

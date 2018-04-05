@@ -25,15 +25,15 @@ public class Invoice {
     private PaymentStatus paid;
     private int billingMonth;
     private double distanceTravelled;
-    private String emissionCatagorie;
+    private String emissionCategory;
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCatagorie) {
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCategory) {
         this.trackerId = trackerId;
         this.paid = paid;
         this.totalAmount = totalAmount;
         this.billingMonth = billingMonth;
         this.distanceTravelled = distanceTravelled;
-        this.emissionCatagorie = emissionCatagorie;
+        this.emissionCategory = emissionCategory;
     }
 
     public Invoice() {
@@ -71,12 +71,12 @@ public class Invoice {
         this.distanceTravelled = distanceTravelled;
     }
 
-    public String getEmissionCatagorie() {
-        return emissionCatagorie;
+    public String getemissionCategory() {
+        return emissionCategory;
     }
 
-    public void setEmissionCatagorie(String emissionCatagorie) {
-        this.emissionCatagorie = emissionCatagorie;
+    public void setemissionCategory(String emissionCategory) {
+        this.emissionCategory = emissionCategory;
     }
 
     public PaymentStatus getPaid() {
