@@ -21,7 +21,7 @@ public class VehiclesController {
     private VehicleService service;
 
     @GET
-    public Response getVehicle() {
+    public Response getVehicles() {
         List<Vehicle> vehicles = service.findAll();
 
         if (vehicles == null) {

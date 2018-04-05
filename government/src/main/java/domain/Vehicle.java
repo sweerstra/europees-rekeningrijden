@@ -14,17 +14,17 @@ public class Vehicle {
     private long id;
     private String trackerId;
     private int ownerId;
-    private String licencePlate;
+    private String licensePlate;
     private String typeTracker;
-    private String emissionCatagorie;
+    private String emissionCategory;
 
-    public Vehicle(String trackerId, int ownerId, String licencePlate, String typeTracker, String emissionCatagorie)
+    public Vehicle(String trackerId, int ownerId, String licensePlate, String typeTracker, String emissionCategory)
     {
         this.trackerId = trackerId;
         this.ownerId = ownerId;
-        this.licencePlate = licencePlate;
+        this.licensePlate = licensePlate;
         this.typeTracker = typeTracker;
-        this.emissionCatagorie = emissionCatagorie;
+        this.emissionCategory = emissionCategory;
     }
 
     public Vehicle(){}
@@ -45,12 +45,12 @@ public class Vehicle {
         this.ownerId = ownerId;
     }
 
-    public String getLicencePlate() {
-        return licencePlate;
+    public String getlicensePlate() {
+        return licensePlate;
     }
 
-    public void setLicencePlate(String licencePlate) {
-        this.licencePlate = licencePlate;
+    public void setlicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
     public String getTypeTracker() {
@@ -61,12 +61,12 @@ public class Vehicle {
         this.typeTracker = typeTracker;
     }
 
-    public String getEmissionCatagorie() {
-        return emissionCatagorie;
+    public String getemissionCategory() {
+        return emissionCategory;
     }
 
-    public void setEmissionCatagorie(String emissionCatagorie) {
-        this.emissionCatagorie = emissionCatagorie;
+    public void setemissionCategory(String emissionCategory) {
+        this.emissionCategory = emissionCategory;
     }
 
     public long getId() {
