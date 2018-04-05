@@ -1,4 +1,3 @@
-
 .add-tracker label {
   font-weight: bold;
 }
@@ -34,37 +33,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.add-tracker__owners {
-  border: 2px solid var(--color-tint);
-  border-radius: var(--border-radius);
-}
-
-.add-tracker__owners input[type=text] {
-  margin: 0;
-  border: none;
-  border-bottom: 2px solid var(--color-tint);
-  border-radius: 0;
-}
-
-.add-tracker__owners ul {
-  width: 100%;
-  height: 200px;
-  overflow-y: auto;
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-.add-tracker__owners ul li {
-  padding: 10px;
-  border-bottom: 1px solid black;
-}
-
-.add-tracker__owners ul li:hover {
-  font-weight: bold;
-  cursor: pointer;
 }
 
 .add-tracker__save {
