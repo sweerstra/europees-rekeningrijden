@@ -68,7 +68,7 @@ class Invoices extends Component {
       {
         Header: 'Paid',
         id: 'paid',
-        accessor: d => d.paid ? <span>&times;</span> : undefined
+        accessor: d => d.paid ? <span>&#x2713;</span> : undefined
       },
       {
         Header: 'Action',
@@ -92,9 +92,8 @@ class Invoices extends Component {
           <h2>Generated invoices</h2>
           {this.state.logs.map(({ id, type }, index) =>
             <div className="invoices__log" key={index}>
-              {type === 'error'
-                ? `Error generating invoice with id ${id}`
-                : `Generated new invoice with id: ${id}`}
+              <span>{`Error generating invoice with id ${id}`}</span>
+              <a href="#">Recalculate</a>
             </div>
           )}
         </div>

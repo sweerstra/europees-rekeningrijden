@@ -13,7 +13,6 @@ import java.util.List;
 @Entity
 @XmlRootElement
 public class Owner {
-
     @Id
     @GeneratedValue
     private long id;
@@ -31,8 +30,8 @@ public class Owner {
     @JsonIgnore
     private List<Ownership> ownerships;
 
-    public Owner(boolean usesBillriderWebsite, String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth) {
-        this.usesBillriderWebsite = usesBillriderWebsite;
+    public Owner(String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth) {
+        this.usesBillriderWebsite = false;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;

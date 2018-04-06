@@ -39,7 +39,7 @@ public class OwnershipController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addOwner(Ownership ownership) {
+    public Response addOwnership(Ownership ownership) {
         Ownership createdOwnership = service.create(ownership);
 
         return Response.ok(createdOwnership).build();
@@ -60,4 +60,6 @@ public class OwnershipController {
 
         return Response.ok(owners).build();
     }
+
+    // TODO: get ownerships for specific month (date) for owner
 }

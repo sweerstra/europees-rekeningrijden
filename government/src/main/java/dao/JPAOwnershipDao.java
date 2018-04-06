@@ -9,11 +9,11 @@ import java.util.List;
 
 @Stateless
 @SuppressWarnings("unchecked")
-public class OwnershipDaoImpl extends DaoFacade<Ownership> implements IOwnershipDao {
+public class JPAOwnershipDao extends DaoFacade<Ownership> implements IOwnershipDao {
     @PersistenceContext(name = "GovernmentPU")
     private EntityManager em;
 
-    public OwnershipDaoImpl() {
+    public JPAOwnershipDao() {
         super(Ownership.class);
     }
 

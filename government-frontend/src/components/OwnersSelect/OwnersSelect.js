@@ -21,7 +21,7 @@ class OwnersSelect extends Component {
       <div className="owners-select">
         <input type="text"
                onChange={this.onSearch}
-               placeholder="Search Owner..."/>
+               placeholder="Search Person..."/>
         <ul>
           {
             owners.length > 0

@@ -1,9 +1,11 @@
 package domain;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @Entity
+@XmlRootElement
 public class Ownership {
     @Id
     @GeneratedValue

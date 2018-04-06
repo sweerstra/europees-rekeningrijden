@@ -28,9 +28,11 @@ public class StartUp {
 
     @PostConstruct
     public void initData() {
-        Owner danny = ownerService.create(new Owner(true, "Danny", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0611785527", "danny.janssen@student.fontys.nl", new Date()));
-        Owner sjoerd = ownerService.create(new Owner(false, "Sjoerd", "Weerstra", "Kaaslaan 3", "5054AL", "Tilburg", "0609876543", "s.weerstra@student.fontys.nl", new Date()));
-        Owner dennis = ownerService.create(new Owner(true, "Dennis", "van Gils", "Troefweg 89c", "5059KT", "Goirle", "0628492322", "d.vangils@student.fontys.nl", new Date()));
+        Owner dannyZonderId = new Owner("Danny", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0611785527", "danny.janssen@student.fontys.nl", new Date());
+        dannyZonderId.setUsesBillriderWebsite(true);
+        Owner danny = ownerService.create(dannyZonderId);
+        Owner sjoerd = ownerService.create(new Owner("Sjoerd", "Weerstra", "Kaaslaan 3", "5054AL", "Tilburg", "0609876543", "s.weerstra@student.fontys.nl", new Date()));
+        Owner dennis = ownerService.create(new Owner("Dennis", "van Gils", "Troefweg 89c", "5059KT", "Goirle", "0628492322", "d.vangils@student.fontys.nl", new Date()));
 
         Vehicle vehicle1 = vehicleService.create(new Vehicle("ENG1234", "22-AB-134", "HP autotracker", "EURO 3"));
         Vehicle vehicle2 = vehicleService.create(new Vehicle("ENG6345", "90-AA-554", "Acer GPS system", "EURO 2"));

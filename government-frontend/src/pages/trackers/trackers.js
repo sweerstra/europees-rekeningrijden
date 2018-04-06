@@ -103,7 +103,7 @@ class Trackers extends Component {
           {
             Header: 'Uses Billriders',
             id: 'usesBillriderWebsite',
-            accessor: d => d.owner.usesBillriderWebsite ? <span>&times;</span> : undefined
+            accessor: d => d.owner.usesBillriderWebsite ? <span>&#x2713;</span> : undefined
           }
         ]
       }
@@ -165,7 +165,7 @@ class Trackers extends Component {
                    onChange={e => this.setState({ search: e.target.value })}/>
             <hr/>
             <div className="trackers__navigation__buttons">
-              <button className="btn" onClick={this.openModal}>Add tracker</button>
+              <button className="btn blue" onClick={this.openModal}>Add tracker</button>
               <Link to="/invoices">View invoices</Link>
             </div>
           </div>
@@ -192,10 +192,10 @@ class Trackers extends Component {
           style={customStyles}
           contentLabel="Add Tracker Modal"
         >
+          <span className="modal__header__close"
+                onClick={this.closeModal}>&times;</span>
           <header className="modal__header">
             <h2>Add Tracker</h2>
-            <span className="modal__header__close"
-                  onClick={this.closeModal}>&times;</span>
           </header>
 
           <AddTracker onAddTracker={this.onAddTracker}/>

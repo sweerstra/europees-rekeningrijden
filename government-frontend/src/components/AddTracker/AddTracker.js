@@ -59,6 +59,10 @@ class AddTracker extends Component {
           </label>
         </section>
 
+        <label>
+          Owner
+        </label>
+
         <section className="horizontal">
           <OwnersSelect owners={owners} onSelect={selectedOwner => this.setState({ selectedOwner })}/>
 
@@ -84,7 +88,7 @@ class AddTracker extends Component {
         </section>
 
         <section className="add-tracker__save">
-          <button className="btn"
+          <button className="btn green"
                   disabled={saveButtonIsDisabled}>Save
           </button>
         </section>

@@ -1,4 +1,5 @@
 .owners-select {
+  margin-top: 4px;
   border: 2px solid var(--color-tint);
   border-radius: var(--border-radius);
 }
