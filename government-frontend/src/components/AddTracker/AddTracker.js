@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './AddTracker.css';
+import OwnersSelect from '../OwnersSelect/OwnersSelect';
+import Api from '../../api';
 
 class AddTracker extends Component {
   onFormChange = (e) => {
@@ -18,11 +20,16 @@ class AddTracker extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { tracker: {} };
+    this.state = { tracker: {}, owners: [], selectedOwner: null };
+  }
+
+  componentDidMount() {
+    Api.owner.getAll()
+      .then(owners => this.setState({ owners }));
   }
 
   render() {
-    const { tracker } = this.state;
+    const { tracker, owners, selectedOwner } = this.state;
     const saveButtonIsDisabled = !tracker.trackerId || !tracker.licensePlate;
     const { onAddTracker } = this.props;
 
@@ -52,42 +59,36 @@ class AddTracker extends Component {
           </label>
         </section>
 
-        <section className="horizontal">
-          <div className="add-tracker__owners">
-            <input type="text" placeholder="Search Owner..."/>
-            <ul>
-              <li>H. Thompson</li>
-              <li>D. Jackson</li>
-              <li>H. Thompson</li>
-              <li>D. Jackson</li>
-              <li>H. Thompson</li>
-              <li>D. Jackson</li>
-            </ul>
-          </div>
+        <label>
+          Owner
+        </label>
 
-          <div className="add-tracker__owner">
+        <section className="horizontal">
+          <OwnersSelect owners={owners} onSelect={selectedOwner => this.setState({ selectedOwner })}/>
+
+          {selectedOwner && <div className="add-tracker__owner">
             <label>
               Name
               <input type="text" className="read-only"
-                     readOnly="true" value={"H. Thompson"}/>
+                     readOnly="true" value={`${selectedOwner.firstName} ${selectedOwner.lastName}`}/>
             </label>
 
             <label>
               Address
               <input type="text" className="read-only"
-                     readOnly="true" value={"Straatnaam 15, Goirle"}/>
+                     readOnly="true" value={selectedOwner.address}/>
             </label>
 
             <label>
               Birthdate
               <input type="text" className="read-only"
-                     readOnly="true" value={"1980-01-01"}/>
+                     readOnly="true" value={new Date(selectedOwner.dateOfBirth).toLocaleDateString()}/>
             </label>
-          </div>
+          </div>}
         </section>
 
         <section className="add-tracker__save">
-          <button className="btn"
+          <button className="btn green"
                   disabled={saveButtonIsDisabled}>Save
           </button>
         </section>

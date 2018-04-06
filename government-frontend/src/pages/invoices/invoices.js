@@ -13,14 +13,14 @@ class Invoices extends Component {
           invoiceId: 1,
           vehicleId: 1,
           name: 'H. Thompson',
-          total: 110.22,
+          totalAmount: 110.22,
           paid: true
         },
         {
           invoiceId: 2,
           vehicleId: 2,
           name: 'J. Smith',
-          total: 60,
+          totalAmount: 60,
           paid: false
         }
       ],
@@ -62,13 +62,13 @@ class Invoices extends Component {
         accessor: 'name'
       },
       {
-        Header: 'Total',
-        accessor: 'total'
+        Header: 'Total Amount',
+        accessor: 'totalAmount'
       },
       {
         Header: 'Paid',
         id: 'paid',
-        accessor: d => d.paid ? <span>&times;</span> : undefined
+        accessor: d => d.paid ? <span>&#x2713;</span> : undefined
       },
       {
         Header: 'Action',
@@ -92,9 +92,8 @@ class Invoices extends Component {
           <h2>Generated invoices</h2>
           {this.state.logs.map(({ id, type }, index) =>
             <div className="invoices__log" key={index}>
-              {type === 'error'
-                ? `Error generating invoice with id ${id}`
-                : `Generated new invoice with id: ${id}`}
+              <span>{`Error generating invoice with id ${id}`}</span>
+              <a href="#">Recalculate</a>
             </div>
           )}
         </div>

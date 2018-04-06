@@ -1,9 +1,7 @@
 package controller;
 
 import domain.Invoice;
-import domain.Vehicle;
 import service.InvoiceService;
-import service.VehicleService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -15,7 +13,6 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/invoice")
 public class InvoiceController {
-
     @Inject
     private InvoiceService service;
 
@@ -43,5 +40,4 @@ public class InvoiceController {
 
         return Response.ok(invoice).build();
     }
-
 }

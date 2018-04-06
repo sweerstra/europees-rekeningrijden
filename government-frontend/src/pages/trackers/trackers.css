@@ -41,35 +41,24 @@ hr {
   padding: 10px 20px;
   border: 2px solid var(--color-tint);
   border-radius: var(--border-radius);
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
 }
 
-.ReactModal__Overlay.ReactModal__Overlay--after-open {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-}
-
-.ReactModal__Content.ReactModal__Content--after-open {
-  box-shadow: 0 5px 10px #000;
-}
-
-.modal__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.modal__header__close {
-  color: var(--color-tint);
-  font-size: 1.6em;
-}
-
-.modal__header__close:hover {
-  color: var(--color-disabled);
-  cursor: pointer;
+.history__date {
+  text-align: center;
 }
 
 /* react-table */
 [role="rowgroup"] {
   cursor: pointer;
 }
+
+[role="gridcell"] {
+  text-align: center;
+}
+
+[role="columnheader"] {
+  font-weight: bold;
+}
+
