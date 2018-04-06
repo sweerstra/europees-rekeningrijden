@@ -42,7 +42,13 @@ public class OwnershipService {
 
         if (foundOwner == null || foundVehicle == null) return null;
 
-        Ownership ownership = new Ownership(foundOwner, foundVehicle, new Date(), null);
+        // access the new tracker ID send, replace it
+        String newTrackerId = entity.getVehicle().getTrackerId();
+        foundVehicle.setTrackerId(newTrackerId);
+
+        Vehicle updatedVehicle = vehicleDao.update(foundVehicle);
+
+        Ownership ownership = new Ownership(foundOwner, updatedVehicle, new Date(), null);
 
         return ownershipDao.create(ownership);
     }

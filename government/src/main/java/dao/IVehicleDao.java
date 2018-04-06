@@ -12,6 +12,8 @@ public interface IVehicleDao {
 
     List<Vehicle> findAll();
 
+    Vehicle update(Vehicle entity);
+
     Vehicle create(Vehicle entity);
 
     void delete(Vehicle entity);

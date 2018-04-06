@@ -2,7 +2,7 @@
   font-weight: bold;
 }
 
-.add-tracker input {
+.add-tracker input, div.read-only {
   margin-top: 4px;
   margin-bottom: 20px;
 }
@@ -70,4 +70,15 @@
 
 .modal__header__close:hover {
   cursor: pointer;
+}
+
+div.read-only {
+  padding: 8px;
+  color: var(--color-success);
+  border-bottom: 2px solid var(--color-success);
+}
+
+div.read-only.not-found {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
 }

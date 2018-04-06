@@ -100,14 +100,6 @@ input::placeholder {
   font-weight: normal;
 }
 
-input.read-only {
-  border-radius: 0;
-  border: 0;
-  border-bottom: 2px solid var(--color-tint);
-  font-weight: normal;
-  cursor: auto;
-}
-
 button:focus, input:focus { outline: none; }
 
 h1, .h1 { font-size: 2em; }

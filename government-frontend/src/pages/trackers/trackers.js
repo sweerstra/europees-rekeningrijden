@@ -14,25 +14,14 @@ class Trackers extends Component {
       .then(ownerships => this.setState({ trackers: ownerships }));
   }
 
-  onAddTracker = (e) => {
-    const { target } = e;
-    e.preventDefault();
+  onAddTracker = (ownership) => {
+    console.log('API -> Add ownership', ownership);
 
-    const trackerId = target.trackerId.value;
-    const licensePlate = target.licensePlate.value;
-
-    const tracker = {
-      trackerId, licensePlate,
-      vehicleId: trackerId,
-      trackerType: 'HP autotracker',
-      owner: {
-        name: 'H. Thompson',
-        usesBillriderWebsite: false
-      },
-      tariffCategory: 'Euro 1',
-    };
-
-    this.setState(state => ({ trackers: [...state.trackers, tracker] }))
+    Api.ownership.add(ownership)
+      .then(ownership => {
+        this.setState(state => ({ trackers: [...state.trackers, ownership] }));
+        this.closeModal();
+      });
   };
 
   fetchPreviousOwnership(owner) {
@@ -198,8 +187,7 @@ class Trackers extends Component {
             <h2>Add Tracker</h2>
           </header>
 
-          <AddTracker onAddTracker={this.onAddTracker}/>
-
+          <AddTracker onAdd={this.onAddTracker}/>
         </Modal>
       </div>
     );

@@ -5,20 +5,14 @@ import Api from '../../api';
 import { debounce } from '../../utils/debounce';
 
 class AddTracker extends Component {
-  onFormChange = (e) => {
-    const { name, value } = e.target;
-
-    this.setState(state => ({ tracker: { ...state.tracker, [name]: value } }));
-  };
-
   constructor(props) {
     super(props);
 
     this.state = {
-      tracker: {},
+      trackerId: '',
       owners: [],
-      selectedOwner: null,
-      emissionCategory: ''
+      owner: null,
+      vehicle: { emissionCategory: null }
     };
   }
 
@@ -28,28 +22,38 @@ class AddTracker extends Component {
     this.licensePlateCallback = debounce(e => {
       const { value } = e.target;
       Api.vehicle.getByLicensePlate(value)
-        .then(({ emissionCategory }) => this.setState({ emissionCategory }))
-        .catch(err => this.setState({ emissionCategory: 'No found' }))
+        .then(vehicle => this.setState({ vehicle }))
+        .catch(() => this.setState({ vehicle: { emissionCategory: null } }));
     }, 600);
   }
+
+  onTrackerIdChange = (e) => {
+    this.setState({ trackerId: e.target.value });
+  };
 
   onLicenseChange = (e) => {
     e.persist();
     this.licensePlateCallback(e);
   };
 
+  onSave = () => {
+    const { owner } = this.state;
+    const { vehicle } = this.state;
+    vehicle.trackerId = this.state.trackerId;
+    this.props.onAdd({ owner, vehicle });
+  };
+
   render() {
-    const { tracker, owners, selectedOwner, emissionCategory } = this.state;
-    const saveButtonIsDisabled = !tracker.trackerId || !tracker.licensePlate;
-    const { onAddTracker } = this.props;
+    const { owners, owner, trackerId, vehicle: { emissionCategory } } = this.state;
+    const saveButtonIsDisabled = !trackerId || !emissionCategory || !owner;
 
     return (
-      <form className="add-tracker" onSubmit={onAddTracker}>
+      <div className="add-tracker">
         <label>
           Tracker ID
           <input type="text"
                  className="add-tracker__tracker-id-input"
-                 onChange={this.onFormChange}
+                 onChange={this.onTrackerIdChange}
                  name="trackerId"
                  placeholder="Enter ID here"/>
         </label>
@@ -64,8 +68,9 @@ class AddTracker extends Component {
 
           <label>
             Emission Category
-            <input type="text" className="read-only"
-                   readOnly="true" value={emissionCategory}/>
+            <div className={`read-only ${emissionCategory ? '' : 'not-found'}`}>
+              {emissionCategory || 'Not Found'}
+            </div>
           </label>
         </section>
 
@@ -74,35 +79,36 @@ class AddTracker extends Component {
         </label>
 
         <section className="horizontal">
-          <OwnersSelect owners={owners} onSelect={selectedOwner => this.setState({ selectedOwner })}/>
+          <OwnersSelect owners={owners} onSelect={owner => this.setState({ owner })}/>
 
-          {selectedOwner && <div className="add-tracker__owner">
+          {owner && <div className="add-tracker__owner">
             <label>
               Name
               <input type="text" className="read-only"
-                     readOnly="true" value={`${selectedOwner.firstName} ${selectedOwner.lastName}`}/>
+                     readOnly="true" value={`${owner.firstName} ${owner.lastName}`}/>
             </label>
 
             <label>
               Address
               <input type="text" className="read-only"
-                     readOnly="true" value={selectedOwner.address}/>
+                     readOnly="true" value={owner.address}/>
             </label>
 
             <label>
               Birthdate
               <input type="text" className="read-only"
-                     readOnly="true" value={new Date(selectedOwner.dateOfBirth).toLocaleDateString()}/>
+                     readOnly="true" value={new Date(owner.dateOfBirth).toLocaleDateString()}/>
             </label>
           </div>}
         </section>
 
         <section className="add-tracker__save">
           <button className="btn green"
+                  onClick={this.onSave}
                   disabled={saveButtonIsDisabled}>Save
           </button>
         </section>
-      </form>
+      </div>
     );
   }
 }
