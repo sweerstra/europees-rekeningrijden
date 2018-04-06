@@ -2,17 +2,11 @@ import React, { Component } from 'react';
 import './AddTracker.css';
 import OwnersSelect from '../OwnersSelect/OwnersSelect';
 import Api from '../../api';
+import { debounce } from '../../utils/debounce';
 
 class AddTracker extends Component {
   onFormChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === 'licensePlate') {
-      if (value.match('^[A-Za-z]{2}-[0-9]{2}-[A-Za-z]{3}$')) {
-        this.setState({ errors: ['License Plate is not valid.'] });
-        return;
-      }
-    }
 
     this.setState(state => ({ tracker: { ...state.tracker, [name]: value } }));
   };
@@ -20,16 +14,32 @@ class AddTracker extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { tracker: {}, owners: [], selectedOwner: null };
+    this.state = {
+      tracker: {},
+      owners: [],
+      selectedOwner: null,
+      emissionCategory: ''
+    };
   }
 
   componentDidMount() {
-    Api.owner.getAll()
-      .then(owners => this.setState({ owners }));
+    Api.owner.getAll().then(owners => this.setState({ owners }));
+
+    this.licensePlateCallback = debounce(e => {
+      const { value } = e.target;
+      Api.vehicle.getByLicensePlate(value)
+        .then(({ emissionCategory }) => this.setState({ emissionCategory }))
+        .catch(err => this.setState({ emissionCategory: 'No found' }))
+    }, 600);
   }
 
+  onLicenseChange = (e) => {
+    e.persist();
+    this.licensePlateCallback(e);
+  };
+
   render() {
-    const { tracker, owners, selectedOwner } = this.state;
+    const { tracker, owners, selectedOwner, emissionCategory } = this.state;
     const saveButtonIsDisabled = !tracker.trackerId || !tracker.licensePlate;
     const { onAddTracker } = this.props;
 
@@ -48,14 +58,14 @@ class AddTracker extends Component {
           <label>
             License Plate
             <input type="text"
-                   onChange={this.onFormChange}
+                   onChange={this.onLicenseChange}
                    name="licensePlate" placeholder="Enter Plate here"/>
           </label>
 
           <label>
             Emission Category
             <input type="text" className="read-only"
-                   readOnly="true" value={"Euro-1"}/>
+                   readOnly="true" value={emissionCategory}/>
           </label>
         </section>
 

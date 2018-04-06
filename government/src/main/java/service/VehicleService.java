@@ -1,5 +1,6 @@
 package service;
 
+import com.mysql.cj.core.util.StringUtils;
 import dao.IVehicleDao;
 import domain.Vehicle;
 
@@ -13,8 +14,7 @@ public class VehicleService {
     @Inject
     private IVehicleDao dao;
 
-    public VehicleService()
-    {
+    public VehicleService() {
         super();
     }
 
@@ -38,7 +38,9 @@ public class VehicleService {
         return dao.findById(id);
     }
 
-    public Vehicle findBylicencePlate(String licensePlate) {
+    public Vehicle findByLicencePlate(String licensePlate) {
+        if (StringUtils.isNullOrEmpty(licensePlate)) return null;
+
         return dao.findByLicenseplate(licensePlate);
     }
 

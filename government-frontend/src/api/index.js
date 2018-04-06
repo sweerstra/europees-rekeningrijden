@@ -10,5 +10,8 @@ export default {
   },
   owner: {
     getAll: () => Request.get(`${API_URL}/owners`)
+  },
+  vehicle: {
+    getByLicensePlate: (licensePlate) => Request.get(`${API_URL}/vehicle/${licensePlate}`)
   }
 };

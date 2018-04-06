@@ -44,9 +44,10 @@ body {
 
 .btn:hover { box-shadow: 0 2px 4px rgba(0, 0, 0, .25); }
 
-.btn:focus { box-shadow: none; }
+.btn:active { box-shadow: none; }
 
 .btn:disabled, input:disabled {
+  box-shadow: none;
   color: var(--color-disabled);
   border-color: var(--color-disabled);
 }
