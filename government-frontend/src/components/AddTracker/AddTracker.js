@@ -68,7 +68,7 @@ class AddTracker extends Component {
 
           <label>
             Emission Category
-            <div className={`read-only ${emissionCategory ? '' : 'not-found'}`}>
+            <div className={emissionCategory ? 'read-only--found' : 'read-only--not-found'}>
               {emissionCategory || 'Not Found'}
             </div>
           </label>
@@ -84,20 +84,18 @@ class AddTracker extends Component {
           {owner && <div className="add-tracker__owner">
             <label>
               Name
-              <input type="text" className="read-only"
-                     readOnly="true" value={`${owner.firstName} ${owner.lastName}`}/>
+              <div className="read-only">{`${owner.firstName} ${owner.lastName}`}</div>
             </label>
 
             <label>
               Address
-              <input type="text" className="read-only"
-                     readOnly="true" value={owner.address}/>
+              <div className="read-only">{owner.address}</div>
             </label>
 
             <label>
               Birthdate
-              <input type="text" className="read-only"
-                     readOnly="true" value={new Date(owner.dateOfBirth).toLocaleDateString()}/>
+              <div
+                className="read-only">{new Date(owner.dateOfBirth).toLocaleDateString()}</div>
             </label>
           </div>}
         </section>

@@ -61,5 +61,13 @@ public class OwnershipController {
         return Response.ok(owners).build();
     }
 
+    @GET
+    @Path("/vehicle/{id}")
+    public Response getByVehicle(@PathParam("id") long id) {
+        List<Ownership> owners = service.getOwnershipsByVehicle(id);
+
+        return Response.ok(owners).build();
+    }
+
     // TODO: get ownerships for specific month (date) for owner
 }

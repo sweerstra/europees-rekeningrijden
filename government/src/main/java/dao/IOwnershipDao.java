@@ -15,5 +15,7 @@ public interface IOwnershipDao {
 
     List<Ownership> findByOwner(long id);
 
+    List<Ownership> findByVehicle(long id);
+
     void delete(Ownership entity);
 }
