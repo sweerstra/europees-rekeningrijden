@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from '../../pages/login/login';
 import Trackers from '../../pages/trackers/trackers';
 import Invoices from '../../pages/invoices/invoices';
+import Region from '../../pages/region/region';
 import './App.css';
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
                        onLogout={this.logout}/>
                      : redirect
                  }/>
+          <Route path="/region" component={Region}/>
           <Route path="/login" render={() =>
             isAuthenticated
               ? <Trackers/>
