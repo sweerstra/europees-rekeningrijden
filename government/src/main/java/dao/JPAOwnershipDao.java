@@ -27,4 +27,11 @@ public class JPAOwnershipDao extends DaoFacade<Ownership> implements IOwnershipD
                 .setParameter("id", id)
                 .getResultList();
     }
+
+    @Override
+    public List<Ownership> findByVehicle(long id) {
+        return em.createQuery("SELECT o from Ownership o WHERE o.vehicle.id = :id")
+                .setParameter("id", id)
+                .getResultList();
+    }
 }

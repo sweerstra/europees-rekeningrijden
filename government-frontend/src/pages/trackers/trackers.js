@@ -14,29 +14,16 @@ class Trackers extends Component {
       .then(ownerships => this.setState({ trackers: ownerships }));
   }
 
-  onAddTracker = (e) => {
-    const { target } = e;
-    e.preventDefault();
-
-    const trackerId = target.trackerId.value;
-    const licensePlate = target.licensePlate.value;
-
-    const tracker = {
-      trackerId, licensePlate,
-      vehicleId: trackerId,
-      trackerType: 'HP autotracker',
-      owner: {
-        name: 'H. Thompson',
-        usesBillriderWebsite: false
-      },
-      tariffCategory: 'Euro 1',
-    };
-
-    this.setState(state => ({ trackers: [...state.trackers, tracker] }))
+  onAddTracker = (ownership) => {
+    Api.ownership.add(ownership)
+      .then(ownership => {
+        this.setState(state => ({ trackers: [...state.trackers, ownership] }));
+        this.closeModal();
+      });
   };
 
-  fetchPreviousOwnership(owner) {
-    Api.ownership.getByOwner(owner.id)
+  fetchPreviousOwnership(vehicle) {
+    Api.ownership.getByVehicle(vehicle.id)
       .then(history => this.setState(state => ({ history })));
   }
 
@@ -71,9 +58,9 @@ class Trackers extends Component {
             accessor: d => d.vehicle.trackerId
           },
           {
-            Header: 'Vehicle ID',
-            id: 'vehicleId',
-            accessor: d => d.vehicle.id
+            Header: 'License Plate',
+            id: 'licensePlate',
+            accessor: d => d.vehicle.licensePlate
           },
           {
             Header: 'Tracker Type',
@@ -84,11 +71,6 @@ class Trackers extends Component {
             Header: 'Emission Category',
             id: 'emissionCategory',
             accessor: d => d.vehicle.emissionCategory
-          },
-          {
-            Header: 'License Plate',
-            id: 'licensePlate',
-            accessor: d => d.vehicle.licensePlate
           }
         ]
       },
@@ -148,7 +130,7 @@ class Trackers extends Component {
               const isSelected = rowInfo && rowInfo.original.vehicle.trackerId === selectedRow;
               return {
                 onClick: () => {
-                  this.fetchPreviousOwnership(rowInfo.original.owner);
+                  this.fetchPreviousOwnership(rowInfo.original.vehicle);
                   this.setState({ selectedRow: rowInfo.original.vehicle.trackerId })
                 },
                 style: {
@@ -170,7 +152,7 @@ class Trackers extends Component {
             </div>
           </div>
           <div className="trackers__administration__history">
-            <h2>Tracker History</h2>
+            <h2>Vehicle History</h2>
             <div className="tracker-history">
               {
                 history.length > 0
@@ -181,7 +163,7 @@ class Trackers extends Component {
                       <span className="history__date">{endDate ? new Date(endDate).toLocaleDateString() : 'Now'}</span>
                     </div>
                   )
-                  : <div>Select a tracker to see it's history</div>
+                  : <div>Select a tracker to see it's vehicle history</div>
               }
             </div>
           </div>
@@ -198,8 +180,7 @@ class Trackers extends Component {
             <h2>Add Tracker</h2>
           </header>
 
-          <AddTracker onAddTracker={this.onAddTracker}/>
-
+          <AddTracker onAdd={this.onAddTracker}/>
         </Modal>
       </div>
     );

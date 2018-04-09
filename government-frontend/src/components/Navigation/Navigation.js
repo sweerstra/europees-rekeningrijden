@@ -6,7 +6,7 @@ const Navigation = ({ heading, onLogout }) => (
   <nav className="nav">
     <h1>{heading}</h1>
     <div className="nav__logout">
-      <Link to="/login" onClick={onLogout}>
+      <Link to="/login" className="btn red" onClick={onLogout}>
         Logout
       </Link>
     </div>

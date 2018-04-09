@@ -26,8 +26,8 @@ class Login extends Component {
                    name="password"
                    placeholder="Password"
                    spellCheck="false" autoCapitalize="none"/>
-            <a href="#">Forgot password?</a>
-            <button className="btn"> Login</button>
+            <a href="#" className="login__content__forgot-password">Forgot password?</a>
+            <button className="btn blue ">Login</button>
           </form>
         </div>
       </div>

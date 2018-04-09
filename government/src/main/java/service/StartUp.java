@@ -46,11 +46,11 @@ public class StartUp {
         Ownership ownership4 = new Ownership(danny, vehicle4, createDate("2016-11-21"), null);
         Ownership ownership5 = new Ownership(sjoerd, vehicle5, createDate("2017-04-11"), null);
 
-        ownershipService.create(ownership1);
-        ownershipService.create(ownership2);
-        ownershipService.create(ownership3);
-        ownershipService.create(ownership4);
-        ownershipService.create(ownership5);
+        ownershipService.addOwnership(ownership1);
+        /*ownershipService.addOwnership(ownership2);
+        ownershipService.addOwnership(ownership3);
+        ownershipService.addOwnership(ownership4);
+        ownershipService.addOwnership(ownership5);*/
     }
 
     private Date createDate(String format) {

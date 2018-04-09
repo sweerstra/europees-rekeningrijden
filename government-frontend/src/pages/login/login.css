@@ -27,3 +27,6 @@
   flex-direction: column;
 }
 
+.login__content__forgot-password {
+  font-size: 0.75em;
+}

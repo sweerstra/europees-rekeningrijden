@@ -1,6 +1,8 @@
 package domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class Owner {
 
     @OneToMany
     @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Ownership> ownerships;
 
     public Owner(String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth) {

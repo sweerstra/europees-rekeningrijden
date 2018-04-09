@@ -1,6 +1,8 @@
 package domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class Vehicle {
 
     @OneToMany
     @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Ownership> ownerships;
 
     private String licensePlate;

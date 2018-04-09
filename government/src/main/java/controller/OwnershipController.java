@@ -40,7 +40,7 @@ public class OwnershipController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addOwnership(Ownership ownership) {
-        Ownership createdOwnership = service.create(ownership);
+        Ownership createdOwnership = service.addOwnership(ownership);
 
         return Response.ok(createdOwnership).build();
     }
@@ -57,6 +57,14 @@ public class OwnershipController {
     @Path("/owner/{id}")
     public Response getByOwner(@PathParam("id") long id) {
         List<Ownership> owners = service.getOwnershipsByOwner(id);
+
+        return Response.ok(owners).build();
+    }
+
+    @GET
+    @Path("/vehicle/{id}")
+    public Response getByVehicle(@PathParam("id") long id) {
+        List<Ownership> owners = service.getOwnershipsByVehicle(id);
 
         return Response.ok(owners).build();
     }
