@@ -15,6 +15,7 @@ public class Employee {
     private String email;
     private String password;
     private String role;
+    private boolean active;
 
     public Employee(String email, String password, String role)
     {
@@ -55,5 +56,13 @@ public class Employee {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

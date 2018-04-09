@@ -8,9 +8,13 @@ public interface IEmployeeDao {
 
     Employee findById(long id);
 
-    List<Employee> findAll();
-
     Employee create(Employee entity);
+
+    Employee update(Employee employee);
+
+    Employee getEmployeeByEmail(String email);
+
+    List<Employee> findAll();
 
     void delete(Employee entity);
 }

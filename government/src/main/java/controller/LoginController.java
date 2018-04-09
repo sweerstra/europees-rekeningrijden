@@ -1,13 +1,11 @@
-package main.controllers;
+package controller;
 
-
+import domain.Employee;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import main.domain.Employee;
-import main.services.EmployeeService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.transaction.annotation.Transactional;
-
+import service.EmployeeService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -20,14 +18,11 @@ import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-
 @Path("/login")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
 @Transactional
 public class LoginController {
-
-
     @Inject
     private EmployeeService service;
 
@@ -40,14 +35,14 @@ public class LoginController {
         Employee employee = service.authenthicate(email, password);
 
         if (employee != null) {
-            String jwtToken = Jwts.builder()
+            String token = Jwts.builder()
                     .setSubject(email)
                     .setIssuer(uriInfo.getAbsolutePath().toString())
                     .setIssuedAt(new Date())
-                    .setExpiration(DateUtils.addMinutes(new Date(), 10))
-                    .signWith(SignatureAlgorithm.HS512, "MockSecretKey")
+                    .setExpiration(DateUtils.addHours(new Date(), 12))
+                    .signWith(SignatureAlgorithm.HS512, "GovernmentKey")
                     .compact();
-            String token = jwtToken;
+
             return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
         }
 
