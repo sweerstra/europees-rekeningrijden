@@ -4,9 +4,9 @@ import domain.Employee;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.transaction.annotation.Transactional;
 import service.EmployeeService;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -21,14 +21,14 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Path("/login")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
-@Transactional
+@RequestScoped
 public class LoginController {
     @Inject
     private EmployeeService service;
 
     @POST
     @Consumes(APPLICATION_FORM_URLENCODED)
-    public Response authenticateUser(@FormParam("login") String email,
+    public Response authenticateUser(@FormParam("email") String email,
                                      @FormParam("password") String password,
                                      @Context UriInfo uriInfo) {
 
@@ -44,10 +44,8 @@ public class LoginController {
                     .compact();
 
             return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-
-        return null;
     }
-
-
 }
