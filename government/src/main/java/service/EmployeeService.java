@@ -21,11 +21,11 @@ public class EmployeeService {
     }
 
     public Employee authenthicate(String email, String password) {
-        Employee loadedUser = employeeDao.getEmployeeByEmail(email);
-        if (loadedUser == null) return null;
-        if (loadedUser.getPassword().equals(password)) return loadedUser;
-        else
-            return null;
+        Employee employee = employeeDao.getEmployeeByEmail(email);
+
+        if (employee == null || !employee.getPassword().equals(password)) return null;
+
+        return employee;
     }
 
     public void deleteEmployee(Employee employee) {
