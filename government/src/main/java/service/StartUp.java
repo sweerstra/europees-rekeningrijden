@@ -1,5 +1,6 @@
 package service;
 
+import domain.Employee;
 import domain.Owner;
 import domain.Ownership;
 import domain.Vehicle;
@@ -14,9 +15,9 @@ import java.util.Date;
 @javax.ejb.Startup
 @Singleton
 public class StartUp {
+    @Inject
+    private EmployeeService employeeService;
 
-    /*@Inject
-    InvoiceDao invoiceDao;*/
     @Inject
     private VehicleService vehicleService;
 
@@ -51,6 +52,8 @@ public class StartUp {
         ownershipService.addOwnership(ownership3);
         ownershipService.addOwnership(ownership4);
         ownershipService.addOwnership(ownership5);*/
+
+        employeeService.addEmployee(new Employee("employee@mail.com", "password", "admin"));
     }
 
     private Date createDate(String format) {
