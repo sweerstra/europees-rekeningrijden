@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 const GoogleMapsLoader = require('google-maps');
 GoogleMapsLoader.KEY = 'AIzaSyD7CDOHHmsCN9aelCcx2-viZERP0AVwCIc';
@@ -35,8 +35,6 @@ GoogleMapsLoader.load(function (google) {
 class Map extends Component {
   constructor(props) {
     super(props);
-
-
   }
 
   render() {

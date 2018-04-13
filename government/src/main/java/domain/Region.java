@@ -1,6 +1,5 @@
 package domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -11,24 +10,24 @@ import java.util.List;
 @Entity
 @XmlRootElement
 public class Region {
-
     @Id
     @GeneratedValue
     private long id;
 
     private String name;
 
-    private double rate;
+    private double defaultRate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "region")
-    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "region")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<RegionTime> regionTimes;
 
-    public Region(String name, double rate) {
+    public Region(String name, double defaultRate) {
         this.name = name;
-        this.rate = rate;
+        this.defaultRate = defaultRate;
     }
+
+    public Region() {}
 
     public long getId() {
         return id;
@@ -46,12 +45,12 @@ public class Region {
         this.name = name;
     }
 
-    public double getRate() {
-        return rate;
+    public double getDefaultRate() {
+        return defaultRate;
     }
 
-    public void setRate(double rate) {
-        this.rate = rate;
+    public void setDefaultRate(double defaultRate) {
+        this.defaultRate = defaultRate;
     }
 
     public List<RegionTime> getRegionTimes() {
