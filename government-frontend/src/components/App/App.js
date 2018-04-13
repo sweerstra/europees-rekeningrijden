@@ -5,7 +5,7 @@ import Trackers from '../../pages/trackers/trackers';
 import Invoices from '../../pages/invoices/invoices';
 import Region from '../../pages/region/region';
 import PrivateRoute from '../PrivateRoute';
-import { getLoggedInEmail, isLoggedIn } from '../../api/auth';
+import { getLoggedInEmail, isLoggedIn, setToken } from '../../api/auth';
 import './App.css';
 
 class App extends Component {
@@ -13,8 +13,8 @@ class App extends Component {
     super();
 
     this.state = {
-      isAuthenticated: isLoggedIn(),
-      loggedInEmail: getLoggedInEmail()
+      loggedInEmail: getLoggedInEmail(),
+      isAuthenticated: isLoggedIn()
     };
   }
 
@@ -39,7 +39,7 @@ class App extends Component {
   }
 
   handleAuthentication = (token) => {
-    localStorage.setItem('access_token', token);
+    setToken(token);
     this.setState({ isAuthenticated: true, loggedInEmail: getLoggedInEmail() });
   };
 }

@@ -1,5 +1,7 @@
 import { decodeToken } from '../utils/decodeToken';
 
+const TOKEN_KEY = 'access_token';
+
 export const getLoggedInEmail = () => {
   const token = getToken();
 
@@ -15,9 +17,13 @@ export const isLoggedIn = () => {
 };
 
 const getToken = () => {
-  return localStorage.getItem('access_token');
+  return localStorage.getItem(TOKEN_KEY);
+};
+
+export const setToken = (token) => {
+  localStorage.setItem(TOKEN_KEY, token);
 };
 
 export const logout = () => {
-  localStorage.removeItem('access_token');
+  localStorage.removeItem(TOKEN_KEY);
 };
