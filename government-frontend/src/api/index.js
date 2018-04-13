@@ -15,5 +15,8 @@ export default {
   },
   vehicle: {
     getByLicensePlate: (licensePlate) => Request.get(`${API_URL}/vehicle/${licensePlate}`)
+  },
+  region: {
+    addRegion: (name, times) => Request.post(`${API_URL}/region`,)
   }
 };
