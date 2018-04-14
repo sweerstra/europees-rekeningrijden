@@ -3,22 +3,38 @@ import './region.css';
 import { RemoveIcon } from '../../images';
 import Map from '../../components/Map/Map';
 import ReactTable from 'react-table';
+import Api from '../../api';
 
 class Region extends Component {
   onCreateRegion = () => {
-    // Api.region.addRegion(region);
-
     const region = {
       name: 'Brighton',
-      defaultRate: this.state.defaultRate,
+      defaultRate: parseFloat(this.state.defaultRate),
       regionTimes: this.state.regionTimes
     };
 
-    console.log('Region to add', region);
+    Api.region.addRegion(region)
+      .then(createdRegion => {
+        this.setState(state => ({ regions: [...state.regions, createdRegion] }));
+        console.log('Region created', createdRegion);
+      });
   };
 
   onEditRegion = () => {
+    const { selectedRegion, defaultRate, regionTimes } = this.state;
 
+    const region = { defaultRate: parseFloat(defaultRate), regionTimes };
+
+    console.log(selectedRegion.id, region);
+
+    Api.region.editRegion(selectedRegion.id, region);
+  };
+
+  onSelectRegion = (selectedRegion) => {
+    this.setState({ selectedRegion });
+
+    Api.region.getByName(selectedRegion.name)
+      .then(({ defaultRate, regionTimes }) => this.setState({ defaultRate, defaultRateValid: true, regionTimes }));
   };
 
   onAddRegionRow = () => {
@@ -37,7 +53,7 @@ class Region extends Component {
     const { value } = target;
 
     this.setState({
-      defaultRate: parseFloat(value),
+      defaultRate: value,
       defaultRateValid: !isNaN(value)
     });
   };
@@ -46,7 +62,6 @@ class Region extends Component {
     this.setState(state => {
       const regionTimes = state.regionTimes;
       regionTimes[index][name] = value;
-
       return ({ regionTimes });
     });
   };
@@ -55,37 +70,15 @@ class Region extends Component {
     super(props);
 
     this.state = {
-      regions: [
-        {
-          id: 1,
-          name: 'Brighton',
-          defaultRate: 5.00
-        },
-        {
-          id: 2,
-          name: 'Manchester',
-          defaultRate: 6.80
-        }
-      ],
-      regionTimes: [
-        {
-          startTime: '8:00',
-          endTime: '12:00',
-          rate: 8.50
-        },
-        {
-          startTime: '15:00',
-          endTime: '17:00',
-          rate: 7.00
-        },
-        {
-          startTime: '20:00',
-          endTime: '22:00',
-          rate: 5.50
-        }
-      ],
+      regions: [],
+      regionTimes: [],
       selectedRegion: null
     };
+  }
+
+  componentDidMount() {
+    Api.region.getAll()
+      .then(regions => this.setState({ regions }));
   }
 
   render() {
@@ -93,11 +86,7 @@ class Region extends Component {
 
     const columns = [
       {
-        Header: 'ID',
-        accessor: 'id'
-      },
-      {
-        Header: 'Name',
+        Header: 'Location',
         accessor: 'name'
       },
       {
@@ -116,7 +105,7 @@ class Region extends Component {
             getTrProps={(state, rowInfo) => {
               const isSelected = rowInfo && selectedRegion && rowInfo.original.id === selectedRegion.id;
               return {
-                onClick: () => this.setState({ selectedRegion: rowInfo.original }),
+                onClick: () => this.onSelectRegion(rowInfo.original),
                 style: {
                   color: isSelected ? 'white' : 'black',
                   backgroundColor: isSelected ? '#3F51B5' : 'white'
@@ -130,7 +119,8 @@ class Region extends Component {
         <div className="region__info__prices">
           <div className="region__time__price--default">
             <span>Default Rate</span>
-            <input type="text" name="defaultRate" onChange={this.onDefaultRateChange} placeholder="&#163; 0.00"/>
+            <input type="text" name="defaultRate" value={defaultRate}
+                   onChange={this.onDefaultRateChange} placeholder="&#163; 0.00"/>
           </div>
           <div className="region__time__price__headers">
             <span>Start Time</span>
@@ -150,7 +140,7 @@ class Region extends Component {
             </div>
           )}
           <div className="region__add-row">
-            <button className="btn" onClick={this.onAddRegionRow}>Add Row</button>
+            <button className="btn" onClick={this.onAddRegionRow}>Add Timeslot</button>
           </div>
 
           <div className="region__actions">

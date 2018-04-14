@@ -37,6 +37,25 @@ public class RegionService {
         return dao.update(region);
     }
 
+    public Region editRegion(long id, Region region) {
+        Region original = dao.findById(id);
+
+        double defaultRate = region.getDefaultRate();
+        List<RegionTime> regionTimes = region.getRegionTimes();
+
+        Region tempRegion = new Region();
+        tempRegion.setId(id);
+
+        for (RegionTime time : regionTimes) {
+            time.setRegion(tempRegion);
+        }
+
+        if (defaultRate != 0) original.setDefaultRate(defaultRate);
+        original.setRegionTimes(regionTimes);
+
+        return dao.update(original);
+    }
+
     public List<Region> findAll() {
         return dao.findAll();
     }

@@ -50,7 +50,21 @@ public class RegionController {
         return Response.ok(region).build();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editRegion(@PathParam("id") long id, Region region) {
+        Region editedRegion = service.editRegion(id, region);
+
+        if (editedRegion != null) {
+            return Response.ok(editedRegion).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
     @GET
+    @Path("/all")
     public Response getAllRegions() {
         List<Region> regions = service.findAll();
 

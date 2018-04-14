@@ -125,7 +125,6 @@ class Trackers extends Component {
           <ReactTable
             data={filtered}
             columns={columns}
-            showPagination={false}
             getTrProps={(state, rowInfo) => {
               const isSelected = rowInfo && rowInfo.original.vehicle.trackerId === selectedRow;
               return {
@@ -139,6 +138,8 @@ class Trackers extends Component {
                 }
               }
             }}
+            minRows="5"
+            showPagination={false}
           />
         </div>
         <div className="trackers__administration">
