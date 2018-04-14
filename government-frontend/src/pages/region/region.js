@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './region.css';
-import { AddIcon, RemoveIcon } from '../../images';
+import { RemoveIcon } from '../../images';
 import Map from '../../components/Map/Map';
 import ReactTable from 'react-table';
 
 class Region extends Component {
-  onSaveRegion = () => {
+  onCreateRegion = () => {
     // Api.region.addRegion(region);
 
     const region = {
@@ -17,14 +17,29 @@ class Region extends Component {
     console.log('Region to add', region);
   };
 
+  onEditRegion = () => {
+
+  };
+
   onAddRegionRow = () => {
     this.setState(state => ({
       regionTimes: [...state.regionTimes, { startTime: '', endTime: '', rate: 0 }]
     }));
   };
 
-  onFieldChange = ({ target }) => {
-    this.setState({ [target.name]: parseFloat(target.value) });
+  onRemoveRegionRow = (index) => {
+    const { regionTimes } = this.state;
+    regionTimes.splice(index, 1);
+    this.setState({ regionTimes });
+  };
+
+  onDefaultRateChange = ({ target }) => {
+    const { value } = target;
+
+    this.setState({
+      defaultRate: parseFloat(value),
+      defaultRateValid: !isNaN(value)
+    });
   };
 
   onEditRegionTime = ({ name, value }, index) => {
@@ -68,12 +83,13 @@ class Region extends Component {
           endTime: '22:00',
           rate: 5.50
         }
-      ]
+      ],
+      selectedRegion: null
     };
   }
 
   render() {
-    const { regions, regionTimes } = this.state;
+    const { selectedRegion, defaultRate, defaultRateValid, regions, regionTimes } = this.state;
 
     const columns = [
       {
@@ -97,15 +113,30 @@ class Region extends Component {
           <ReactTable
             data={regions}
             columns={columns}
+            getTrProps={(state, rowInfo) => {
+              const isSelected = rowInfo && selectedRegion && rowInfo.original.id === selectedRegion.id;
+              return {
+                onClick: () => this.setState({ selectedRegion: rowInfo.original }),
+                style: {
+                  color: isSelected ? 'white' : 'black',
+                  backgroundColor: isSelected ? '#3F51B5' : 'white'
+                }
+              }
+            }}
+            minRows="5"
             showPagination={false}
           />
         </div>
         <div className="region__info__prices">
           <div className="region__time__price--default">
             <span>Default Rate</span>
-            <input type="text" name="defaultRate" onChange={this.onFieldChange} placeholder="0.00"/>
+            <input type="text" name="defaultRate" onChange={this.onDefaultRateChange} placeholder="&#163; 0.00"/>
           </div>
           <div className="region__time__price__headers">
+            <span>Start Time</span>
+            <span>End Time</span>
+            <span>Rate</span>
+            {regionTimes.length > 0 && <span style={{ justifySelf: 'flex-end' }}>Remove Rate</span>}
           </div>
           {regionTimes.map(({ startTime, endTime, rate }, index) =>
             <div className="region__time__price" key={index}>
@@ -113,14 +144,26 @@ class Region extends Component {
                      onChange={({ target }) => this.onEditRegionTime(target, index)}/>
               <input type="text" name="endTime" value={endTime} placeholder="00:00"
                      onChange={({ target }) => this.onEditRegionTime(target, index)}/>
-              <input type="text" name="rate" value={rate} placeholder="5.00"
+              <input type="text" name="rate" value={rate} placeholder="&#163; 0.00"
                      onChange={({ target }) => this.onEditRegionTime(target, index)}/>
-              <RemoveIcon/>
+              <RemoveIcon onClick={() => this.onRemoveRegionRow(index)}/>
             </div>
           )}
-          <AddIcon onClick={this.onAddRegionRow}/>
+          <div className="region__add-row">
+            <button className="btn" onClick={this.onAddRegionRow}>Add Row</button>
+          </div>
+
+          <div className="region__actions">
+            <button className="add-time-region-button btn green"
+                    onClick={this.onCreateRegion}
+                    disabled={!defaultRate || !defaultRateValid}>Create
+            </button>
+            <button className="save-time-region-button btn green"
+                    onClick={this.onEditRegion}
+                    disabled={!selectedRegion || !defaultRate || !defaultRateValid}>Save
+            </button>
+          </div>
         </div>
-        <button className="save-time-region-button btn" onClick={this.onSaveRegion}>Save</button>
       </div>
     );
   }

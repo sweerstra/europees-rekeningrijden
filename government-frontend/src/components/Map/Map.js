@@ -17,17 +17,18 @@ GoogleMapsLoader.load(function (google) {
     drawingControl: true,
     drawingControlOptions: {
       position: google.maps.ControlPosition.TOP_CENTER,
-      drawingModes: ['polyline']
+      drawingModes: ['polygon']
     },
-    polylineOptions: {
+    polygonOptions: {
       strokeColor: '#3F51B5',
-      fillOpacity: 1,
-      strokeWeight: 5,
-      clickable: false,
-      editable: true,
-      zIndex: 1
+      strokeOpacity: 0.8,
+      fillColor: '#3F51B5',
+      fillOpacity: 0.35,
+      strokeWeight: 4,
+      clickable: true
     }
   });
+
   drawingManager.setMap(map);
 });
 
@@ -35,6 +36,10 @@ GoogleMapsLoader.load(function (google) {
 class Map extends Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+
   }
 
   render() {
