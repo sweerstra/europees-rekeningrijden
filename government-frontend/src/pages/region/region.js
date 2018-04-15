@@ -7,10 +7,14 @@ import Api from '../../api';
 
 class Region extends Component {
   onCreateRegion = () => {
+    const coordinates = this.state.selectedPolygon.getPath().getArray()
+      .map(c => ({ lat: c.lat(), lng: c.lng() }));
+
     const region = {
-      name: 'Brighton',
+      name: this.state.name,
       defaultRate: parseFloat(this.state.defaultRate),
-      regionTimes: this.state.regionTimes
+      regionTimes: this.state.regionTimes,
+      coordinates
     };
 
     Api.region.addRegion(region)
@@ -18,8 +22,8 @@ class Region extends Component {
   };
 
   onEditRegion = () => {
-    const { selectedRegion, defaultRate, regionTimes } = this.state;
-    const region = { defaultRate: parseFloat(defaultRate), regionTimes };
+    const { selectedRegion, name, defaultRate, regionTimes } = this.state;
+    const region = { name, defaultRate: parseFloat(defaultRate), regionTimes };
 
     Api.region.editRegion(selectedRegion.id, region);
   };
@@ -28,12 +32,19 @@ class Region extends Component {
     this.setState({ selectedRegion });
 
     Api.region.getByName(selectedRegion.name)
-      .then(({ defaultRate, regionTimes }) => this.setState({ defaultRate, defaultRateValid: true, regionTimes }));
+      .then(({ name, defaultRate, regionTimes }) =>
+        this.setState({
+          name,
+          defaultRate,
+          isValid: true,
+          regionTimes
+        }));
   };
 
   onAddRegionRow = () => {
     this.setState(state => ({
-      regionTimes: [...state.regionTimes, { startTime: '', endTime: '', rate: 0 }]
+      regionTimes: [...state.regionTimes, { startTime: '', endTime: '', rate: 0 }],
+      isValid: false
     }));
   };
 
@@ -48,21 +59,37 @@ class Region extends Component {
 
     this.setState({
       defaultRate: value,
-      defaultRateValid: !isNaN(value)
+      isValid: !isNaN(value)
     });
   };
 
-  onEditRegionTime = ({ name, value }, index) => {
+  onLocationNameChange = (e) => {
+    this.setState({ name: e.target.value });
+  };
+
+  onRegionTimeChange = ({ name, value }, index) => {
+    let isValidTime = true;
+
+    if (name === 'startTime' || name === 'endTime') {
+      const pattern = new RegExp('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
+      if (!pattern.test(value)) {
+        isValidTime = false;
+      }
+    }
+
     this.setState(state => {
       const regionTimes = state.regionTimes;
       regionTimes[index][name] = value;
-      return ({ regionTimes });
+
+      const currentRegionTime = regionTimes[index];
+      const hasValidProps = Object.keys(currentRegionTime).every(key => currentRegionTime[key]);
+      return ({ regionTimes, isValid: isValidTime && hasValidProps });
     });
   };
 
-  onPolygonSelect = (e, polygon, coordinates) => {
+  onPolygonSelect = (e, polygon) => {
     this.setState(({ polygons }) => {
-      polygons.forEach(polygon => polygon.setOptions({ strokeColor: '#4CAF50', fillColor: '#4CAF50' }));
+      polygons.forEach(polygon => polygon.setOptions({ strokeColor: '#3F51B5', fillColor: '#3F51B5' }));
       return { polygons };
     });
 
@@ -87,7 +114,7 @@ class Region extends Component {
   }
 
   render() {
-    const { selectedRegion, defaultRate, defaultRateValid, regionTimes } = this.state;
+    const { selectedRegion, name, defaultRate, isValid, regionTimes, selectedPolygon } = this.state;
 
     const columns = [
       {
@@ -125,9 +152,14 @@ class Region extends Component {
           />
         </div>
         <div className="region__info__prices">
+          <div className="region__time__location-name">
+            <span>Location</span>
+            <input type="text" value={name}
+                   onChange={this.onLocationNameChange}/>
+          </div>
           <div className="region__time__price--default">
             <span>Default Rate</span>
-            <input type="text" name="defaultRate" value={defaultRate}
+            <input type="text" value={defaultRate}
                    onChange={this.onDefaultRateChange} placeholder="&#163; 0.00"/>
           </div>
           <div className="region__time__price__headers">
@@ -139,11 +171,11 @@ class Region extends Component {
           {regionTimes.map(({ startTime, endTime, rate }, index) =>
             <div className="region__time__price" key={index}>
               <input type="text" name="startTime" value={startTime} placeholder="00:00"
-                     onChange={({ target }) => this.onEditRegionTime(target, index)}/>
+                     onChange={({ target }) => this.onRegionTimeChange(target, index)}/>
               <input type="text" name="endTime" value={endTime} placeholder="00:00"
-                     onChange={({ target }) => this.onEditRegionTime(target, index)}/>
+                     onChange={({ target }) => this.onRegionTimeChange(target, index)}/>
               <input type="text" name="rate" value={rate} placeholder="&#163; 0.00"
-                     onChange={({ target }) => this.onEditRegionTime(target, index)}/>
+                     onChange={({ target }) => this.onRegionTimeChange(target, index)}/>
               <RemoveIcon onClick={() => this.onRemoveRegionRow(index)}/>
             </div>
           )}
@@ -154,11 +186,11 @@ class Region extends Component {
           <div className="region__actions">
             <button className="add-time-region-button btn green"
                     onClick={this.onCreateRegion}
-                    disabled={!defaultRate || !defaultRateValid}>Create
+                    disabled={!name || !defaultRate || !isValid || !selectedPolygon}>Create
             </button>
             <button className="save-time-region-button btn green"
                     onClick={this.onEditRegion}
-                    disabled={!selectedRegion || !defaultRate || !defaultRateValid}>Save
+                    disabled={!selectedRegion || !name || !defaultRate || !isValid}>Save
             </button>
           </div>
         </div>

@@ -40,6 +40,7 @@ public class RegionService {
     public Region editRegion(long id, Region region) {
         Region original = dao.findById(id);
 
+        String name = region.getName();
         double defaultRate = region.getDefaultRate();
         List<RegionTime> regionTimes = region.getRegionTimes();
 
@@ -50,6 +51,7 @@ public class RegionService {
             time.setRegion(tempRegion);
         }
 
+        if (!StringUtils.isNullOrEmpty(name)) original.setName(name);
         if (defaultRate != 0) original.setDefaultRate(defaultRate);
         original.setRegionTimes(regionTimes);
 

@@ -20,14 +20,17 @@
   padding: 20px;
 }
 
+.region__time__location-name,
 .region__time__price--default {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
 
+.region__time__location-name span,
 .region__time__price--default span { flex: 0 120px; }
 
+.region__time__location-name input,
 .region__time__price--default input { flex: 1; margin: 0; }
 
 .region__time__price__headers, .region__time__price {

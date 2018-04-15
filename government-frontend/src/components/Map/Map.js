@@ -37,12 +37,9 @@ class Map extends Component {
         this.props.onPolygonAdd(polygon);
 
         polygon.addListener('click', (e) => {
-          const coordinates = polygon.getPath().getArray()
-            .map(c => ({ lat: c.lat(), lng: c.lng() }));
+          this.props.onPolygonSelect(e, polygon);
 
-          this.props.onPolygonSelect(e, polygon, coordinates);
-
-          polygon.setOptions({ strokeColor: '#F44336', fillColor: '#F44336' });
+          polygon.setOptions({ strokeColor: '#4CAF50', fillColor: '#4CAF50' });
 
           // TODO: color linked polygons?
         });
