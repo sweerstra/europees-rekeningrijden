@@ -14,18 +14,12 @@ class Region extends Component {
     };
 
     Api.region.addRegion(region)
-      .then(createdRegion => {
-        this.setState(state => ({ regions: [...state.regions, createdRegion] }));
-        console.log('Region created', createdRegion);
-      });
+      .then(createdRegion => this.setState(state => ({ regions: [...state.regions, createdRegion] })));
   };
 
   onEditRegion = () => {
     const { selectedRegion, defaultRate, regionTimes } = this.state;
-
     const region = { defaultRate: parseFloat(defaultRate), regionTimes };
-
-    console.log(selectedRegion.id, region);
 
     Api.region.editRegion(selectedRegion.id, region);
   };
@@ -66,13 +60,24 @@ class Region extends Component {
     });
   };
 
+  onPolygonSelect = (e, polygon, coordinates) => {
+    this.setState(({ polygons }) => {
+      polygons.forEach(polygon => polygon.setOptions({ strokeColor: '#4CAF50', fillColor: '#4CAF50' }));
+      return { polygons };
+    });
+
+    this.setState({ selectedPolygon: polygon });
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
       regions: [],
       regionTimes: [],
-      selectedRegion: null
+      polygons: [],
+      selectedRegion: null,
+      selectedPolygon: null
     };
   }
 
@@ -82,7 +87,7 @@ class Region extends Component {
   }
 
   render() {
-    const { selectedRegion, defaultRate, defaultRateValid, regions, regionTimes } = this.state;
+    const { selectedRegion, defaultRate, defaultRateValid, regionTimes } = this.state;
 
     const columns = [
       {
@@ -97,10 +102,13 @@ class Region extends Component {
 
     return (
       <div className="region-page">
-        <Map/>
+        <Map
+          polygons={this.state.polygons}
+          onPolygonAdd={polygon => this.setState(state => ({ polygons: [...state.polygons, polygon] }))}
+          onPolygonSelect={this.onPolygonSelect}/>
         <div className="region__info__table">
           <ReactTable
-            data={regions}
+            data={this.state.regions}
             columns={columns}
             getTrProps={(state, rowInfo) => {
               const isSelected = rowInfo && selectedRegion && rowInfo.original.id === selectedRegion.id;
