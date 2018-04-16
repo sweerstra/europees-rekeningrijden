@@ -69,19 +69,19 @@ public class Owner {
         this.lastName = lastName;
     }
 
-    public String getAdresse() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAdresse(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public String getpostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setpostalCode(String postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 

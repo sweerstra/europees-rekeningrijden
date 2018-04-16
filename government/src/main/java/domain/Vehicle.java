@@ -3,6 +3,7 @@ package domain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -13,15 +14,16 @@ public class Vehicle {
     @GeneratedValue
     private long id;
     private String trackerId;
-    private int ownerId;
+    @OneToOne
+    private Owner owner;
     private String licensePlate;
     private String typeTracker;
     private String emissionCategory;
 
-    public Vehicle(String trackerId, int ownerId, String licensePlate, String typeTracker, String emissionCategory)
+    public Vehicle(String trackerId, Owner owner, String licensePlate, String typeTracker, String emissionCategory)
     {
         this.trackerId = trackerId;
-        this.ownerId = ownerId;
+        this.owner = owner;
         this.licensePlate = licensePlate;
         this.typeTracker = typeTracker;
         this.emissionCategory = emissionCategory;
@@ -37,19 +39,19 @@ public class Vehicle {
         this.trackerId = trackerId;
     }
 
-    public int getOwnerId() {
-        return ownerId;
+    public Owner getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
-    public String getlicensePlate() {
+    public String getLicensePlate() {
         return licensePlate;
     }
 
-    public void setlicensePlate(String licensePlate) {
+    public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
 
@@ -61,11 +63,11 @@ public class Vehicle {
         this.typeTracker = typeTracker;
     }
 
-    public String getemissionCategory() {
+    public String getEmissionCategory() {
         return emissionCategory;
     }
 
-    public void setemissionCategory(String emissionCategory) {
+    public void setEmissionCategory(String emissionCategory) {
         this.emissionCategory = emissionCategory;
     }
 
