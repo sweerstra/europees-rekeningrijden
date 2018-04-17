@@ -87,11 +87,11 @@ public class Owner {
         this.address = address;
     }
 
-    public String getpostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setpostalCode(String postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
