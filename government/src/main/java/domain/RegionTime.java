@@ -6,11 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 @Entity
-@XmlRootElement
-public class RegionTime {
+public class RegionTime implements Serializable {
     @Id
     @GeneratedValue
     private long id;

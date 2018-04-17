@@ -1,15 +1,15 @@
 package service;
 
-import domain.Owner;
-import domain.Ownership;
-import domain.Vehicle;
+import domain.*;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @javax.ejb.Startup
 @Singleton
@@ -25,6 +25,9 @@ public class StartUp {
 
     @Inject
     private OwnershipService ownershipService;
+
+    @Inject
+    private RegionService regionService;
 
     @PostConstruct
     public void initData() {
@@ -51,6 +54,17 @@ public class StartUp {
         ownershipService.addOwnership(ownership3);
         ownershipService.addOwnership(ownership4);
         ownershipService.addOwnership(ownership5);*/
+
+        Region region = new Region("Middlesbrough", 8.50);
+        region.setRegionTimes(new ArrayList<RegionTime>());
+        List<Coordinate> coordinates = new ArrayList<>();
+        coordinates.add(new Coordinate(52.985692411184985, -0.6241609374999371));
+        coordinates.add(new Coordinate(52.02951508881423, -0.09681718749993706));
+        coordinates.add(new Coordinate(51.77871745471084, -0.9647371093749371));
+        region.setCoordinates(coordinates);
+        Region createdRegion = regionService.create(region);
+
+
     }
 
     private Date createDate(String format) {

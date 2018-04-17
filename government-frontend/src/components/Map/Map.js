@@ -5,8 +5,20 @@ GoogleMapsLoader.KEY = 'AIzaSyD7CDOHHmsCN9aelCcx2-viZERP0AVwCIc';
 GoogleMapsLoader.LIBRARIES = ['drawing'];
 
 class Map extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      map: null,
+      polygon: null,
+      coordinates: []
+    };
+  }
+
   componentDidMount() {
     GoogleMapsLoader.load((google) => {
+      window.google = google;
+
       const mapOptions = {
         zoom: 7,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -31,23 +43,67 @@ class Map extends Component {
         }
       });
 
-      // TODO: load existing polygons from this.props.polygons
-
       google.maps.event.addListener(drawingManager, 'polygoncomplete', (polygon) => {
-        this.props.onPolygonAdd(polygon);
+        const coordinates = polygon.getPath().getArray()
+          .map(c => ({ lat: c.lat(), lng: c.lng() }));
 
-        polygon.addListener('click', (e) => {
-          this.props.onPolygonSelect(e, polygon);
-
-          polygon.setOptions({ strokeColor: '#4CAF50', fillColor: '#4CAF50' });
-
-          // TODO: color linked polygons?
+        // delete the map of the old polygon and replace the selected polygon
+        this.setState(state => {
+          if (state.polygon) {
+            state.polygon.setMap(null);
+          }
+          return { polygon };
         });
+
+        this.props.onSelectPolygon(coordinates);
       });
 
       drawingManager.setMap(map);
+
+      this.setState({ map });
     });
   }
+
+  // when a region is selected, new coordinates will be passed to this function
+  // @https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { coordinates } = nextProps;
+
+    // check if the coordinates have changed based on the coordinates saved in state
+    if (coordinates.length === 0 || !Map.coordinatesDiffer(coordinates, prevState.coordinates)) {
+      return null;
+    }
+
+    // because google maps expects the first coordinate to also be the last before drawing
+    const [firstCoordinate] = coordinates;
+    const triangleCoordinates = [...coordinates, firstCoordinate];
+
+    const polygon = new window.google.maps.Polygon({
+      paths: triangleCoordinates,
+      strokeColor: '#3F51B5',
+      strokeOpacity: 0.8,
+      fillColor: '#3F51B5',
+      fillOpacity: 0.35,
+      strokeWeight: 4,
+      clickable: true
+    });
+
+    polygon.setMap(prevState.map);
+
+    if (prevState.polygon) {
+      prevState.polygon.setMap(null);
+    }
+
+    return { polygon, coordinates };
+  }
+
+  static coordinatesDiffer(coords1, coords2) {
+    if (coords1.length !== coords2.length) return true;
+
+    return coords1.some(({ lat, lng }, index) => {
+      return lat !== coords2[index].lat || lng !== coords2[index].lng;
+    });
+  };
 
   render() {
     return (

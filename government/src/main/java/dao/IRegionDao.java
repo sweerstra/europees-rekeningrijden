@@ -16,4 +16,6 @@ public interface IRegionDao {
     List<Region> findAll();
 
     void delete(Region entity);
+
+    void deleteCoordinatesByRegion(Region entity);
 }

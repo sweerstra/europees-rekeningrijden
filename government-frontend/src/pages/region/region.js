@@ -7,14 +7,11 @@ import Api from '../../api';
 
 class Region extends Component {
   onCreateRegion = () => {
-    const coordinates = this.state.selectedPolygon.getPath().getArray()
-      .map(c => ({ lat: c.lat(), lng: c.lng() }));
-
     const region = {
       name: this.state.name,
       defaultRate: parseFloat(this.state.defaultRate),
       regionTimes: this.state.regionTimes,
-      coordinates
+      coordinates: this.state.coordinates
     };
 
     Api.region.addRegion(region)
@@ -22,22 +19,22 @@ class Region extends Component {
   };
 
   onEditRegion = () => {
-    const { selectedRegion, name, defaultRate, regionTimes } = this.state;
-    const region = { name, defaultRate: parseFloat(defaultRate), regionTimes };
+    const { selectedRegion, name, defaultRate, regionTimes, coordinates } = this.state;
+    const region = { name, defaultRate: parseFloat(defaultRate), regionTimes, coordinates };
 
     Api.region.editRegion(selectedRegion.id, region);
   };
 
   onSelectRegion = (selectedRegion) => {
-    this.setState({ selectedRegion });
-
     Api.region.getByName(selectedRegion.name)
-      .then(({ name, defaultRate, regionTimes }) =>
+      .then(({ name, defaultRate, regionTimes, coordinates }) =>
         this.setState({
+          selectedRegion,
           name,
           defaultRate,
-          isValid: true,
-          regionTimes
+          regionTimes,
+          coordinates,
+          isValid: true
         }));
   };
 
@@ -82,18 +79,14 @@ class Region extends Component {
       regionTimes[index][name] = value;
 
       const currentRegionTime = regionTimes[index];
+      // validate if the region times are filled in
       const hasValidProps = Object.keys(currentRegionTime).every(key => currentRegionTime[key]);
       return ({ regionTimes, isValid: isValidTime && hasValidProps });
     });
   };
 
-  onPolygonSelect = (e, polygon) => {
-    this.setState(({ polygons }) => {
-      polygons.forEach(polygon => polygon.setOptions({ strokeColor: '#3F51B5', fillColor: '#3F51B5' }));
-      return { polygons };
-    });
-
-    this.setState({ selectedPolygon: polygon });
+  onSelectPolygon = (coordinates) => {
+    this.setState({ coordinates });
   };
 
   constructor(props) {
@@ -102,9 +95,8 @@ class Region extends Component {
     this.state = {
       regions: [],
       regionTimes: [],
-      polygons: [],
+      coordinates: [],
       selectedRegion: null,
-      selectedPolygon: null
     };
   }
 
@@ -114,7 +106,7 @@ class Region extends Component {
   }
 
   render() {
-    const { selectedRegion, name, defaultRate, isValid, regionTimes, selectedPolygon } = this.state;
+    const { selectedRegion, name, defaultRate, isValid, regionTimes, coordinates } = this.state;
 
     const columns = [
       {
@@ -130,9 +122,8 @@ class Region extends Component {
     return (
       <div className="region-page">
         <Map
-          polygons={this.state.polygons}
-          onPolygonAdd={polygon => this.setState(state => ({ polygons: [...state.polygons, polygon] }))}
-          onPolygonSelect={this.onPolygonSelect}/>
+          onSelectPolygon={this.onSelectPolygon}
+          coordinates={coordinates}/>
         <div className="region__info__table">
           <ReactTable
             data={this.state.regions}
@@ -186,7 +177,7 @@ class Region extends Component {
           <div className="region__actions">
             <button className="add-time-region-button btn green"
                     onClick={this.onCreateRegion}
-                    disabled={!name || !defaultRate || !isValid || !selectedPolygon}>Create
+                    disabled={!name || !defaultRate || !isValid || !coordinates.length}>Create
             </button>
             <button className="save-time-region-button btn green"
                     onClick={this.onEditRegion}

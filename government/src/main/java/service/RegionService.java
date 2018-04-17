@@ -2,6 +2,7 @@ package service;
 
 import com.mysql.cj.core.util.StringUtils;
 import dao.IRegionDao;
+import domain.Coordinate;
 import domain.Region;
 import domain.RegionTime;
 
@@ -27,12 +28,18 @@ public class RegionService {
         Region region = dao.create(new Region(entity.getName(), entity.getDefaultRate()));
 
         List<RegionTime> times = entity.getRegionTimes();
+        List<Coordinate> coordinates = entity.getCoordinates();
 
         for (RegionTime time : times) {
             time.setRegion(region);
         }
 
+        for (Coordinate coordinate : coordinates) {
+            coordinate.setRegion(region);
+        }
+
         region.setRegionTimes(times);
+        region.setCoordinates(coordinates);
 
         return dao.update(region);
     }
@@ -43,6 +50,7 @@ public class RegionService {
         String name = region.getName();
         double defaultRate = region.getDefaultRate();
         List<RegionTime> regionTimes = region.getRegionTimes();
+        List<Coordinate> coordinates = region.getCoordinates();
 
         Region tempRegion = new Region();
         tempRegion.setId(id);
@@ -51,9 +59,18 @@ public class RegionService {
             time.setRegion(tempRegion);
         }
 
+        for (Coordinate coordinate : coordinates) {
+            coordinate.setRegion(tempRegion);
+        }
+
+
         if (!StringUtils.isNullOrEmpty(name)) original.setName(name);
         if (defaultRate != 0) original.setDefaultRate(defaultRate);
         original.setRegionTimes(regionTimes);
+
+        // not deleting old coordinates, use explicit delete method
+        dao.deleteCoordinatesByRegion(tempRegion);
+        original.setCoordinates(coordinates);
 
         return dao.update(original);
     }

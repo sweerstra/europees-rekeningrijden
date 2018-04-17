@@ -1,7 +1,6 @@
 package controller;
 
 import domain.Region;
-import domain.RegionTime;
 import service.RegionService;
 
 import javax.enterprise.context.RequestScoped;
@@ -27,11 +26,7 @@ public class RegionController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        for (RegionTime time : region.getRegionTimes()) {
-            time.setRegion(null);
-        }
-
-        return Response.ok(region).build();
+        return Response.ok(region.serialized()).build();
     }
 
     @GET
@@ -43,11 +38,7 @@ public class RegionController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        for (RegionTime time : region.getRegionTimes()) {
-            time.setRegion(null);
-        }
-
-        return Response.ok(region).build();
+        return Response.ok(region.serialized()).build();
     }
 
     @PUT
@@ -57,7 +48,7 @@ public class RegionController {
         Region editedRegion = service.editRegion(id, region);
 
         if (editedRegion != null) {
-            return Response.ok(editedRegion).build();
+            return Response.ok(editedRegion.serialized()).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

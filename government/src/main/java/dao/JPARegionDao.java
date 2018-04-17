@@ -24,4 +24,11 @@ public class JPARegionDao extends DaoFacade<Region> implements IRegionDao {
                     .getSingleResult();
         } catch (Exception e) { return null; }
     }
+
+    @Override
+    public void deleteCoordinatesByRegion(Region entity) {
+        em.createQuery("DELETE FROM Coordinate c WHERE c.region.id = :id")
+                .setParameter("id", entity.getId())
+                .executeUpdate();
+    }
 }

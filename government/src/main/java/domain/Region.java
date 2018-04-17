@@ -1,15 +1,18 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @XmlRootElement
-public class Region {
+public class Region implements Serializable {
     @Id
     @GeneratedValue
     private long id;
@@ -18,13 +21,21 @@ public class Region {
 
     private double defaultRate;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "region")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "region")
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     private List<RegionTime> regionTimes;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "region")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    private List<Coordinate> coordinates;
 
     public Region(String name, double defaultRate) {
         this.name = name;
         this.defaultRate = defaultRate;
+        this.regionTimes = new ArrayList<>();
+        this.coordinates = new ArrayList<>();
     }
 
     public Region() {}
@@ -59,5 +70,19 @@ public class Region {
 
     public void setRegionTimes(List<RegionTime> regionTimes) {
         this.regionTimes = regionTimes;
+    }
+
+    public List<Coordinate> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(List<Coordinate> coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public Region serialized() {
+        for (RegionTime regionTime : this.regionTimes) regionTime.setRegion(null);
+        for (Coordinate coordinate : this.coordinates) coordinate.setRegion(null);
+        return this;
     }
 }
