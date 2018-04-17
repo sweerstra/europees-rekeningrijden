@@ -1,35 +1,41 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @Entity
 @XmlRootElement
 public class Vehicle {
-
     @Id
     @GeneratedValue
     private long id;
     private String trackerId;
-    @OneToOne
-    private Owner owner;
+
+    @OneToMany
+    @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Ownership> ownerships;
+
     private String licensePlate;
     private String typeTracker;
     private String emissionCategory;
 
-    public Vehicle(String trackerId, Owner owner, String licensePlate, String typeTracker, String emissionCategory)
-    {
+    public Vehicle(String trackerId, String licensePlate, String typeTracker, String emissionCategory) {
         this.trackerId = trackerId;
-        this.owner = owner;
         this.licensePlate = licensePlate;
         this.typeTracker = typeTracker;
         this.emissionCategory = emissionCategory;
     }
 
-    public Vehicle(){}
+    public Vehicle() {}
 
     public String getTrackerId() {
         return trackerId;
@@ -39,19 +45,23 @@ public class Vehicle {
         this.trackerId = trackerId;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public List<Ownership> getOwnerships() {
+        return ownerships;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public void addOwnership(Ownership ownership) {
+        this.ownerships.add(ownership);
     }
 
-    public String getLicensePlate() {
+    public void setOwnerships(List<Ownership> ownerships) {
+        this.ownerships = ownerships;
+    }
+
+    public String getlicensePlate() {
         return licensePlate;
     }
 
-    public void setLicensePlate(String licensePlate) {
+    public void setlicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
 
@@ -63,11 +73,11 @@ public class Vehicle {
         this.typeTracker = typeTracker;
     }
 
-    public String getEmissionCategory() {
+    public String getemissionCategory() {
         return emissionCategory;
     }
 
-    public void setEmissionCategory(String emissionCategory) {
+    public void setemissionCategory(String emissionCategory) {
         this.emissionCategory = emissionCategory;
     }
 

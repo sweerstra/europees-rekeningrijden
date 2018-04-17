@@ -1,15 +1,20 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @XmlRootElement
 public class Owner {
-
     @Id
     @GeneratedValue
     private long id;
@@ -23,8 +28,13 @@ public class Owner {
     private String email;
     private Date dateOfBirth;
 
-    public Owner(String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth)
-    {
+    @OneToMany
+    @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Ownership> ownerships;
+
+    public Owner(String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth) {
+        this.usesBillriderWebsite = false;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -35,7 +45,7 @@ public class Owner {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Owner(){}
+    public Owner() {}
 
     public long getId() {
         return id;
@@ -115,5 +125,13 @@ public class Owner {
 
     public void setdateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public List<Ownership> getOwnerships() {
+        return ownerships;
+    }
+
+    public void setOwnerships(List<Ownership> ownerships) {
+        this.ownerships = ownerships;
     }
 }
