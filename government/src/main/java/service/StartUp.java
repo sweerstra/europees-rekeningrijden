@@ -14,9 +14,6 @@ import java.util.List;
 @javax.ejb.Startup
 @Singleton
 public class StartUp {
-
-    /*@Inject
-    InvoiceDao invoiceDao;*/
     @Inject
     private VehicleService vehicleService;
 
@@ -63,8 +60,6 @@ public class StartUp {
         coordinates.add(new Coordinate(51.77871745471084, -0.9647371093749371));
         region.setCoordinates(coordinates);
         Region createdRegion = regionService.create(region);
-
-
     }
 
     private Date createDate(String format) {

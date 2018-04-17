@@ -3,6 +3,9 @@ import Request from './Request';
 const API_URL = 'http://localhost:60858/government/api';
 
 export default {
+  auth: {
+    login: (email, password) => Request.post(`${API_URL}/login`, { email, password })
+  },
   ownership: {
     add: (ownership) => Request.post(`${API_URL}/ownership`, ownership),
     getAll: () => Request.get(`${API_URL}/ownership/all`),
