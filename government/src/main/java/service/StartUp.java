@@ -26,6 +26,9 @@ public class StartUp {
     @Inject
     private RegionService regionService;
 
+    @Inject
+    private EmployeeService employeeService;
+
     @PostConstruct
     public void initData() {
         Owner dannyZonderId = new Owner("Danny", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0611785527", "danny.janssen@student.fontys.nl", new Date());
@@ -60,6 +63,8 @@ public class StartUp {
         coordinates.add(new Coordinate(51.77871745471084, -0.9647371093749371));
         region.setCoordinates(coordinates);
         Region createdRegion = regionService.create(region);
+
+        employeeService.addEmployee(new Employee("employee@mail.com", "password", "admin"));
     }
 
     private Date createDate(String format) {

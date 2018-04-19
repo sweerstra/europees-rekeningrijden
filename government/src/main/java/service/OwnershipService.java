@@ -68,6 +68,4 @@ public class OwnershipService {
     public List<Ownership> getOwnershipsByVehicle(long id) {
         return ownershipDao.findByVehicle(id);
     }
-
-
 }
