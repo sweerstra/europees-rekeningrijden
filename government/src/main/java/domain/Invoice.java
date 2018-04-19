@@ -1,6 +1,7 @@
 package domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
@@ -26,14 +28,30 @@ public class Invoice {
     private int billingMonth;
     private double distanceTravelled;
     private String emissionCategory;
+    private Vehicle vehicle;
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCategory) {
+    @JsonIgnore
+    private ArrayList<String> conditions;
+
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCategory, Vehicle vehicle) {
         this.trackerId = trackerId;
         this.paid = paid;
         this.totalAmount = totalAmount;
         this.billingMonth = billingMonth;
         this.distanceTravelled = distanceTravelled;
         this.emissionCategory = emissionCategory;
+        this.vehicle = vehicle;
+    }
+
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCategory, Vehicle vehicle, ArrayList<String> conditions) {
+        this.trackerId = trackerId;
+        this.paid = paid;
+        this.totalAmount = totalAmount;
+        this.billingMonth = billingMonth;
+        this.distanceTravelled = distanceTravelled;
+        this.emissionCategory = emissionCategory;
+        this.vehicle = vehicle;
+        this.conditions = conditions;
     }
 
     public Invoice() {
@@ -71,14 +89,6 @@ public class Invoice {
         this.distanceTravelled = distanceTravelled;
     }
 
-    public String getemissionCategory() {
-        return emissionCategory;
-    }
-
-    public void setemissionCategory(String emissionCategory) {
-        this.emissionCategory = emissionCategory;
-    }
-
     public PaymentStatus getPaid() {
         return paid;
     }
@@ -105,6 +115,30 @@ public class Invoice {
 
     public void setBillingMonth(int billingMonth) {
         this.billingMonth = billingMonth;
+    }
+
+    public String getEmissionCategory() {
+        return emissionCategory;
+    }
+
+    public void setEmissionCategory(String emissionCategory) {
+        this.emissionCategory = emissionCategory;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public ArrayList<String> getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(ArrayList<String> conditions) {
+        this.conditions = conditions;
     }
 
     public enum PaymentStatus {

@@ -2,6 +2,9 @@ import Request from './Request';
 import { API_URL } from '../config/index';
 
 export default {
+  auth: {
+    login: (email, password) => Request.post(`${API_URL}/login`, { email, password })
+  },
   ownership: {
     add: (ownership) => Request.post(`${API_URL}/ownership`, ownership),
     getAll: () => Request.get(`${API_URL}/ownership/all`),
