@@ -57,11 +57,11 @@ public class Vehicle {
         this.ownerships = ownerships;
     }
 
-    public String getlicensePlate() {
+    public String getLicensePlate() {
         return licensePlate;
     }
 
-    public void setlicensePlate(String licensePlate) {
+    public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
 
@@ -73,11 +73,11 @@ public class Vehicle {
         this.typeTracker = typeTracker;
     }
 
-    public String getemissionCategory() {
+    public String getEmissionCategory() {
         return emissionCategory;
     }
 
-    public void setemissionCategory(String emissionCategory) {
+    public void setEmissionCategory(String emissionCategory) {
         this.emissionCategory = emissionCategory;
     }
 

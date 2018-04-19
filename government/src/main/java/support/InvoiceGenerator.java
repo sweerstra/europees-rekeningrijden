@@ -44,7 +44,8 @@ public class InvoiceGenerator {
         Date today = new Date();
         document = new Document();
 
-        Owner currOwner = invoiceToGenerate.getVehicle().getOwner();
+//        Owner currOwner = invoiceToGenerate.getVehicle().getOwner();
+        Owner currOwner = new Owner("D.A.", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0656453412", "danny.janssen@student.fontys.nl", new Date());
         Vehicle currVehicle = invoiceToGenerate.getVehicle();
 
         //TODO: Use the below 'fileName' to get user's licenseplate
@@ -95,7 +96,7 @@ public class InvoiceGenerator {
         return true;
     }
 
-    private void addVehicleInformation(Document document, Vehicle currVehicle) throws DocumentException {
+    private void addVehicleInformation(Document document, final Vehicle currVehicle) throws DocumentException {
         PdfPTable vehilceInfoTable = new PdfPTable(4);
         vehilceInfoTable.setHorizontalAlignment(Element.ALIGN_LEFT);
         vehilceInfoTable.setWidthPercentage(100.0f);
@@ -116,7 +117,7 @@ public class InvoiceGenerator {
         // endregion
     }
 
-    private void addSenderConcernsInformation(Document document, Owner currOwner) throws DocumentException {
+    private void addSenderConcernsInformation(Document document, final Owner currOwner) throws DocumentException {
         // Sender-Concerns table to get them next to each other
         PdfPTable senderConcernsTable = new PdfPTable(2);
         senderConcernsTable.setWidthPercentage(100.0f);
@@ -180,7 +181,7 @@ public class InvoiceGenerator {
             add("STATUS");
         }});
 
-        StringBuilder splitConditions = new StringBuilder();
+        final StringBuilder splitConditions = new StringBuilder();
         ArrayList<String> conditions = invoiceToGenerate.getConditions();
         if (conditions != null && !conditions.isEmpty()) {
             for (String c : conditions) {
@@ -212,7 +213,7 @@ public class InvoiceGenerator {
             add("AMOUNT");
         }});
 
-        double multiplier = 0;
+        double multiplier;
         switch (invoiceToGenerate.getEmissionCategory()) {
             case "EURO 1":
                 multiplier = 21;
@@ -236,7 +237,7 @@ public class InvoiceGenerator {
                 multiplier = 50;
                 break;
         }
-        double finalMultiplier = multiplier;
+        final double finalMultiplier = multiplier;
         addRows(billingInfoTable, new ArrayList<String>() {{
             add(String.valueOf(invoiceToGenerate.getDistanceTravelled()));
             add(invoiceToGenerate.getEmissionCategory().toUpperCase());
@@ -346,7 +347,7 @@ public class InvoiceGenerator {
 
     public static void main(String[] args) {
         Owner owner = new Owner("D.A.", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0656453412", "danny.janssen@student.fontys.nl", new Date());
-        Vehicle vehicle = new Vehicle("5455", owner, "12-AB-333", "TomTom", "EURO 1");
+        Vehicle vehicle = new Vehicle("5455", "12-AB-333", "TomTom", "EURO 1");
         Invoice invoice = new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 178, 4, 200, "EURO 4", vehicle, new ArrayList<String>() {{
             add("testcondition2");
             add("testcondition3");
