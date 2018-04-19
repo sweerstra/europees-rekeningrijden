@@ -1,6 +1,5 @@
 import Request from './Request';
-
-const API_URL = 'http://localhost:60858/government/api';
+import { API_URL } from '../config/index';
 
 export default {
   ownership: {

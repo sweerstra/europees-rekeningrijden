@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { GOOGLE_MAPS_API_KEY } from '../../config';
 
+// https://www.npmjs.com/package/google-maps
 const GoogleMapsLoader = require('google-maps');
-GoogleMapsLoader.KEY = 'AIzaSyD7CDOHHmsCN9aelCcx2-viZERP0AVwCIc';
+GoogleMapsLoader.KEY = GOOGLE_MAPS_API_KEY;
 GoogleMapsLoader.LIBRARIES = ['drawing'];
 
 class Map extends Component {
@@ -16,6 +18,9 @@ class Map extends Component {
   }
 
   componentDidMount() {
+    // https://developers.google.com/maps/documentation/javascript/examples/polygon-simple
+    // https://developers.google.com/maps/documentation/javascript/drawinglayer
+
     GoogleMapsLoader.load((google) => {
       window.google = google;
 
@@ -65,7 +70,7 @@ class Map extends Component {
   }
 
   // when a region is selected, new coordinates will be passed to this function
-  // @https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
+  // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
   static getDerivedStateFromProps(nextProps, prevState) {
     const { coordinates } = nextProps;
 

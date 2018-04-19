@@ -95,6 +95,10 @@ input {
   display: block;
 }
 
+input[type="time"] {
+  font-family: inherit;
+}
+
 input::placeholder {
   color: var(--color-disabled);
   font-weight: normal;

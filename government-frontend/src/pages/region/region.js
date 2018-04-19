@@ -68,6 +68,7 @@ class Region extends Component {
     let isValidTime = true;
 
     if (name === 'startTime' || name === 'endTime') {
+      // @https://stackoverflow.com/questions/7536755/regular-expression-for-matching-hhmm-time-format
       const pattern = new RegExp('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
       if (!pattern.test(value)) {
         isValidTime = false;
@@ -161,11 +162,11 @@ class Region extends Component {
           </div>
           {regionTimes.map(({ startTime, endTime, rate }, index) =>
             <div className="region__time__price" key={index}>
-              <input type="text" name="startTime" value={startTime} placeholder="00:00"
+              <input type="time" name="startTime" value={startTime} placeholder="00:00"
                      onChange={({ target }) => this.onRegionTimeChange(target, index)}/>
-              <input type="text" name="endTime" value={endTime} placeholder="00:00"
+              <input type="time" name="endTime" value={endTime} placeholder="00:00"
                      onChange={({ target }) => this.onRegionTimeChange(target, index)}/>
-              <input type="text" name="rate" value={rate} placeholder="&#163; 0.00"
+              <input type="type" name="rate" value={rate} placeholder="&#163; 0.00"
                      onChange={({ target }) => this.onRegionTimeChange(target, index)}/>
               <RemoveIcon onClick={() => this.onRemoveRegionRow(index)}/>
             </div>

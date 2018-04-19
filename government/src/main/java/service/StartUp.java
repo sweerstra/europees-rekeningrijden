@@ -14,9 +14,6 @@ import java.util.List;
 @javax.ejb.Startup
 @Singleton
 public class StartUp {
-
-    /*@Inject
-    InvoiceDao invoiceDao;*/
     @Inject
     private VehicleService vehicleService;
 
