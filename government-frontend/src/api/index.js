@@ -1,6 +1,5 @@
 import Request from './Request';
-
-const API_URL = 'http://localhost:60858/government/api';
+import { API_URL } from '../config/index';
 
 export default {
   auth: {
@@ -18,5 +17,11 @@ export default {
   },
   vehicle: {
     getByLicensePlate: (licensePlate) => Request.get(`${API_URL}/vehicle/${licensePlate}`)
+  },
+  region: {
+    addRegion: (region) => Request.post(`${API_URL}/region`, region),
+    editRegion: (id, region) => Request.put(`${API_URL}/region/${id}`, region),
+    getByName: (name) => Request.get(`${API_URL}/region/${name}`),
+    getAll: () => Request.get(`${API_URL}/region/all`)
   }
 };
