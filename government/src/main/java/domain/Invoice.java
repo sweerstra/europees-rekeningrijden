@@ -3,10 +3,7 @@ package domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -15,7 +12,6 @@ import java.util.Date;
 @Entity
 @XmlRootElement
 public class Invoice {
-
     @Id
     @GeneratedValue
     private long id;
@@ -28,6 +24,9 @@ public class Invoice {
     private int billingMonth;
     private double distanceTravelled;
     private String emissionCategory;
+
+    @OneToOne
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     private Vehicle vehicle;
 
     @JsonIgnore
