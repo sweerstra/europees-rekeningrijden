@@ -1,0 +1,68 @@
+.region-page {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(300px, 1fr) 1fr;
+  grid-template-areas: "region-map region-map" "region-table region-prices";
+}
+
+.region-page .map {
+  grid-area: region-map;
+}
+
+.region__info__table {
+  grid-area: region-table;
+  padding: 20px;
+}
+
+.region__info__prices {
+  grid-area: region-prices;
+  padding: 20px;
+}
+
+.region__time__location-name,
+.region__time__price--default {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.region__time__location-name span,
+.region__time__price--default span { flex: 0 120px; }
+
+.region__time__location-name input,
+.region__time__price--default input { flex: 1; margin: 0; }
+
+.region__time__price__headers, .region__time__price {
+  display: grid;
+  grid-gap: 20px;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  margin-bottom: 10px;
+}
+
+.region__time__price input { margin: 0; }
+
+.region__time__price .feather-x { justify-self: flex-end; }
+
+.region__add-row {
+  margin-top: 20px;
+  display: flex;
+}
+
+.region__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-time-region-button {
+  margin-right: 20px;
+}
+
+.feather:hover {
+  stroke: var(--color-primary);
+  cursor: pointer;
+}
+
+
+

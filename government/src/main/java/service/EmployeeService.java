@@ -1,0 +1,42 @@
+package service;
+
+import dao.IEmployeeDao;
+import domain.Employee;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+
+@Stateless
+public class EmployeeService {
+
+    @Inject
+    private IEmployeeDao employeeDao;
+
+    public EmployeeService() {
+        super();
+    }
+
+    public Employee addEmployee(Employee employee) {
+        return employeeDao.create(employee);
+    }
+
+    public Employee authenthicate(String email, String password) {
+        Employee employee = employeeDao.getEmployeeByEmail(email);
+
+        if (employee == null || !employee.getPassword().equals(password)) return null;
+
+        return employee;
+    }
+
+    public void deleteEmployee(Employee employee) {
+        employeeDao.delete(employee);
+    }
+
+    public Employee updateEmployee(Employee employee) {
+        return employeeDao.update(employee);
+    }
+
+    public Employee findEmployeeById(Long iD) {
+        return employeeDao.findById(iD);
+    }
+}
