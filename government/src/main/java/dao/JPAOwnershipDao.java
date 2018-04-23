@@ -10,7 +10,7 @@ import java.util.List;
 @Stateless
 @SuppressWarnings("unchecked")
 public class JPAOwnershipDao extends DaoFacade<Ownership> implements IOwnershipDao {
-    @PersistenceContext(name = "GovernmentPU")
+    @PersistenceContext(unitName = "GovernmentPU")
     private EntityManager em;
 
     public JPAOwnershipDao() {

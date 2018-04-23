@@ -40,6 +40,7 @@ public class Invoice {
         this.distanceTravelled = distanceTravelled;
         this.emissionCategory = emissionCategory;
         this.vehicle = vehicle;
+        conditions = new ArrayList<>();
     }
 
     public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCategory, Vehicle vehicle, ArrayList<String> conditions) {
@@ -104,7 +105,7 @@ public class Invoice {
         this.dateOfPayment = dateOfPayment;
     }
 
-    public void setCurrentDateOfPayment() {
+    public void createCurrentDateOfPayment() {
         this.dateOfPayment = new Timestamp(System.currentTimeMillis());
     }
 

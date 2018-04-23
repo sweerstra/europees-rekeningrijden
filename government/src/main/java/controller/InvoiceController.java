@@ -1,7 +1,9 @@
 package controller;
 
 import domain.Invoice;
+import domain.Ownership;
 import service.InvoiceService;
+import service.OwnershipService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -16,11 +18,14 @@ public class InvoiceController {
     @Inject
     private InvoiceService service;
 
+    @Inject
+    private OwnershipService ownershipService;
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addInvoice(Invoice invoice) {
        Invoice added = service.create(invoice);
-       invoice.setCurrentDateOfPayment();
+       invoice.createCurrentDateOfPayment();
 
         if (added == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -39,5 +44,18 @@ public class InvoiceController {
         }
 
         return Response.ok(invoice).build();
+    }
+
+    @GET
+    @Path("/generate/{id}")
+    public Response generateInvoicePdf(@PathParam("id") long id) {
+        Invoice invoice = service.findById(id);
+
+        if (invoice == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        Ownership ownership = ownershipService.getLatestOwnership(invoice.getVehicle().getId());
+        return Response.ok(service.generateInvoicePdf(id, ownership), "application/pdf").build();
     }
 }

@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class JPARegionDao extends DaoFacade<Region> implements IRegionDao {
 
-    @PersistenceContext(name = "GovernmentPU")
+    @PersistenceContext(unitName = "GovernmentPU")
     private EntityManager em;
 
     public JPARegionDao() {

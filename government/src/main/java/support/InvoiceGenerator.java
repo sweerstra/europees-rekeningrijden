@@ -4,10 +4,10 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import domain.Invoice;
 import domain.Owner;
+import domain.Ownership;
 import domain.Vehicle;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormatSymbols;
@@ -25,7 +25,11 @@ public class InvoiceGenerator {
     private Document document;
     private double feePerMile;
 
-    public InvoiceGenerator(Invoice invoice) {
+    public InvoiceGenerator() {
+
+    }
+
+    public InputStream objectToPdf(Invoice invoice, Ownership ownership) {
         this.invoiceToGenerate = invoice;
         this.feePerMile = 0.44;
         int noOfDays = 30; //30 days from now
@@ -34,32 +38,29 @@ public class InvoiceGenerator {
         calendar.add(Calendar.DAY_OF_YEAR, noOfDays);
         Date date = calendar.getTime();
         this.invoiceToGenerate.getConditions().add(0, "Payment must be done before " + new SimpleDateFormat("dd/MM/yyyy").format(date));
-    }
 
-    public InvoiceGenerator() {
-    }
-
-    public boolean objectToPdf(String saveLocation) {
         formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date();
         document = new Document();
 
 //        Owner currOwner = invoiceToGenerate.getVehicle().getOwner();
-        Owner currOwner = new Owner("D.A.", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0656453412", "danny.janssen@student.fontys.nl", new Date());
+        Owner currOwner = ownership.getOwner();
         Vehicle currVehicle = invoiceToGenerate.getVehicle();
 
         //TODO: Use the below 'fileName' to get user's licenseplate
         //String fileName = formatter.format(today) + " " + invoiceToGenerate.getVehicle().getlicensePlate() + ".pdf";
         String fileName = formatter.format(today) + " invoice.pdf";
 
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
         try {
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File("/Users/danny/" + fileName)));
+            PdfWriter writer = PdfWriter.getInstance(document, out);
             Font font = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, BaseColor.BLACK);
             document.open();
 
-            Path path = Paths.get(resourcePath + "logo.png");
-            Image img = Image.getInstance(path.toAbsolutePath().toString());
-            document.add(img);
+//            Path path = Paths.get(resourcePath + "logo.png");
+//            Image img = Image.getInstance(path.toString());
+//            document.add(img);
 
             addSenderConcernsInformation(document, currOwner);
 
@@ -93,7 +94,7 @@ public class InvoiceGenerator {
             e.printStackTrace();
         }
 
-        return true;
+        return new ByteArrayInputStream(out.toByteArray());
     }
 
     private void addVehicleInformation(Document document, final Vehicle currVehicle) throws DocumentException {
@@ -345,14 +346,14 @@ public class InvoiceGenerator {
         return new DateFormatSymbols(Locale.UK).getMonths()[month - 1];
     }
 
-    public static void main(String[] args) {
-        Owner owner = new Owner("D.A.", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0656453412", "danny.janssen@student.fontys.nl", new Date());
-        Vehicle vehicle = new Vehicle("5455", "12-AB-333", "TomTom", "EURO 1");
-        Invoice invoice = new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 178, 4, 200, "EURO 4", vehicle, new ArrayList<String>() {{
-            add("testcondition2");
-            add("testcondition3");
-        }});
-        InvoiceGenerator invoiceGenerator = new InvoiceGenerator(invoice);
-        invoiceGenerator.objectToPdf("");
-    }
+//    public static void main(String[] args) {
+//        Owner owner = new Owner("D.A.", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0656453412", "danny.janssen@student.fontys.nl", new Date());
+//        Vehicle vehicle = new Vehicle("5455", "12-AB-333", "TomTom", "EURO 1");
+//        Invoice invoice = new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 178, 4, 200, "EURO 4", vehicle, new ArrayList<String>() {{
+//            add("testcondition2");
+//            add("testcondition3");
+//        }});
+//        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+//        invoiceGenerator.objectToPdf(invoice,owner);
+//    }
 }

@@ -29,6 +29,9 @@ public class StartUp {
     @Inject
     private EmployeeService employeeService;
 
+    @Inject
+    private InvoiceService invoiceService;
+
     @PostConstruct
     public void initData() {
         Owner dannyZonderId = new Owner("Danny", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0611785527", "danny.janssen@student.fontys.nl", new Date());
@@ -65,6 +68,10 @@ public class StartUp {
         Region createdRegion = regionService.create(region);
 
         employeeService.addEmployee(new Employee("employee@mail.com", "password", "admin"));
+
+        Invoice invoice1 = invoiceService.create(new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 278.19, 4, 123, "EURO 4", vehicle1));
+        Invoice invoice2 = invoiceService.create(new Invoice("ENG6345", Invoice.PaymentStatus.CANCELLED, 278.19, 4, 123, "EURO 4", vehicle2));
+        Invoice invoice3 = invoiceService.create(new Invoice("ENG5786", Invoice.PaymentStatus.OPEN, 278.19, 4, 123, "EURO 4", vehicle3));
     }
 
     private Date createDate(String format) {

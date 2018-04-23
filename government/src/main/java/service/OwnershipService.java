@@ -68,4 +68,9 @@ public class OwnershipService {
     public List<Ownership> getOwnershipsByVehicle(long id) {
         return ownershipDao.findByVehicle(id);
     }
+
+    public Ownership getLatestOwnership(long id) {
+        List<Ownership> latests = ownershipDao.findByVehicle(id);
+        return latests.get(latests.size() - 1);
+    }
 }
