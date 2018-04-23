@@ -47,16 +47,16 @@ public class StartUp {
         Vehicle vehicle5 = vehicleService.create(new Vehicle("ENG8496", "33-VG-007", "TomTom ATS", "EURO 1"));
 
         Ownership ownership1 = new Ownership(danny, vehicle1, createDate("2013-09-18"), createDate("2015-06-08"));
-        Ownership ownership2 = new Ownership(sjoerd, vehicle2, createDate("2014-02-27"), createDate("2015-10-20"));
-        Ownership ownership3 = new Ownership(dennis, vehicle3, createDate("2014-05-02"), createDate("2016-09-18"));
+        Ownership ownership2 = new Ownership(sjoerd, vehicle1, createDate("2014-02-27"), createDate("2015-10-20"));
+        Ownership ownership3 = new Ownership(dennis, vehicle1, createDate("2014-05-02"), createDate("2016-09-18"));
         Ownership ownership4 = new Ownership(danny, vehicle4, createDate("2016-11-21"), null);
         Ownership ownership5 = new Ownership(sjoerd, vehicle5, createDate("2017-04-11"), null);
 
         ownershipService.addOwnership(ownership1);
-        /*ownershipService.addOwnership(ownership2);
+        ownershipService.addOwnership(ownership2);
         ownershipService.addOwnership(ownership3);
-        ownershipService.addOwnership(ownership4);
-        ownershipService.addOwnership(ownership5);*/
+//        ownershipService.addOwnership(ownership4);
+//        ownershipService.addOwnership(ownership5);
 
         Region region = new Region("Middlesbrough", 8.50);
         region.setRegionTimes(new ArrayList<RegionTime>());
