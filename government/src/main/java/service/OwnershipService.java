@@ -9,6 +9,7 @@ import domain.Vehicle;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class OwnershipService {
 
         Vehicle updatedVehicle = vehicleDao.update(foundVehicle);
 
-        Ownership ownership = new Ownership(foundOwner, updatedVehicle, new Date(), null);
+        Ownership ownership = new Ownership(foundOwner, updatedVehicle, entity.getStartDate(), null);
 
         return ownershipDao.create(ownership);
     }
@@ -67,5 +68,11 @@ public class OwnershipService {
 
     public List<Ownership> getOwnershipsByVehicle(long id) {
         return ownershipDao.findByVehicle(id);
+    }
+
+    public Ownership getLatestOwnership(long id) {
+        List<Ownership> latests = ownershipDao.findByVehicle(id);
+        Collections.sort(latests);
+        return latests.get(latests.size() - 1);
     }
 }

@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 
 @Stateless
 public class InvoiceDao extends DaoFacade<Invoice> implements IInvoiceDao{
-    @PersistenceContext(name = "GovernmentPU")
+    @PersistenceContext(unitName = "GovernmentPU")
     private EntityManager em;
 
     public InvoiceDao() {

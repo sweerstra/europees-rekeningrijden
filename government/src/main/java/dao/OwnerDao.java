@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class OwnerDao extends DaoFacade<Owner> implements IOwnerDao{
 
-    @PersistenceContext(name = "GovernmentPU")
+    @PersistenceContext(unitName = "GovernmentPU")
     private EntityManager em;
 
     public OwnerDao() {

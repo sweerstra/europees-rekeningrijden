@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 
 @Stateless
 public class JPAVehicleDao extends DaoFacade<Vehicle> implements IVehicleDao {
-    @PersistenceContext(name = "GovernmentPU")
+    @PersistenceContext(unitName = "GovernmentPU")
     private EntityManager em;
 
     public JPAVehicleDao() {

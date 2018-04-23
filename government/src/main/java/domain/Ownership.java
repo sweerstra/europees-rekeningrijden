@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Entity
 @XmlRootElement
-public class Ownership {
+public class Ownership implements Comparable<Ownership> {
     @Id
     @GeneratedValue
     private long id;
@@ -69,5 +69,10 @@ public class Ownership {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public int compareTo(Ownership o) {
+        return getStartDate().compareTo(o.getStartDate());
     }
 }
