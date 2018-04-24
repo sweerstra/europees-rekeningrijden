@@ -5,15 +5,9 @@ const speedInput = document.getElementById('speed');
 const generateSimulationButton = document.getElementById('generate-simulation');
 const addSimulationButton = document.getElementById('add-simulation');
 const simulationAmountText = document.getElementById('simulation-amount');
-const MOVEMENT_API_URL = 'localhost:8080/movement/api/movement';
-const SIMULATION_API_URL = 'localhost:8080/simulation/api/generate';
+const MOVEMENT_API_URL = 'http://localhost:8080/movement/api/movement';
+const SIMULATION_API_URL = 'http://localhost:8080/simulation/api/route';
 const defaultStrokeColor = localStorage.getItem('--color-main') || '#4CAF50';
-
-const ROUTES = [
-    { from: 'Leicester', to: 'Peterborough' },
-    { from: 'Oxford', to: 'Swindon' },
-    { from: 'Bath', to: 'Southampton' }
-];
 
 let map;
 let currentTrackers = [];
@@ -33,17 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (speed) {
             // get two coordinates from simulation API based on speed value
-            /* post(SIMULATION_API_URL, { speed })
-                .then(resp => resp); */
+            post(`${SIMULATION_API_URL}/${speed}`)
+                .then(({ startCoordinate, endCoordinate }) => {
+                    const from = `${startCoordinate.longitude}, ${startCoordinate.latitude}`;
+                    const to = `${endCoordinate.longitude}, ${endCoordinate.latitude}`;
 
-            const randomIndex = Math.floor(Math.random() * ROUTES.length);
-            const randomRoute = ROUTES[randomIndex];
-            if (randomRoute === undefined) return;
-
-            console.log(randomRoute);
-
-            ROUTES.splice(randomIndex, 1);
-            calcRoute(randomRoute.from, randomRoute.to, speed);
+                    calcRoute(from, to, speed);
+                });
         } else {
             console.warn('Please enter a speed value.');
         }
@@ -122,11 +112,11 @@ function addSimulation(route, polyline, speed) {
             console.log(routeResult);
 
             // make post request to save movement
-            /* post(MOVEMENT_API_URL, routeResult)
+            post(MOVEMENT_API_URL, routeResult)
                 .catch(err => {
                     console.error(err.message);
                     clearInterval(interval);
-                }); */
+                });
         } else {
             clearInterval(interval);
             polyline.setMap(null);
