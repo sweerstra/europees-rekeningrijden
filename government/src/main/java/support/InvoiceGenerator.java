@@ -7,9 +7,9 @@ import domain.Owner;
 import domain.Ownership;
 import domain.Vehicle;
 
-import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class InvoiceGenerator {
-
     private Invoice invoiceToGenerate;
     private static SimpleDateFormat formatter;
     private static String resourcePath = "government/src/main/resources/images/";
@@ -45,6 +44,7 @@ public class InvoiceGenerator {
 
 //        Owner currOwner = invoiceToGenerate.getVehicle().getOwner();
         Owner currOwner = ownership.getOwner();
+        String trackerId = ownership.getTrackerId();
         Vehicle currVehicle = invoiceToGenerate.getVehicle();
 
         //TODO: Use the below 'fileName' to get user's licenseplate
@@ -73,7 +73,7 @@ public class InvoiceGenerator {
             document.add(billingMonth);
 
             addWhiteLines(1);
-            addVehicleInformation(document, currVehicle);
+            addVehicleInformation(document, trackerId, currVehicle);
 
             addWhiteLines(1);
             addPaymentInformation(document);
@@ -97,24 +97,24 @@ public class InvoiceGenerator {
         return new ByteArrayInputStream(out.toByteArray());
     }
 
-    private void addVehicleInformation(Document document, final Vehicle currVehicle) throws DocumentException {
-        PdfPTable vehilceInfoTable = new PdfPTable(4);
-        vehilceInfoTable.setHorizontalAlignment(Element.ALIGN_LEFT);
-        vehilceInfoTable.setWidthPercentage(100.0f);
-        addTableHeader(vehilceInfoTable, new ArrayList<String>() {{
+    private void addVehicleInformation(Document document, final String trackerId, final Vehicle currVehicle) throws DocumentException {
+        PdfPTable vehicleInfoTable = new PdfPTable(4);
+        vehicleInfoTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+        vehicleInfoTable.setWidthPercentage(100.0f);
+        addTableHeader(vehicleInfoTable, new ArrayList<String>() {{
             add("TRACKERNUMBER");
             add("DATE");
             add("LICENSEPLATE");
             add("INVOICENUMBER");
         }});
-        addRows(vehilceInfoTable, new ArrayList<String>() {{
-            add(currVehicle.getTrackerId());
+        addRows(vehicleInfoTable, new ArrayList<String>() {{
+            add(trackerId);
             add(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
             add(currVehicle.getLicensePlate());
             add(String.valueOf(invoiceToGenerate.getId()));
         }});
 
-        document.add(vehilceInfoTable);
+        document.add(vehicleInfoTable);
         // endregion
     }
 
@@ -287,7 +287,7 @@ public class InvoiceGenerator {
         document.add(totalInfoTable);
     }
 
-    private void addClosingJustification(Document document, PdfWriter writer) throws DocumentException{
+    private void addClosingJustification(Document document, PdfWriter writer) throws DocumentException {
         PdfContentByte canvas = writer.getDirectContent();
         CMYKColor magentaColor = new CMYKColor(0.f, 0.f, 0.f, 1.f);
         canvas.setColorStroke(magentaColor);
@@ -309,7 +309,7 @@ public class InvoiceGenerator {
         addTableHeader(justificationTable, new ArrayList<String>() {{
             add("Justification");
         }});
-        addRows(justificationTable, new ArrayList<String>(){{
+        addRows(justificationTable, new ArrayList<String>() {{
             add("* - Multiplier is based on the car's emission category, period in which was driven and the driven through regions");
         }});
 

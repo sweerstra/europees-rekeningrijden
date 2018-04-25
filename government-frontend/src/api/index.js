@@ -10,7 +10,7 @@ export default {
     getAll: () => Request.get(`${API_URL}/ownership/all`),
     getLatest: () => Request.get(`${API_URL}/ownership/latest`),
     getByOwner: (id) => Request.get(`${API_URL}/ownership/owner/${id}`),
-    getByVehicle: (id) => Request.get(`${API_URL}/ownership/vehicle/${id}`)
+    getByVehicleOrTrackerId: (vehicleId, trackerId) => Request.get(`${API_URL}/ownership/vehicle/${vehicleId}/${trackerId}`)
   },
   owner: {
     getAll: () => Request.get(`${API_URL}/owners`)

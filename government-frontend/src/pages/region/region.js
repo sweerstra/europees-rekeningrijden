@@ -116,7 +116,8 @@ class Region extends Component {
       },
       {
         Header: 'Default Rate',
-        accessor: 'defaultRate'
+        id: 'defaultRate',
+        accessor: d => <span>&#163; {d.defaultRate.toFixed(2)}</span>
       },
     ];
 
@@ -150,9 +151,9 @@ class Region extends Component {
                    onChange={this.onLocationNameChange}/>
           </div>
           <div className="region__time__price--default">
-            <span>Default Rate</span>
+            <span>Default Rate (&#163;)</span>
             <input type="text" value={defaultRate}
-                   onChange={this.onDefaultRateChange} placeholder="&#163; 0.00"/>
+                   onChange={this.onDefaultRateChange} placeholder="0.00"/>
           </div>
           <div className="region__time__price__headers">
             <span>Start Time</span>

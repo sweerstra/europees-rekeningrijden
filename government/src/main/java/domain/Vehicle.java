@@ -17,7 +17,6 @@ public class Vehicle {
     @Id
     @GeneratedValue
     private long id;
-    private String trackerId;
 
     @OneToMany
     @JsonIgnore
@@ -28,22 +27,13 @@ public class Vehicle {
     private String typeTracker;
     private String emissionCategory;
 
-    public Vehicle(String trackerId, String licensePlate, String typeTracker, String emissionCategory) {
-        this.trackerId = trackerId;
+    public Vehicle(String licensePlate, String typeTracker, String emissionCategory) {
         this.licensePlate = licensePlate;
         this.typeTracker = typeTracker;
         this.emissionCategory = emissionCategory;
     }
 
     public Vehicle() {}
-
-    public String getTrackerId() {
-        return trackerId;
-    }
-
-    public void setTrackerId(String trackerId) {
-        this.trackerId = trackerId;
-    }
 
     public List<Ownership> getOwnerships() {
         return ownerships;
@@ -87,5 +77,15 @@ public class Vehicle {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Vehicle) {
+            if (((Vehicle) obj).getId() == this.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

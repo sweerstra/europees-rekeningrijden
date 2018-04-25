@@ -37,15 +37,12 @@ class AddTracker extends Component {
   };
 
   onSave = () => {
-    const { owner } = this.state;
-    const { vehicle } = this.state;
-    vehicle.trackerId = this.state.trackerId;
-    this.props.onAdd({ owner, vehicle });
+    const { trackerId, owner, vehicle } = this.state;
+    this.props.onAdd({ trackerId, owner, vehicle });
   };
 
   render() {
     const { owners, owner, trackerId, vehicle: { emissionCategory } } = this.state;
-    const saveButtonIsDisabled = !trackerId || !emissionCategory || !owner;
 
     return (
       <div className="add-tracker">
@@ -103,7 +100,7 @@ class AddTracker extends Component {
         <section className="add-tracker__save">
           <button className="btn green"
                   onClick={this.onSave}
-                  disabled={saveButtonIsDisabled}>Save
+                  disabled={!trackerId}>Create
           </button>
         </section>
       </div>

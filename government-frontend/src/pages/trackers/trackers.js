@@ -5,7 +5,7 @@ import 'react-table/react-table.css';
 import './trackers.css';
 import Navigation from '../../components/Navigation/Navigation';
 import AddTracker from '../../components/AddTracker/AddTracker';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import Api from '../../api';
 
 class Trackers extends Component {
@@ -15,6 +15,8 @@ class Trackers extends Component {
   }
 
   onAddTracker = (ownership) => {
+    console.log({ ownership });
+
     Api.ownership.add(ownership)
       .then(ownership => {
         this.setState(state => ({ trackers: [...state.trackers, ownership] }));
@@ -22,8 +24,8 @@ class Trackers extends Component {
       });
   };
 
-  fetchPreviousOwnership(vehicle) {
-    Api.ownership.getByVehicle(vehicle.id)
+  fetchPreviousOwnershipFromVehicle(vehicle, trackerId) {
+    Api.ownership.getByVehicleOrTrackerId(vehicle.id, trackerId)
       .then(history => this.setState(state => ({ history })));
   }
 
@@ -55,22 +57,22 @@ class Trackers extends Component {
           {
             Header: 'Tracker ID',
             id: 'trackerId',
-            accessor: d => d.vehicle.trackerId
+            accessor: d => d.trackerId
           },
           {
             Header: 'License Plate',
             id: 'licensePlate',
-            accessor: d => d.vehicle.licensePlate
+            accessor: d => d.vehicle ? d.vehicle.licensePlate : 'n/a'
           },
           {
             Header: 'Tracker Type',
             id: 'trackerType',
-            accessor: d => d.vehicle.typeTracker
+            accessor: d => d.vehicle ? d.vehicle.typeTracker : 'n/a'
           },
           {
             Header: 'Emission Category',
             id: 'emissionCategory',
-            accessor: d => d.vehicle.emissionCategory
+            accessor: d => d.vehicle ? d.vehicle.emissionCategory : 'n/a'
           }
         ]
       },
@@ -80,12 +82,12 @@ class Trackers extends Component {
           {
             Header: 'Name',
             id: 'name',
-            accessor: d => d.owner.firstName + ' ' + d.owner.lastName
+            accessor: d => d.owner ? `${d.owner.firstName} ${d.owner.lastName}` : 'n/a'
           },
           {
             Header: 'Uses Billriders',
             id: 'usesBillriderWebsite',
-            accessor: d => d.owner.usesBillriderWebsite ? <span>&#x2713;</span> : undefined
+            accessor: d => d.owner && d.owner.usesBillriderWebsite ? <span>&#x2713;</span> : undefined
           }
         ]
       }
@@ -95,13 +97,16 @@ class Trackers extends Component {
     const search = this.state.search.toLowerCase();
 
     const filtered = search
-      ? trackers.filter(row => {
-        return row.vehicle.trackerId.toLowerCase().includes(search)
-          || row.vehicle.typeTracker.toLowerCase().includes(search)
-          || row.vehicle.emissionCategory.toLowerCase().includes(search)
-          || row.vehicle.licensePlate.toLowerCase().includes(search)
-          || row.owner.firstName.toLowerCase().includes(search)
-          || row.owner.lastName.toLowerCase().includes(search)
+      ? trackers.filter(({ trackerId, vehicle, owner }) => {
+        vehicle = vehicle || { typeTracker: '', emissionCategory: '', licensePlate: '' };
+        owner = owner || { firstName: '', lastName: '' };
+
+        return trackerId.toLowerCase().includes(search)
+          || vehicle.typeTracker.toLowerCase().includes(search)
+          || vehicle.emissionCategory.toLowerCase().includes(search)
+          || vehicle.licensePlate.toLowerCase().includes(search)
+          || owner.firstName.toLowerCase().includes(search)
+          || owner.lastName.toLowerCase().includes(search)
       })
       : trackers;
 
@@ -126,11 +131,17 @@ class Trackers extends Component {
             data={filtered}
             columns={columns}
             getTrProps={(state, rowInfo) => {
-              const isSelected = rowInfo && rowInfo.original.vehicle.trackerId === selectedRow;
+              const isSelected = rowInfo && rowInfo.original.trackerId === selectedRow;
+
               return {
                 onClick: () => {
-                  this.fetchPreviousOwnership(rowInfo.original.vehicle);
-                  this.setState({ selectedRow: rowInfo.original.vehicle.trackerId })
+                  const { trackerId, vehicle } = rowInfo.original;
+
+                  if (vehicle) {
+                    this.fetchPreviousOwnershipFromVehicle(vehicle, trackerId);
+                  }
+
+                  this.setState({ selectedRow: trackerId });
                 },
                 style: {
                   color: isSelected ? 'white' : 'black',
@@ -150,6 +161,7 @@ class Trackers extends Component {
             <div className="trackers__navigation__buttons">
               <button className="btn blue" onClick={this.openModal}>Add tracker</button>
               <Link to="/invoices">View invoices</Link>
+              <Link to="/region">View regions</Link>
             </div>
           </div>
           <div className="trackers__administration__history">
@@ -157,9 +169,10 @@ class Trackers extends Component {
             <div className="tracker-history">
               {
                 history.length > 0
-                  ? history.map(({ vehicle: { trackerId }, owner: { firstName, lastName }, startDate, endDate }, index) =>
+                  ? history.map(({ trackerId, vehicle: { licensePlate }, owner: { firstName, lastName }, startDate, endDate }, index) =>
                     <div className="history" key={index}>
-                      <span>{trackerId}</span>
+                      <span>{licensePlate}</span>
+                      <span>{`${firstName} ${lastName}`}</span>
                       <span className="history__date">{new Date(startDate).toLocaleDateString()}</span>
                       <span className="history__date">{endDate ? new Date(endDate).toLocaleDateString() : 'Now'}</span>
                     </div>
