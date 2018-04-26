@@ -13,4 +13,6 @@ public interface IInvoiceDao {
     Invoice create(Invoice entity);
 
     void delete(Invoice entity);
+
+    Invoice update(Invoice entity);
 }

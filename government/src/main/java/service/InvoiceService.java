@@ -5,6 +5,7 @@ import domain.Invoice;
 import domain.Ownership;
 import domain.Vehicle;
 import support.InvoiceGenerator;
+import domain.Invoice.PaymentStatus;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -19,8 +20,7 @@ public class InvoiceService {
 
     private InvoiceGenerator invoiceGenerator;
 
-    public InvoiceService()
-    {
+    public InvoiceService() {
         super();
         invoiceGenerator = new InvoiceGenerator();
     }
@@ -40,10 +40,16 @@ public class InvoiceService {
         return dao.findAll();
     }
 
-    public InputStream generateInvoicePdf(long id, Ownership ownership){
+    public InputStream generateInvoicePdf(long id, Ownership ownership) {
         Invoice invoice = findById(id);
 
         return invoiceGenerator.objectToPdf(invoice, ownership);
+    }
+
+    public Invoice changePaymentStatus(Invoice invoice, PaymentStatus status) {
+        invoice.setPaid(status);
+
+        return dao.update(invoice);
     }
 
 }
