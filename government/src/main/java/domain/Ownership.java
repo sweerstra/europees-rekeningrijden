@@ -11,10 +11,12 @@ public class Ownership implements Comparable<Ownership> {
     @GeneratedValue
     private long id;
 
-    @ManyToOne
+    private String trackerId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Owner owner;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Vehicle vehicle;
 
     @Column(nullable = false)
@@ -22,7 +24,8 @@ public class Ownership implements Comparable<Ownership> {
 
     private Date endDate;
 
-    public Ownership(Owner owner, Vehicle vehicle, Date startDate, Date endDate) {
+    public Ownership(String trackerId, Owner owner, Vehicle vehicle, Date startDate, Date endDate) {
+        this.trackerId = trackerId;
         this.owner = owner;
         this.vehicle = vehicle;
         this.startDate = startDate;
@@ -37,6 +40,14 @@ public class Ownership implements Comparable<Ownership> {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getTrackerId() {
+        return trackerId;
+    }
+
+    public void setTrackerId(String trackerId) {
+        this.trackerId = trackerId;
     }
 
     public Owner getOwner() {
