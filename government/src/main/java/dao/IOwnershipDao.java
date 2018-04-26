@@ -9,6 +9,8 @@ public interface IOwnershipDao {
 
     Ownership create(Ownership entity);
 
+    Ownership update(Ownership entity);
+
     List<Ownership> findAll();
 
     List<Ownership> findLatest();
@@ -16,6 +18,8 @@ public interface IOwnershipDao {
     List<Ownership> findByOwner(long id);
 
     List<Ownership> findByVehicle(long id);
+
+    List<Ownership> findByTrackerId(String id);
 
     void delete(Ownership entity);
 }

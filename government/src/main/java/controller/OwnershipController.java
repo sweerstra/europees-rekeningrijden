@@ -62,9 +62,9 @@ public class OwnershipController {
     }
 
     @GET
-    @Path("/vehicle/{id}")
-    public Response getByVehicle(@PathParam("id") long id) {
-        List<Ownership> owners = service.getOwnershipsByVehicle(id);
+    @Path("/vehicle/{vehicleId}/{trackerId}")
+    public Response getByVehicle(@PathParam("vehicleId") long vehicleId, @PathParam("trackerId") String trackerId) {
+        List<Ownership> owners = service.getOwnershipsByVehicleOrTrackerId(vehicleId, trackerId);
 
         return Response.ok(owners).build();
     }
