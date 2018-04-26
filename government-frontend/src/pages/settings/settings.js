@@ -34,7 +34,7 @@ class Settings extends Component {
 
   onSave = (e) => {
     // TODO: save emissions
-    const { emissions} = this.state;
+    const { emissions } = this.state;
 
     console.log(emissions);
     Api.emissions.addEmissions(emissions);
@@ -57,17 +57,15 @@ class Settings extends Component {
       <div className="settings">
         <h1>Emission Category</h1>
         <div className="settings__emissions">
-          <div className="settings__emission">
-            {this.state.emissions.map(({ name, rate }, index) =>
-              <label>
-                {name}
-                <input type="text" value={rate} onChange={e => this.onEmissionChange(e, index)}/>
-              </label>
-            )}
-            <button onClick={this.onSave}>
-              Save
-            </button>
-          </div>
+          {this.state.emissions.map(({ name, rate }, index) =>
+            <label className="settings__emission">
+              {name}
+              <input type="text" value={rate} onChange={e => this.onEmissionChange(e, index)}/>
+            </label>
+          )}
+          <button onClick={this.onSave} className="settings__emission__btn btn green">
+            Save
+          </button>
         </div>
       </div>
     );
