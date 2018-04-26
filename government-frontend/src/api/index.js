@@ -23,5 +23,8 @@ export default {
     editRegion: (id, region) => Request.put(`${API_URL}/region/${id}`, region),
     getByName: (name) => Request.get(`${API_URL}/region/${name}`),
     getAll: () => Request.get(`${API_URL}/region/all`)
+  },
+  emissions: {
+    addEmissions: (emissions) => Request.post(`${API_URL}/emissions`, emissions)
   }
 };

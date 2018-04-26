@@ -10,6 +10,7 @@ import domain.Region;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -22,19 +23,30 @@ public class EmissionService {
         super();
     }
 
-    public EmissionCategory create(EmissionCategory entity) {
-        if (dao.findById(entity.getId()) == null) {
-            return dao.create(entity);
+    public List<EmissionCategory> create(List<EmissionCategory> entities) {
+        if(entities == null || entities.isEmpty()) return null;
+
+        List<EmissionCategory> created = new ArrayList<>();
+
+        for (EmissionCategory category : entities) {
+            deleteEmission(category);
+            created.add(dao.create(category));
         }
-        return null;
+
+        return created;
     }
+
 
     public List<EmissionCategory> findAll() {
         return dao.findAll();
     }
 
     public void deleteEmission(EmissionCategory emissionCategory) {
-        dao.delete(emissionCategory);
+        EmissionCategory original = dao.findByName(emissionCategory.getName());
+
+        if (original == null) return;
+
+        dao.deleteByName(original);
     }
 
     public EmissionCategory updateEmission(EmissionCategory emissionCategory) {

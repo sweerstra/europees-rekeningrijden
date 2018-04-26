@@ -13,24 +13,23 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @RequestScoped
-@Path("/emission")
+@Path("/emissions")
 @Produces(MediaType.APPLICATION_JSON)
 public class EmissionController {
 
     @Inject
     private EmissionService service;
 
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addEmission(EmissionCategory emission) {
-        EmissionCategory added = service.create(emission);
+    public Response addEmissions(List<EmissionCategory> emissions) {
+        List<EmissionCategory> created = service.create(emissions);
 
-        if (added == null) {
+        if (created == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        return Response.ok(emission).build();
+        return Response.ok(created).build();
     }
 
     @GET

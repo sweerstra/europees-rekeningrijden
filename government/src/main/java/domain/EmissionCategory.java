@@ -1,9 +1,6 @@
 package domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -14,6 +11,7 @@ public class EmissionCategory {
     @GeneratedValue
     private long id;
 
+    @Column(unique = true)
     private String name;
     private double rate;
 

@@ -2,6 +2,7 @@ package dao;
 
 import domain.EmissionCategory;
 import domain.Employee;
+import domain.Region;
 
 import java.util.List;
 
@@ -9,12 +10,15 @@ public interface IEmissionDao {
 
     EmissionCategory findById(long id);
 
-   EmissionCategory create(EmissionCategory entity);
+    EmissionCategory findByName(String name);
 
-    EmissionCategory update(EmissionCategory employee);
+    EmissionCategory create(EmissionCategory entity);
+
+    EmissionCategory update(EmissionCategory entity);
 
     List<EmissionCategory> findAll();
 
     void delete(EmissionCategory entity);
 
+    void deleteByName(EmissionCategory entity);
 }
