@@ -58,4 +58,40 @@ public class InvoiceController {
         Ownership ownership = ownershipService.getLatestOwnership(invoice.getVehicle().getId());
         return Response.ok(service.generateInvoicePdf(id, ownership), "application/pdf").build();
     }
+
+    @PUT
+    @Path("{id}/paid")
+    public Response setInvoiceToPaid(@PathParam("id") long id){
+        Invoice invoice = service.findById(id);
+
+        if(invoice == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(service.changePaymentStatus(invoice, Invoice.PaymentStatus.PAID)).build();
+    }
+
+    @PUT
+    @Path("{id}/cancel")
+    public Response setInvoiceToCancelled(@PathParam("id") long id){
+        Invoice invoice = service.findById(id);
+
+        if(invoice == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(service.changePaymentStatus(invoice, Invoice.PaymentStatus.CANCELLED)).build();
+    }
+
+    @PUT
+    @Path("{id}/open")
+    public Response setInvoiceToOpen(@PathParam("id") long id){
+        Invoice invoice = service.findById(id);
+
+        if(invoice == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(service.changePaymentStatus(invoice, Invoice.PaymentStatus.OPEN)).build();
+    }
 }

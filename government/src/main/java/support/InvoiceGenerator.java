@@ -58,6 +58,8 @@ public class InvoiceGenerator {
             Font font = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, BaseColor.BLACK);
             document.open();
 
+            addWhiteLines(3);
+
 //            Path path = Paths.get(resourcePath + "logo.png");
 //            Image img = Image.getInstance(path.toString());
 //            document.add(img);
@@ -300,7 +302,7 @@ public class InvoiceGenerator {
         canvas.lineTo(558, 105);
         canvas.closePathStroke();
 
-        addWhiteLines(5);
+        addWhiteLines(7);
 
         PdfPTable justificationTable = new PdfPTable(1);
         justificationTable.setHorizontalAlignment(Element.ALIGN_RIGHT);

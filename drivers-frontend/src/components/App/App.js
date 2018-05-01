@@ -1,13 +1,11 @@
-import React, {Component} from 'react';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from '../../pages/login/login';
-import Register from '../../pages/register/register'
-import Trackers from '../../pages/trackers/trackers';
-import Invoices from '../../pages/invoices/invoices';
-import Region from '../../pages/region/region';
+import Invoices from '../../pages/invoices/invoices'
 import PrivateRoute from '../PrivateRoute';
-import {getLoggedInEmail, isLoggedIn, setToken} from '../../api/auth';
+import { getLoggedInEmail, isLoggedIn, setToken } from '../../api/auth';
 import './App.css';
+import Register from "../../pages/register/register";
 
 class App extends Component {
   constructor() {
@@ -20,17 +18,14 @@ class App extends Component {
   }
 
   render() {
-    const {isAuthenticated} = this.state;
+    const { isAuthenticated } = this.state;
 
     return (
       <div className="App">
         <Switch>
-          <PrivateRoute path="/trackers" authenticated={isAuthenticated} component={Trackers}/>
-          <PrivateRoute path="/invoices" authenticated={isAuthenticated} component={Invoices}/>
-          <PrivateRoute path="/region" authenticated={isAuthenticated} component={Region}/>
           <Route path="/login" render={() =>
             isAuthenticated
-              ? <Trackers/>
+              ? <Invoices/>
               : <Login onAuthenticate={this.handleAuthentication}/>
           }/>
           <Route path="/register" render={() =>
@@ -38,6 +33,7 @@ class App extends Component {
               ? <Invoices/>
               : <Register onAuthenticate={this.handleAuthentication}/>
           }/>
+          <Route path="/invoices" component={Invoices}/>
           <Redirect to="/login"/>
         </Switch>
       </div>
@@ -46,7 +42,7 @@ class App extends Component {
 
   handleAuthentication = (token) => {
     setToken(token);
-    this.setState({isAuthenticated: true, loggedInEmail: getLoggedInEmail()});
+    this.setState({ isAuthenticated: true, loggedInEmail: getLoggedInEmail() });
   };
 }
 
