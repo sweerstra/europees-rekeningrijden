@@ -7,7 +7,7 @@ import Navigation from '../../components/Navigation/Navigation';
 import TrackerModal from '../../components/TrackerModal/TrackerModal';
 import { Link } from 'react-router-dom';
 import Api from '../../api';
-import { EditIcon } from '../../images/index';
+import { EditIcon, RemoveIcon } from '../../images/index';
 
 class Trackers extends Component {
   constructor(props) {
@@ -111,6 +111,24 @@ class Trackers extends Component {
                 this.setState({ isEditing: true, trackerToEdit: { id, trackerId } });
                 this.showModal(true);
               }}/>
+          },
+          {
+            Header: 'Remove',
+            id: 'remove',
+            accessor: ({ id }) => {
+              return <RemoveIcon onClick={e => {
+                e.stopPropagation();
+
+                Api.ownership.remove(id)
+                  .then(() => {
+                    this.setState(({ trackers }) => {
+                      const index = trackers.findIndex(t => t.id === id);
+                      trackers.splice(index, 1);
+                      return ({ trackers });
+                    });
+                  });
+              }}/>;
+            }
           }
         ]
       }
