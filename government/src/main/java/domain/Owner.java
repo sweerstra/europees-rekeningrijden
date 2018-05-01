@@ -134,4 +134,14 @@ public class Owner {
     public void setOwnerships(List<Ownership> ownerships) {
         this.ownerships = ownerships;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Owner) {
+            if (((Owner) obj).getId() == this.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

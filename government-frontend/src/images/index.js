@@ -18,7 +18,16 @@ export const RemoveIcon = ({ onClick }) => (
   </svg>
 );
 
-export const UserIcon = ({onClick}) => (
+export const EditIcon = ({ onClick }) => (
+  <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+       stroke="currentColor"
+       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-edit" color="#384047">
+    <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"/>
+    <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"/>
+  </svg>
+);
+
+export const UserIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-user" color="#384047">
@@ -27,18 +36,19 @@ export const UserIcon = ({onClick}) => (
   </svg>
 );
 
-export const PasswordIcon = ({onClick}) => (
+export const PasswordIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
-       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="feather feather-lock" color="#384047">
+       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-lock" color="#384047">
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
     <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
   </svg>
 );
 
-export const EmailIcon = ({onClick}) => (
-  <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="feather feather-at-sign" color="#384047">
+export const EmailIcon = ({ onClick }) => (
+  <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+       stroke="currentColor"
+       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-at-sign" color="#384047">
     <circle cx="12" cy="12" r="4"/>
     <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/>
   </svg>

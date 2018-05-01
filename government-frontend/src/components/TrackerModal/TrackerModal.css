@@ -1,36 +1,36 @@
-.add-tracker label {
+.tracker-modal label {
   font-weight: bold;
 }
 
-.add-tracker input, div.read-only {
+.tracker-modal input, div.read-only {
   margin-top: 4px;
   margin-bottom: 20px;
 }
 
-.add-tracker__tracker-id-input {
+.tracker-modal__tracker-id-input {
   width: 100%;
 }
 
-.add-tracker__emmission-category {
+.tracker-modal__emmission-category {
   border-radius: 0;
   border: 0;
   border-bottom: 2px solid var(--color-tint);
   cursor: auto;
 }
 
-.add-tracker section.horizontal {
+.tracker-modal section.horizontal {
   display: grid;
   grid-gap: 20px;
   grid-template-columns: 1fr 1fr;
 }
 
-.add-tracker section.vertical {
+.tracker-modal section.vertical {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.add-tracker__save {
+.tracker-modal__save {
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;

@@ -28,6 +28,8 @@ hr {
   grid-gap: 20px;
 }
 
+.trackers__navigation__buttons button { grid-column: 1 / -1; }
+
 .trackers__navigation__buttons a { text-align: center; }
 
 .trackers__administration__controls { }
@@ -42,11 +44,18 @@ hr {
   border: 2px solid var(--color-tint);
   border-radius: var(--border-radius);
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .history__date {
   text-align: center;
+}
+
+@media (max-width: 992px) {
+  .trackers {
+    grid-template-columns: 1fr;
+    grid-template-areas: "nav" "table" "controls";
+  }
 }
 
 /* react-table */

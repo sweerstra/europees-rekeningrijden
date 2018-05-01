@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import './AddTracker.css';
+import './TrackerModal.css';
 import OwnersSelect from '../OwnersSelect/OwnersSelect';
 import Api from '../../api';
 import { debounce } from '../../utils/debounce';
 
-class AddTracker extends Component {
+class TrackerModal extends Component {
   constructor(props) {
     super(props);
 
+    const trackerToEdit = this.props.trackerToEdit || {};
+
     this.state = {
-      trackerId: '',
+      id: trackerToEdit.id || 0,
+      trackerId: trackerToEdit.trackerId || '',
       owners: [],
       owner: null,
       vehicle: { emissionCategory: null }
@@ -37,25 +40,24 @@ class AddTracker extends Component {
   };
 
   onSave = () => {
-    const { owner } = this.state;
-    const { vehicle } = this.state;
-    vehicle.trackerId = this.state.trackerId;
-    this.props.onAdd({ owner, vehicle });
+    const { id, trackerId, owner, vehicle } = this.state;
+    this.props.onSave({ id, trackerId, owner, vehicle });
   };
 
   render() {
     const { owners, owner, trackerId, vehicle: { emissionCategory } } = this.state;
-    const saveButtonIsDisabled = !trackerId || !emissionCategory || !owner;
 
     return (
-      <div className="add-tracker">
+      <div className="tracker-modal">
         <label>
           Tracker ID
           <input type="text"
-                 className="add-tracker__tracker-id-input"
+                 className="tracker-modal__tracker-id-input"
+                 value={trackerId}
                  onChange={this.onTrackerIdChange}
                  name="trackerId"
-                 placeholder="Enter ID here"/>
+                 placeholder="Enter ID here"
+                 disabled={this.props.isEditing}/>
         </label>
 
         <section className="horizontal">
@@ -81,7 +83,7 @@ class AddTracker extends Component {
         <section className="horizontal">
           <OwnersSelect owners={owners} onSelect={owner => this.setState({ owner })}/>
 
-          {owner && <div className="add-tracker__owner">
+          {owner && <div className="tracker-modal__owner">
             <label>
               Name
               <div className="read-only">{`${owner.firstName} ${owner.lastName}`}</div>
@@ -100,10 +102,10 @@ class AddTracker extends Component {
           </div>}
         </section>
 
-        <section className="add-tracker__save">
+        <section className="tracker-modal__save">
           <button className="btn green"
                   onClick={this.onSave}
-                  disabled={saveButtonIsDisabled}>Save
+                  disabled={!trackerId}>Save
           </button>
         </section>
       </div>
@@ -111,4 +113,4 @@ class AddTracker extends Component {
   }
 }
 
-export default AddTracker;
+export default TrackerModal;

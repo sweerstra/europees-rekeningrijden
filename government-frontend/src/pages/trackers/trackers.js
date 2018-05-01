@@ -4,37 +4,12 @@ import Modal from 'react-modal';
 import 'react-table/react-table.css';
 import './trackers.css';
 import Navigation from '../../components/Navigation/Navigation';
-import AddTracker from '../../components/AddTracker/AddTracker';
-import { Link } from "react-router-dom";
+import TrackerModal from '../../components/TrackerModal/TrackerModal';
+import { Link } from 'react-router-dom';
 import Api from '../../api';
+import { EditIcon } from '../../images/index';
 
 class Trackers extends Component {
-  componentDidMount() {
-    Api.ownership.getLatest()
-      .then(ownerships => this.setState({ trackers: ownerships }));
-  }
-
-  onAddTracker = (ownership) => {
-    Api.ownership.add(ownership)
-      .then(ownership => {
-        this.setState(state => ({ trackers: [...state.trackers, ownership] }));
-        this.closeModal();
-      });
-  };
-
-  fetchPreviousOwnership(vehicle) {
-    Api.ownership.getByVehicle(vehicle.id)
-      .then(history => this.setState(state => ({ history })));
-  }
-
-  openModal = () => {
-    this.setState({ modalIsOpen: true });
-  };
-
-  closeModal = () => {
-    this.setState({ modalIsOpen: false });
-  };
-
   constructor(props) {
     super(props);
 
@@ -43,9 +18,44 @@ class Trackers extends Component {
       history: [],
       search: '',
       modalIsOpen: false,
-      selectedRow: null
+      selectedRow: null,
+      isEditing: false,
+      trackerToEdit: null
     };
+
+    Modal.setAppElement('body');
   }
+
+  componentDidMount() {
+    Api.ownership.getLatest()
+      .then(trackers => this.setState({ trackers }));
+  }
+
+  onAddTracker = (tracker) => {
+    Api.ownership.add(tracker)
+      .then(createdTracker => this.setState(state => ({ trackers: [...state.trackers, createdTracker] })));
+  };
+
+  onEditTracker = (tracker) => {
+    Api.ownership.edit(tracker)
+      .then(updatedTracker => {
+        this.setState(state => ({
+          trackers: state.trackers.map(t => {
+            if (t.trackerId === updatedTracker.trackerId) {
+              return updatedTracker;
+            }
+            return t;
+          })
+        }));
+      });
+  };
+
+  fetchOwnershipForTracker(trackerId) {
+    Api.ownership.getByTrackerId(trackerId)
+      .then(history => this.setState(state => ({ history })));
+  }
+
+  showModal = (modalIsOpen) => this.setState({ modalIsOpen });
 
   render() {
     const columns = [
@@ -55,22 +65,22 @@ class Trackers extends Component {
           {
             Header: 'Tracker ID',
             id: 'trackerId',
-            accessor: d => d.vehicle.trackerId
+            accessor: d => d.trackerId
           },
           {
             Header: 'License Plate',
             id: 'licensePlate',
-            accessor: d => d.vehicle.licensePlate
+            accessor: d => d.vehicle ? d.vehicle.licensePlate : 'n/a'
           },
           {
             Header: 'Tracker Type',
             id: 'trackerType',
-            accessor: d => d.vehicle.typeTracker
+            accessor: d => d.vehicle ? d.vehicle.typeTracker : 'n/a'
           },
           {
             Header: 'Emission Category',
             id: 'emissionCategory',
-            accessor: d => d.vehicle.emissionCategory
+            accessor: d => d.vehicle ? d.vehicle.emissionCategory : 'n/a'
           }
         ]
       },
@@ -80,28 +90,46 @@ class Trackers extends Component {
           {
             Header: 'Name',
             id: 'name',
-            accessor: d => d.owner.firstName + ' ' + d.owner.lastName
+            accessor: d => d.owner ? `${d.owner.firstName} ${d.owner.lastName}` : 'n/a'
           },
           {
             Header: 'Uses Billriders',
             id: 'usesBillriderWebsite',
-            accessor: d => d.owner.usesBillriderWebsite ? <span>&#x2713;</span> : undefined
+            accessor: d => d.owner && d.owner.usesBillriderWebsite ? <span>&#x2713;</span> : undefined
+          }
+        ]
+      },
+      {
+        columns: [
+          {
+            Header: 'Edit',
+            id: 'edit',
+            accessor: ({ id, trackerId }) =>
+              <EditIcon onClick={e => {
+                e.stopPropagation();
+                console.log('tracker to edit: ', id, trackerId);
+                this.setState({ isEditing: true, trackerToEdit: { id, trackerId } });
+                this.showModal(true);
+              }}/>
           }
         ]
       }
     ];
 
-    const { trackers, history, modalIsOpen, selectedRow } = this.state;
+    const { trackers, history, modalIsOpen, selectedRow, isEditing, trackerToEdit } = this.state;
     const search = this.state.search.toLowerCase();
 
     const filtered = search
-      ? trackers.filter(row => {
-        return row.vehicle.trackerId.toLowerCase().includes(search)
-          || row.vehicle.typeTracker.toLowerCase().includes(search)
-          || row.vehicle.emissionCategory.toLowerCase().includes(search)
-          || row.vehicle.licensePlate.toLowerCase().includes(search)
-          || row.owner.firstName.toLowerCase().includes(search)
-          || row.owner.lastName.toLowerCase().includes(search)
+      ? trackers.filter(({ trackerId, vehicle, owner }) => {
+        vehicle = vehicle || { typeTracker: '', emissionCategory: '', licensePlate: '' };
+        owner = owner || { firstName: '', lastName: '' };
+
+        return trackerId.toLowerCase().includes(search)
+          || vehicle.typeTracker.toLowerCase().includes(search)
+          || vehicle.emissionCategory.toLowerCase().includes(search)
+          || vehicle.licensePlate.toLowerCase().includes(search)
+          || owner.firstName.toLowerCase().includes(search)
+          || owner.lastName.toLowerCase().includes(search)
       })
       : trackers;
 
@@ -126,11 +154,14 @@ class Trackers extends Component {
             data={filtered}
             columns={columns}
             getTrProps={(state, rowInfo) => {
-              const isSelected = rowInfo && rowInfo.original.vehicle.trackerId === selectedRow;
+              const isSelected = rowInfo && rowInfo.original.trackerId === selectedRow;
+
               return {
                 onClick: () => {
-                  this.fetchPreviousOwnership(rowInfo.original.vehicle);
-                  this.setState({ selectedRow: rowInfo.original.vehicle.trackerId })
+                  const { trackerId } = rowInfo.original;
+
+                  this.fetchOwnershipForTracker(trackerId);
+                  this.setState({ selectedRow: trackerId });
                 },
                 style: {
                   color: isSelected ? 'white' : 'black',
@@ -148,8 +179,9 @@ class Trackers extends Component {
                    onChange={e => this.setState({ search: e.target.value })}/>
             <hr/>
             <div className="trackers__navigation__buttons">
-              <button className="btn blue" onClick={this.openModal}>Add tracker</button>
+              <button className="btn blue" onClick={() => this.showModal(true)}>Add tracker</button>
               <Link to="/invoices">View invoices</Link>
+              <Link to="/region">View regions</Link>
             </div>
           </div>
           <div className="trackers__administration__history">
@@ -157,13 +189,16 @@ class Trackers extends Component {
             <div className="tracker-history">
               {
                 history.length > 0
-                  ? history.map(({ vehicle: { trackerId }, owner: { firstName, lastName }, startDate, endDate }, index) =>
-                    <div className="history" key={index}>
-                      <span>{trackerId}</span>
+                  ? history.map(({ vehicle, owner, startDate, endDate }, index) => {
+                    owner = owner || { firstName: '', lastName: '' };
+                    vehicle = vehicle || { licensePlate: '' };
+
+                    return <div className="history" key={index}><span>{vehicle.licensePlate}</span>
+                      <span>{`${owner.firstName} ${owner.lastName}`}</span>
                       <span className="history__date">{new Date(startDate).toLocaleDateString()}</span>
                       <span className="history__date">{endDate ? new Date(endDate).toLocaleDateString() : 'Now'}</span>
-                    </div>
-                  )
+                    </div>;
+                  })
                   : <div>Select a tracker to see it's vehicle history</div>
               }
             </div>
@@ -171,17 +206,30 @@ class Trackers extends Component {
         </div>
         <Modal
           isOpen={modalIsOpen}
-          onRequestClose={this.closeModal}
+          onRequestClose={() => {
+            this.showModal(false);
+            this.setState({ isEditing: false });
+          }}
           style={customStyles}
           contentLabel="Add Tracker Modal"
         >
           <span className="modal__header__close"
-                onClick={this.closeModal}>&times;</span>
+                onClick={() => this.showModal(false)}>&times;</span>
           <header className="modal__header">
-            <h2>Add Tracker</h2>
+            <h2>{isEditing ? 'Edit Tracker' : 'Add Tracker'}</h2>
           </header>
 
-          <AddTracker onAdd={this.onAddTracker}/>
+          <TrackerModal
+            onSave={tracker => {
+              if (isEditing) {
+                this.onEditTracker(tracker);
+              } else {
+                this.onAddTracker(tracker);
+              }
+              this.showModal(false);
+            }}
+            trackerToEdit={trackerToEdit}
+            isEditing={isEditing}/>
         </Modal>
       </div>
     );

@@ -52,11 +52,11 @@ public class StartUp {
         Ownership ownership4 = new Ownership("ENG5142", danny, vehicle4, createDate("2016-11-21"), null);
         Ownership ownership5 = new Ownership("ENG8496", sjoerd, vehicle5, createDate("2017-04-11"), null);
 
-        ownershipService.addOwnership(ownership1);
-        ownershipService.addOwnership(ownership2);
-        ownershipService.addOwnership(ownership3);
-        ownershipService.addOwnership(ownership4);
-        ownershipService.addOwnership(ownership5);
+        ownershipService.create(ownership1);
+        ownershipService.create(ownership2);
+        ownershipService.create(ownership3);
+        ownershipService.create(ownership4);
+        ownershipService.create(ownership5);
 
         Region region = new Region("Middlesbrough", 8.50);
         region.setRegionTimes(new ArrayList<RegionTime>());
@@ -69,11 +69,9 @@ public class StartUp {
 
         employeeService.addEmployee(new Employee("employee@mail.com", "password", "admin"));
 
-        Invoice invoice1 = invoiceService.create(new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 278.19, 4, 543, "EURO 4", vehicle1));
-        Invoice invoice2 = invoiceService.create(new Invoice("ENG6345", Invoice.PaymentStatus.CANCELLED, 278.19, 4, 123, "EURO 3", vehicle2));
-        Invoice invoice3 = invoiceService.create(new Invoice("ENG5786", Invoice.PaymentStatus.OPEN, 278.19, 4, 432, "EURO 6", vehicle3));
-        Invoice invoice4 = invoiceService.create(new Invoice("ENG1345", Invoice.PaymentStatus.PAID, 278.19, 4, 333, "EURO 1", vehicle4));
-        Invoice invoice5 = invoiceService.create(new Invoice("ENG4186", Invoice.PaymentStatus.OPEN, 278.19, 4, 239, "EURO 2", vehicle5));
+        Invoice invoice1 = invoiceService.create(new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 278.19, 4, 123, "EURO 4", vehicle1));
+        Invoice invoice2 = invoiceService.create(new Invoice("ENG6345", Invoice.PaymentStatus.CANCELLED, 278.19, 4, 123, "EURO 4", vehicle2));
+        Invoice invoice3 = invoiceService.create(new Invoice("ENG5786", Invoice.PaymentStatus.OPEN, 278.19, 4, 123, "EURO 4", vehicle3));
     }
 
     private Date createDate(String format) {
