@@ -7,30 +7,39 @@ class Settings extends Component {
     emissions: [
       {
         name: 'Euro1',
-        rate: 0.5
+        rate: 0.2
       },
       {
         name: 'Euro2',
-        rate: 0.6
+        rate: 0.2
       },
       {
         name: 'Euro3',
-        rate: 0.6
+        rate: 0.3
       },
       {
         name: 'Euro4',
-        rate: 0.6
+        rate: 0.3
       },
       {
         name: 'Euro5',
-        rate: 0.6
+        rate: 0.4
       },
       {
         name: 'Euro6',
-        rate: 0.6
+        rate: 0.4
       }
     ]
   };
+
+  componentDidMount() {
+    Api.emissions.getEmissions()
+      .then(emissions => {
+        if (emissions.length > 0) {
+          this.setState({ emissions });
+        }
+      });
+  }
 
   onSave = (e) => {
     // TODO: save emissions

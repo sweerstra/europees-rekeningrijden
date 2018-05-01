@@ -25,6 +25,7 @@ export default {
     getAll: () => Request.get(`${API_URL}/region/all`)
   },
   emissions: {
-    addEmissions: (emissions) => Request.post(`${API_URL}/emissions`, emissions)
+    addEmissions: (emissions) => Request.post(`${API_URL}/emissions`, emissions),
+    getEmissions: () => Request.get(`${API_URL}/emissions/all`)
   }
 };
