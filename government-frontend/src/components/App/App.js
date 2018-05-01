@@ -5,6 +5,7 @@ import Register from '../../pages/register/register'
 import Trackers from '../../pages/trackers/trackers';
 import Invoices from '../../pages/invoices/invoices';
 import Region from '../../pages/region/region';
+import Settings from '../../pages/settings/settings';
 import PrivateRoute from '../PrivateRoute';
 import {getLoggedInEmail, isLoggedIn, setToken} from '../../api/auth';
 import './App.css';
@@ -28,6 +29,7 @@ class App extends Component {
           <PrivateRoute path="/trackers" authenticated={isAuthenticated} component={Trackers}/>
           <PrivateRoute path="/invoices" authenticated={isAuthenticated} component={Invoices}/>
           <PrivateRoute path="/region" authenticated={isAuthenticated} component={Region}/>
+          <PrivateRoute path="/settings" authenticated={isAuthenticated} component={Settings}/>
           <Route path="/login" render={() =>
             isAuthenticated
               ? <Trackers/>
