@@ -45,6 +45,18 @@ public class OwnershipController {
         return Response.ok(createdOwnership).build();
     }
 
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editOwnership(Ownership ownership) {
+        Ownership editedOwnership = service.updateOwnership(ownership);
+
+        if (editedOwnership == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(editedOwnership).build();
+    }
+
     @GET
     @Path("/latest")
     public Response getLatest() {
@@ -68,6 +80,15 @@ public class OwnershipController {
 
         return Response.ok(owners).build();
     }
+
+    @GET
+    @Path("/tracker/{trackerId}")
+    public Response getByVehicle(@PathParam("trackerId") String trackerId) {
+        List<Ownership> ownerships = service.getOwnershipsByTrackerId(trackerId);
+
+        return Response.ok(ownerships).build();
+    }
+
 
     // TODO: get ownerships for specific month (date) for owner
 }

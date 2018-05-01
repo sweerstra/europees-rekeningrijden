@@ -7,10 +7,12 @@ export default {
   },
   ownership: {
     add: (ownership) => Request.post(`${API_URL}/ownership`, ownership),
+    edit: (ownership) => Request.put(`${API_URL}/ownership`, ownership),
     getAll: () => Request.get(`${API_URL}/ownership/all`),
     getLatest: () => Request.get(`${API_URL}/ownership/latest`),
     getByOwner: (id) => Request.get(`${API_URL}/ownership/owner/${id}`),
-    getByVehicleOrTrackerId: (vehicleId, trackerId) => Request.get(`${API_URL}/ownership/vehicle/${vehicleId}/${trackerId}`)
+    getByVehicleOrTrackerId: (vehicleId, trackerId) => Request.get(`${API_URL}/ownership/vehicle/${vehicleId}/${trackerId}`),
+    getByTrackerId: (trackerId) => Request.get(`${API_URL}/ownership/tracker/${trackerId}`)
   },
   owner: {
     getAll: () => Request.get(`${API_URL}/owners`)

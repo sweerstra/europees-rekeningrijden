@@ -1,5 +1,6 @@
 package service;
 
+import com.mysql.cj.core.util.StringUtils;
 import dao.IOwnerDao;
 import dao.IOwnershipDao;
 import dao.IVehicleDao;
@@ -34,23 +35,22 @@ public class OwnershipService {
     }
 
     public Ownership addOwnership(Ownership entity) {
+        String trackerId = entity.getTrackerId();
+        if (StringUtils.isNullOrEmpty(trackerId)) return null;
+
         Owner owner = entity.getOwner();
         Vehicle vehicle = entity.getVehicle();
 
-        if (owner != null && owner.getId() != 0) {
-            owner = ownerDao.findById(owner.getId());
-        } else {
-            owner = null;
-        }
+        owner = owner != null && owner.getId() != 0
+                ? ownerDao.findById(owner.getId())
+                : null;
 
-        if (vehicle != null && vehicle.getId() != 0) {
-            vehicle = vehicleDao.findById(vehicle.getId());
-        } else {
-            vehicle = null;
-        }
+        vehicle = vehicle != null && vehicle.getId() != 0
+                ? vehicleDao.findById(vehicle.getId())
+                : null;
 
         Date now = new Timestamp(System.currentTimeMillis());
-        Ownership ownership = new Ownership(entity.getTrackerId(), owner, vehicle, now, null);
+        Ownership ownership = new Ownership(trackerId, owner, vehicle, now, null);
 
         return ownershipDao.create(ownership);
     }
@@ -65,24 +65,16 @@ public class OwnershipService {
         Vehicle originalVehicle = original.getVehicle();
         Owner originalOwner = original.getOwner();
 
-        Date now = new Timestamp(System.currentTimeMillis());
-        original.setEndDate(now);
-
-        // update old
-        ownershipDao.update(original);
-
-        Ownership newOwnership = new Ownership();
-        newOwnership.setStartDate(now);
-
-        if (!originalVehicle.equals(newVehicle) || !originalOwner.equals(newOwner)) {
-            newOwnership.setVehicle(newVehicle);
-            newOwnership.setOwner(newOwner);
-
-            // create new
-            ownershipDao.create(newOwnership);
+        if ((originalVehicle == newVehicle || originalVehicle.equals(newVehicle))
+                && (originalOwner == newOwner || originalOwner.equals(newOwner))) {
+            return null;
         }
 
-        return null;
+        Date now = new Timestamp(System.currentTimeMillis());
+        original.setEndDate(now);
+        ownershipDao.update(original);
+
+        return addOwnership(new Ownership(entity.getTrackerId(), newOwner, newVehicle, now, null));
     }
 
     public Ownership create(Ownership entity) {
@@ -99,6 +91,10 @@ public class OwnershipService {
 
     public List<Ownership> getOwnershipsByOwner(long id) {
         return ownershipDao.findByOwner(id);
+    }
+
+    public List<Ownership> getOwnershipsByTrackerId(String trackerId) {
+        return ownershipDao.findByTrackerId(trackerId);
     }
 
     public List<Ownership> getOwnershipsByVehicleOrTrackerId(long vehicleId, String trackerId) {

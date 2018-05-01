@@ -17,3 +17,12 @@ export const RemoveIcon = ({ onClick }) => (
     <line x1="6" y1="6" x2="18" y2="18"/>
   </svg>
 );
+
+export const EditIcon = ({ onClick }) => (
+  <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+       stroke="currentColor"
+       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-edit" color="#384047">
+    <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"/>
+    <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"/>
+  </svg>
+);
