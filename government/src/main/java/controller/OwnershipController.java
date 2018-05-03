@@ -57,6 +57,19 @@ public class OwnershipController {
         return Response.ok(editedOwnership).build();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response closeOwnership(@PathParam("id") long id) {
+        Ownership editedOwnership = service.closeOwnership(id);
+
+        if (editedOwnership == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(editedOwnership).build();
+    }
+
     @GET
     @Path("/latest")
     public Response getLatest() {
@@ -91,4 +104,6 @@ public class OwnershipController {
 
 
     // TODO: get ownerships for specific month (date) for owner
+
+
 }

@@ -13,7 +13,7 @@ export default {
     getByOwner: (id) => Request.get(`${API_URL}/ownership/owner/${id}`),
     getByVehicleOrTrackerId: (vehicleId, trackerId) => Request.get(`${API_URL}/ownership/vehicle/${vehicleId}/${trackerId}`),
     getByTrackerId: (trackerId) => Request.get(`${API_URL}/ownership/tracker/${trackerId}`),
-    remove: (id) => Request.delete(`${API_URL}/ownership/${id}`)
+    remove: (id) => Request.put(`${API_URL}/ownership/${id}`)
   },
   owner: {
     getAll: () => Request.get(`${API_URL}/owners`)
