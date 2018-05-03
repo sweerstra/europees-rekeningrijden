@@ -77,6 +77,15 @@ public class OwnershipService {
         return addOwnership(new Ownership(entity.getTrackerId(), newOwner, newVehicle, now, null));
     }
 
+    public Ownership closeOwnership(long id) {
+        Ownership original = ownershipDao.findById(id);
+        if (original == null) return null;
+
+        Date now = new Timestamp(System.currentTimeMillis());
+        original.setEndDate(now);
+        return ownershipDao.update(original);
+    }
+
     public Ownership create(Ownership entity) {
         return ownershipDao.create(entity);
     }
@@ -124,4 +133,6 @@ public class OwnershipService {
         Collections.sort(latests);
         return latests.get(latests.size() - 1);
     }
+
+
 }
