@@ -1,0 +1,25 @@
+.route-invoices {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 80px 1fr 1fr;
+  grid-template-areas: "nav nav" "invoices route-map" "invoices route-map";
+}
+
+.route-invoices__table {
+  grid-area: invoices;
+  padding: 20px;
+}
+
+.route-invoices .feather-download:hover {
+  stroke: var(--color-primary);
+}
+
+.route-invoices__table [role="row"].active a { color: white; }
+
+.route-invoices__table [role="row"].active .feather-download:hover { stroke: white; }
+
+.route-invoices__map {
+  grid-area: route-map;
+  padding: 20px 20px 20px 0;
+}

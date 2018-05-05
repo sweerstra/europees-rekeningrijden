@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './login.css';
 import Api from '../../api';
-import {UserIcon, PasswordIcon} from "../../icons";
+import { PasswordIcon, UserIcon } from "../../icons";
 
 class Login extends Component {
   onLogin = async (e) => {
-    const {target} = e;
+    const { target } = e;
     e.preventDefault();
 
     const email = target.email.value;
