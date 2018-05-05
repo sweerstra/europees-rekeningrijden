@@ -6,6 +6,10 @@ const GoogleMapsLoader = require('google-maps');
 GoogleMapsLoader.KEY = GOOGLE_MAPS_API_KEY;
 
 class RouteMap extends Component {
+  state = {
+    id: 0
+  };
+
   componentDidMount() {
     GoogleMapsLoader.load((google) => {
       window.google = google;
@@ -20,6 +24,31 @@ class RouteMap extends Component {
 
       this.setState({ map });
     });
+  }
+
+  // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { id, coordinates } = nextProps.route;
+    if (prevState.id === id || coordinates.length === 0) return null;
+
+    // access the coordinates obtained from parent component, transform them
+    const path = coordinates.map(c => ({ lat: c.latitude, lng: c.longitude }));
+
+    // https://developers.google.com/maps/documentation/javascript/reference/3/#Polyline
+    const polyline = new window.google.maps.Polyline({
+      path,
+      geodesic: true,
+      strokeColor: '#3F51B5',
+      strokeWeight: 4,
+      strokeOpacity: 1.0
+    });
+
+    const { map } = prevState;
+    map.setCenter(path[0]);
+    map.setZoom(10);
+    polyline.setMap(map);
+
+    return { id };
   }
 
   render() {

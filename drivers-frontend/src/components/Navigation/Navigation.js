@@ -10,7 +10,7 @@ class Navigation extends Component {
         <h1 className="nav__heading">{this.props.heading}</h1>
         <div>Logged in as <b>{getLoggedInEmail()}</b></div>
         <div className="nav__logout">
-          <Link to="/login" className="btn red" onClick={this.onLogout}>
+          <Link to="/login" className="btn light" onClick={this.onLogout}>
             Logout
           </Link>
         </div>

@@ -1,7 +1,7 @@
 .route-invoices {
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 6fr 4fr;
   grid-template-rows: 80px 1fr 1fr;
   grid-template-areas: "nav nav" "invoices route-map" "invoices route-map";
 }
