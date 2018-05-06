@@ -7,7 +7,9 @@ GoogleMapsLoader.KEY = GOOGLE_MAPS_API_KEY;
 
 class RouteMap extends Component {
   state = {
-    id: 0
+    id: 0,
+    map: {},
+    polylines: []
   };
 
   componentDidMount() {
@@ -43,12 +45,15 @@ class RouteMap extends Component {
       strokeOpacity: 1.0
     });
 
-    const { map } = prevState;
+    const { map, polylines } = prevState;
     map.setCenter(path[0]);
-    map.setZoom(10);
-    polyline.setMap(map);
+    map.setZoom(9);
 
-    return { id };
+    polylines.forEach(p => p.setMap(null));
+    polyline.setMap(map);
+    polylines.push(polyline);
+
+    return { id, polylines };
   }
 
   render() {

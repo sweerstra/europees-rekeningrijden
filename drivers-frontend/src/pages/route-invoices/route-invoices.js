@@ -5,6 +5,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import RouteMap from '../../components/RouteMap/RouteMap';
 import { DownloadIcon } from '../../icons';
+import Api from '../../api';
 
 class RouteInvoices extends Component {
   constructor(props) {
@@ -42,76 +43,27 @@ class RouteInvoices extends Component {
       ],
       selectedInvoice: {
         id: 0,
-        routes: [{ "latitude": 51.50986, "longitude": -0.11812 }, {
-          "latitude": 51.51164000000001,
-          "longitude": -0.11903000000000001
-        }, { "latitude": 51.5127, "longitude": -0.11850000000000001 }, {
-          "latitude": 51.51328,
-          "longitude": -0.11767000000000001
-        }, { "latitude": 51.51474, "longitude": -0.11861000000000001 }, {
-          "latitude": 51.517360000000004,
-          "longitude": -0.12034000000000002
-        }, { "latitude": 51.519310000000004, "longitude": -0.12149000000000001 }, {
-          "latitude": 51.523680000000006,
-          "longitude": -0.12676
-        }, { "latitude": 51.52711000000001, "longitude": -0.13054000000000002 }, {
-          "latitude": 51.52573,
-          "longitude": -0.13533
-        }, { "latitude": 51.52398, "longitude": -0.14404 }, {
-          "latitude": 51.522310000000004,
-          "longitude": -0.15617
-        }, { "latitude": 51.52049, "longitude": -0.16689 }, {
-          "latitude": 51.51993,
-          "longitude": -0.18151
-        }, { "latitude": 51.519540000000006, "longitude": -0.18848 }, {
-          "latitude": 51.52046000000001,
-          "longitude": -0.19508
-        }, { "latitude": 51.52149000000001, "longitude": -0.20161 }, {
-          "latitude": 51.51921,
-          "longitude": -0.20624
-        }, { "latitude": 51.51576000000001, "longitude": -0.21727000000000002 }, {
-          "latitude": 51.514230000000005,
-          "longitude": -0.23701000000000003
-        }, { "latitude": 51.513980000000004, "longitude": -0.24670000000000003 }, {
-          "latitude": 51.51447,
-          "longitude": -0.25499
-        }, { "latitude": 51.517030000000005, "longitude": -0.2606 }, {
-          "latitude": 51.52268,
-          "longitude": -0.26464000000000004
-        }, { "latitude": 51.525670000000005, "longitude": -0.27221 }, {
-          "latitude": 51.526810000000005,
-          "longitude": -0.28284000000000004
-        }, { "latitude": 51.529740000000004, "longitude": -0.29281 }, {
-          "latitude": 51.531180000000006,
-          "longitude": -0.30499000000000004
-        }, { "latitude": 51.534510000000004, "longitude": -0.33819000000000005 }, {
-          "latitude": 51.53945,
-          "longitude": -0.36328000000000005
-        }, { "latitude": 51.54079, "longitude": -0.37143000000000004 }, {
-          "latitude": 51.544720000000005,
-          "longitude": -0.38322
-        }, { "latitude": 51.547650000000004, "longitude": -0.39353000000000005 }, {
-          "latitude": 51.54797000000001,
-          "longitude": -0.40349
-        }, { "latitude": 51.5484, "longitude": -0.41922000000000004 }, {
-          "latitude": 51.549690000000005,
-          "longitude": -0.43526000000000004
-        }]
+        routes: []
       }
     };
+  }
+
+  componentDidMount() {
+    Api.invoice.getInvoices()
+      .then(invoices => this.setState({ invoices }));
   }
 
   render() {
     const columns = [
       {
-        Header: 'ID',
-        accessor: 'id',
-        id: 'id'
-      },
-      {
         Header: 'Tracker ID',
         accessor: 'trackerId',
         id: 'trackerId'
+      },
+      {
+        Header: 'License Plate',
+        id: 'licensePlate',
+        accessor: d => d.vehicle ? d.vehicle.licensePlate : undefined
       },
       {
         Header: 'Distance',
@@ -124,14 +76,17 @@ class RouteInvoices extends Component {
         accessor: d => <span>&#163; {d.totalAmount.toFixed(2)}</span>
       },
       {
-        Header: 'Paid',
+        Header: 'Status',
         id: 'paid',
-        accessor: d => d.paid ? <span>&#x2713;</span> : undefined
+        accessor: 'paid'
       },
       {
-        Header: 'Month',
+        Header: 'Billing Month',
         id: 'month',
-        accessor: d => <span>{new Date(d.month).toLocaleString('en-GB', { month: 'long', year: 'numeric' })}</span>
+        accessor: d => <span>{new Date(`2018-${d.billingMonth}-01`).toLocaleString('en-GB', {
+          month: 'long',
+          year: 'numeric'
+        })}</span>
       },
       {
         id: 'download',
@@ -139,8 +94,8 @@ class RouteInvoices extends Component {
           // prevent selection of invoice, we just want to download
           e.stopPropagation();
 
-          // TODO: make call to invoice PDF service
-
+          const url = Api.invoice.getDownloadUrl(d.id);
+          window.open(url, '_blank');
         }}/>
       }
     ];
@@ -154,16 +109,17 @@ class RouteInvoices extends Component {
           <ReactTable
             data={this.state.invoices}
             getTrProps={(state, rowInfo) => {
-              const isSelected = rowInfo && rowInfo.original.id === selectedInvoice.id;
+              const id = rowInfo ? rowInfo.original.id : null;
+              const isSelected = id === selectedInvoice.id;
 
               return {
                 onClick: () => {
-                  this.setState(state => ({
-                    selectedInvoice: { ...state.selectedInvoice, ...rowInfo.original }
-                  }));
+                  if (id === null) return;
 
-                  // TODO: fetch routes from invoice
-
+                  Api.route.getRoute(id)
+                    .then(({ routes }) => this.setState(state => ({
+                      selectedInvoice: { id, routes }
+                    })));
                 },
                 className: isSelected ? 'active' : '',
                 style: {
