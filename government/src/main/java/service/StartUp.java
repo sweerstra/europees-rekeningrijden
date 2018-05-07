@@ -69,9 +69,9 @@ public class StartUp {
 
         employeeService.addEmployee(new Employee("employee@mail.com", "password", "admin"));
 
-        Invoice invoice1 = invoiceService.create(new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 278.19, 4, 123, "EURO 4", vehicle1));
-        Invoice invoice2 = invoiceService.create(new Invoice("ENG6345", Invoice.PaymentStatus.CANCELLED, 278.19, 4, 123, "EURO 4", vehicle2));
-        Invoice invoice3 = invoiceService.create(new Invoice("ENG5786", Invoice.PaymentStatus.OPEN, 278.19, 4, 123, "EURO 4", vehicle3));
+        Invoice invoice1 = invoiceService.create(new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 131.19, 5, 29.18, "EURO 4", vehicle1));
+        Invoice invoice2 = invoiceService.create(new Invoice("ENG6345", Invoice.PaymentStatus.CANCELLED, 81.54, 5, 10.30, "EURO 4", vehicle2));
+        Invoice invoice3 = invoiceService.create(new Invoice("ENG5786", Invoice.PaymentStatus.OPEN, 778.23, 5, 150.50, "EURO 4", vehicle3));
     }
 
     private Date createDate(String format) {

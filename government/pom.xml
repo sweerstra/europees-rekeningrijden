@@ -9,7 +9,6 @@
     <url>http://maven.apache.org</url>
 
     <dependencies>
-
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
@@ -69,8 +68,8 @@
             <artifactId>itextpdf</artifactId>
             <version>5.5.13</version>
         </dependency>
-
     </dependencies>
+
     <build>
         <finalName>government</finalName>
         <plugins>

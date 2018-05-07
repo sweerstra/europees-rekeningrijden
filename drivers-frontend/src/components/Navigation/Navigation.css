@@ -1,6 +1,8 @@
 nav {
   grid-area: nav;
   padding: 0 40px;
+  background-color: var(--color-primary);
+  color: white;
   display: grid;
   grid-gap: 20px;
   grid-template-columns: 1fr;
