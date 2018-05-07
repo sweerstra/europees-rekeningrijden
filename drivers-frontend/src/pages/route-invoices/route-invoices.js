@@ -4,7 +4,7 @@ import Navigation from '../../components/Navigation/Navigation';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import RouteMap from '../../components/RouteMap/RouteMap';
-import { DownloadIcon } from '../../icons';
+import { FileTextIcon } from '../../icons';
 import Api from '../../api';
 
 class RouteInvoices extends Component {
@@ -12,35 +12,7 @@ class RouteInvoices extends Component {
     super(props);
 
     this.state = {
-      invoices: [
-        {
-          id: 1,
-          trackerId: 'ENG1234',
-          name: 'H. Thompson',
-          distanceTravelled: 56,
-          totalAmount: 110.22,
-          month: '2017-07-09',
-          paid: true
-        },
-        {
-          id: 2,
-          trackerId: 'ENG1234',
-          name: 'H. Thompson',
-          distanceTravelled: 14.2,
-          totalAmount: 30.89,
-          month: '2017-12-12',
-          paid: false
-        },
-        {
-          id: 3,
-          trackerId: 'ENG5678',
-          name: 'J. Smith',
-          distanceTravelled: 120.5,
-          totalAmount: 206,
-          month: '2018-01-01',
-          paid: true
-        }
-      ],
+      invoices: [],
       selectedInvoice: {
         id: 0,
         routes: []
@@ -89,8 +61,9 @@ class RouteInvoices extends Component {
         })}</span>
       },
       {
-        id: 'download',
-        accessor: d => <DownloadIcon onClick={e => {
+        Header: 'PDF',
+        id: 'open',
+        accessor: d => <FileTextIcon onClick={e => {
           // prevent selection of invoice, we just want to download
           e.stopPropagation();
 

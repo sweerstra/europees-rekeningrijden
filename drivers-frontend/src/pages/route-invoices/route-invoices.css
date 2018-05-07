@@ -11,14 +11,10 @@
   padding: 20px;
 }
 
-.route-invoices .feather-download:hover {
-  stroke: var(--color-primary);
-}
+.route-invoices .feather:hover { stroke: var(--color-primary); }
 
 .route-invoices__table [role="row"].active a { color: white; }
 
-.route-invoices__table [role="row"].active .feather-download:hover { stroke: white; }
+.route-invoices__table [role="row"].active .feather:hover { stroke: white; }
 
-.route-invoices__map {
-  grid-area: route-map;
-}
+.route-invoices__map { grid-area: route-map; }
