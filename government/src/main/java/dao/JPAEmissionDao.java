@@ -1,19 +1,15 @@
 package dao;
 
 import domain.EmissionCategory;
-import domain.Ownership;
-import domain.Region;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 public class JPAEmissionDao extends DaoFacade<EmissionCategory> implements IEmissionDao {
-
     @PersistenceContext(unitName = "GovernmentPU")
     private EntityManager em;
 
-    public JPAEmissionDao()
-    {
+    public JPAEmissionDao() {
         super(EmissionCategory.class);
     }
 
@@ -32,6 +28,4 @@ public class JPAEmissionDao extends DaoFacade<EmissionCategory> implements IEmis
                 .setParameter("name", entity.getName())
                 .executeUpdate();
     }
-
-
 }

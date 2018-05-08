@@ -2,16 +2,15 @@ package dao;
 
 import domain.Movement;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IMovementDao {
-
-    List<Movement> findAll();
-
-    Movement findbyAuthorisationcode(String authorisationCode);
-
     Movement create(Movement entity);
 
+    List<Movement> findByTrackerId(String trackerId);
 
+    List<Movement> findBetweenDates(String trackerId, Date startDate, Date endDate);
 
+    List<Movement> findAll();
 }
