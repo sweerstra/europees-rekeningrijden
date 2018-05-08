@@ -13,7 +13,7 @@ const defaultStrokeColor = localStorage.getItem('--color-main') || '#4CAF50';
 
 let map;
 let currentTrackers = [];
-let trackerId = 'ENG9999';
+let trackerId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     const mapOptions = {
