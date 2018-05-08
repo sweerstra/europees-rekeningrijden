@@ -1,6 +1,8 @@
 package controller;
 
+import domain.Ownership;
 import domain.Vehicle;
+import service.OwnershipService;
 import service.VehicleService;
 
 import javax.enterprise.context.RequestScoped;
@@ -14,12 +16,15 @@ import javax.ws.rs.core.Response;
 @Path("/vehicle")
 public class VehicleController {
     @Inject
-    private VehicleService service;
+    private VehicleService vehicleService;
+
+    @Inject
+    private OwnershipService ownershipService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addVehicle(Vehicle vehicle) {
-        Vehicle added = service.create(vehicle);
+        Vehicle added = vehicleService.create(vehicle);
 
         if (added == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -28,27 +33,43 @@ public class VehicleController {
         return Response.ok(vehicle).build();
     }
 
-    /*@GET
-    @Path("/{id}")
-    public Response getVehicle(@PathParam("id") long id) {
-        Vehicle vehicle = service.findById(id);
+    @GET
+    @Path("/id/{id}")
+    public Response getVehicleById(@PathParam("id") long id) {
+        Vehicle vehicle = vehicleService.findById(id);
 
         if (vehicle == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         return Response.ok(vehicle).build();
-    }*/
+    }
 
     @GET
     @Path("/{licensePlate}")
     public Response getVehicleByLicensePlate(@PathParam("licensePlate") String licensePlate) {
-        Vehicle vehicle = service.findByLicencePlate(licensePlate);
+        Vehicle vehicle = vehicleService.findByLicencePlate(licensePlate);
 
         if (vehicle == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         return Response.ok(vehicle).build();
+    }
+
+    @GET
+    @Path("/{licensePlate}/tracker")
+    public Response getTrackerByLicensePlate(@PathParam("licensePlate") String licensePlate) {
+        Vehicle vehicle = vehicleService.findByLicencePlate(licensePlate);
+        if (vehicle == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        Ownership ownership = ownershipService.getLatestOwnership(vehicle.getId());
+        if (ownership == null || ownership.getEndDate() == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(ownership).build();
     }
 }

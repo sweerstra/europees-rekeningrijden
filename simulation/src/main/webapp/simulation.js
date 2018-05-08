@@ -1,17 +1,19 @@
 const directionsService = new google.maps.DirectionsService();
+const licensePlateInput = document.getElementById('license-plate');
 const fromInput = document.getElementById('from');
 const toInput = document.getElementById('to');
 const speedInput = document.getElementById('speed');
 const generateSimulationButton = document.getElementById('generate-simulation');
 const addSimulationButton = document.getElementById('add-simulation');
 const simulationAmountText = document.getElementById('simulation-amount');
-const MOVEMENT_API_URL = 'http://localhost:8080/movement/api/movement';
+const MOVEMENT_API_URL = 'http://localhost:60858/movement/api/movement';
 const SIMULATION_API_URL = 'http://localhost:8080/simulation/api/route';
+const LICENSE_PLATE_CHECK_URL = 'http://localhost:60858/government/api/vehicle';
 const defaultStrokeColor = localStorage.getItem('--color-main') || '#4CAF50';
 
 let map;
 let currentTrackers = [];
-let trackerId = 1;
+let trackerId = 'ENG9999';
 
 document.addEventListener('DOMContentLoaded', () => {
     const mapOptions = {
@@ -22,10 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
 
+    licensePlateInput.addEventListener('input', debounce(({ target }) => {
+        const { value } = target;
+
+        get(`${LICENSE_PLATE_CHECK_URL}/${value}/tracker`)
+            .then(tracker => {
+                target.classList.remove('invalid');
+                trackerId = tracker.trackerId;
+            })
+            .catch(() => {
+                target.classList.add('invalid');
+                trackerId = null;
+            });
+    }, 500));
+
     generateSimulationButton.addEventListener('click', () => {
         const speed = parseFloat(speedInput.value);
 
-        if (speed) {
+        if (speed && trackerId) {
             // get two coordinates from simulation API based on speed value
             post(`${SIMULATION_API_URL}/${speed}`)
                 .then(({ startCoordinate, endCoordinate }) => {
@@ -35,14 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     calcRoute(from, to, speed);
                 });
         } else {
-            console.warn('Please enter a speed value.');
+            console.warn('Please enter the correct field values.');
         }
     });
 
     addSimulationButton.addEventListener('click', () => {
         const speed = parseFloat(speedInput.value);
 
-        if (speed) {
+        if (speed && trackerId) {
             calcRoute(fromInput.value, toInput.value, speed);
         }
     });
@@ -101,12 +117,13 @@ function addSimulation(route, polyline, speed) {
             animateStep(polyline, movementCount, pathLength);
 
             const { lat, lng } = path[movementCount - 1];
-            const { trackerId, movementId, time } = polyline;
+            const { trackerId } = polyline;
 
             const routeResult = {
+                trackerId,
                 latitude: lat(),
                 longitude: lng(),
-                trackerId, movementId, time
+                time: new Date().toLocaleString()
             };
 
             console.log(routeResult);
@@ -128,6 +145,15 @@ function addSimulation(route, polyline, speed) {
 
     currentTrackers.push(trackerId);
     simulationAmountText.textContent = currentTrackers.length.toString();
+}
+
+function get(url) {
+    const options = {
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(url, options)
+        .then(resp => resp.json());
 }
 
 function post(url, data) {
@@ -156,8 +182,7 @@ function createPolyline(directionResult) {
             },
             offset: '0%'
         }],
-        trackerId: trackerId++,
-        time: new Date()
+        trackerId
     });
 
     polyline.setMap(map);
@@ -168,5 +193,14 @@ function animateStep(polyline, movementCount, pathLength) {
     const icons = polyline.get('icons');
     icons[0].offset = ((movementCount / pathLength) * 100) + '%';
     polyline.set('icons', icons);
-    polyline.movementId = movementCount;
+}
+
+function debounce(fn, time) {
+    let timeout;
+
+    return function () {
+        const call = () => fn.apply(this, arguments);
+        clearTimeout(timeout);
+        timeout = setTimeout(call, time);
+    }
 }

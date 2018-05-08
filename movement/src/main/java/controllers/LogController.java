@@ -1,10 +1,7 @@
 package controllers;
 
 import domain.Log;
-import domain.Movement;
-import domain.Tracker;
 import services.LogService;
-import services.TrackerService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -54,6 +51,4 @@ public class LogController {
         service.delete(id);
         return Response.ok().build();
     }
-
-
 }

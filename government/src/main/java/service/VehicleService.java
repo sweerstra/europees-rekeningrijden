@@ -10,7 +10,6 @@ import java.util.List;
 
 @Stateless
 public class VehicleService {
-
     @Inject
     private IVehicleDao dao;
 

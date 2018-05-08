@@ -5,7 +5,6 @@ import domain.Vehicle;
 import java.util.List;
 
 public interface IVehicleDao {
-
     Vehicle findById(long id);
 
     Vehicle findByLicenseplate(String licencePlate);
