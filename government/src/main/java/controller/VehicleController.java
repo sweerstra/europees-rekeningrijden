@@ -34,6 +34,18 @@ public class VehicleController {
     }
 
     @GET
+    @Path("/id/{id}")
+    public Response getVehicleById(@PathParam("id") long id) {
+        Vehicle vehicle = vehicleService.findById(id);
+
+        if (vehicle == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(vehicle).build();
+    }
+
+    @GET
     @Path("/{licensePlate}")
     public Response getVehicleByLicensePlate(@PathParam("licensePlate") String licensePlate) {
         Vehicle vehicle = vehicleService.findByLicencePlate(licensePlate);
