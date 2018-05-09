@@ -28,7 +28,7 @@ public class UserService {
         return userDao.update(user);
     }
 
-    public User findUser(Long iD) {
-        return userDao.findById(iD);
+    public User findUser(Long id) {
+        return userDao.findById(id);
     }
 }

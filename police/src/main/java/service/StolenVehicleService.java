@@ -35,7 +35,7 @@ public class StolenVehicleService {
         return stolenVehicleDao.update(stolenVehicle);
     }
 
-    public StolenVehicle findStolenVehicleById(Long iD) {
-        return stolenVehicleDao.findById(iD);
+    public StolenVehicle findStolenVehicleById(Long id) {
+        return stolenVehicleDao.findById(idd);
     }
 }

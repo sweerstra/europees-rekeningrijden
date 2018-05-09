@@ -15,6 +15,8 @@ public class ForeignVehicle {
 
     private String trackerid;
 
+    private String countryCode;
+
     private String licencePlate;
 
     private String emissionCatagory;
@@ -62,5 +64,13 @@ public class ForeignVehicle {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 }
