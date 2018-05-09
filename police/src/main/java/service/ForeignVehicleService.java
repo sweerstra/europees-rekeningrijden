@@ -17,7 +17,7 @@ public class ForeignVehicleService {
         super();
     }
 
-    public ForeignVehicle addEmployee(ForeignVehicle foreignVehicle) {
+    public ForeignVehicle addForeignVehicle(ForeignVehicle foreignVehicle) {
         return foreignVehicleDao.create(foreignVehicle);
     }
 
@@ -29,7 +29,7 @@ public class ForeignVehicleService {
         return foreignVehicleDao.update(foreignVehicle);
     }
 
-    public ForeignVehicle findForeignVehicleById(Long iD) {
-        return foreignVehicleDao.findById(iD);
+    public ForeignVehicle findForeignVehicleById(long id) {
+        return foreignVehicleDao.findById(id);
     }
 }
