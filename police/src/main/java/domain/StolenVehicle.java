@@ -16,9 +16,11 @@ public class StolenVehicle {
     @GeneratedValue
     private long id;
 
-    private String trackerid;
+    private String trackerId;
 
     private Date date;
+
+    private String licencePlate;
 
     private String dateString;
 
@@ -27,16 +29,16 @@ public class StolenVehicle {
 
     public StolenVehicle(String trackerid, Date date)
     {
-        this.trackerid = trackerid;
+        this.trackerId = trackerid;
         this.date = date;
     }
 
-    public String getTrackerid() {
-        return trackerid;
+    public String getTrackerId() {
+        return trackerId;
     }
 
-    public void setTrackerid(String trackerid) {
-        this.trackerid = trackerid;
+    public void setTrackerId(String trackerid) {
+        this.trackerId = trackerid;
     }
 
     public Date getDate() {
@@ -61,5 +63,13 @@ public class StolenVehicle {
 
     public void setDateString(String dateString) {
         this.dateString = dateString;
+    }
+
+    public String getLicencePlate() {
+        return licencePlate;
+    }
+
+    public void setLicencePlate(String licencePlate) {
+        this.licencePlate = licencePlate;
     }
 }
