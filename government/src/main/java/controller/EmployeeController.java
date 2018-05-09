@@ -20,11 +20,6 @@ public class EmployeeController {
     @Inject
     private EmployeeService service;
 
-    @GET
-    public Response removethis() {
-        return Response.ok(service.findEmployeeById((long)18)).build();
-    }
-
 
     @POST
     @Security
@@ -42,5 +37,59 @@ public class EmployeeController {
         }
 
     }
+
+    @PUT
+    @Security
+    @Path("/setActive/{id}")
+    public Response setEmployeeActive(@HeaderParam("id") Integer selfid, @PathParam("id") String id) {
+        Employee updatedEmployee = service.setActiveByAdmin(selfid, Long.parseLong(id));
+
+        if (updatedEmployee != null)
+        {
+            return Response.ok(updatedEmployee).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+    }
+
+    @PUT
+    @Security
+    @Path("/setActive/{id}")
+    public Response setEmployeeInactive (@HeaderParam("id") Integer selfid, @PathParam("id") String id) {
+        Employee updatedEmployee = service.setInactiveByAdmin(selfid, Long.parseLong(id));
+
+        if (updatedEmployee != null)
+        {
+            return Response.ok(updatedEmployee).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+    }
+
+    @PUT
+    @Security
+    @Path("/setRole/{id}/{rolename}")
+    public Response setEmployeeRole (@HeaderParam("id") Integer selfID, @PathParam("rolename") String rolename
+            , @PathParam("id") String userID) {
+        Employee updatedEmployee = service.setEmployeeRole(selfID, Long.parseLong(userID), rolename);
+
+        if (updatedEmployee != null)
+        {
+            return Response.ok(updatedEmployee).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+    }
+
+
 
 }

@@ -31,6 +31,55 @@ public class EmployeeService {
         else return null;
     }
 
+    public Employee setActiveByAdmin(long selfID, long userID) {
+        Employee found = findEmployeeById(selfID);
+
+        if (found == null)
+            return null;
+
+        Employee employee;
+
+        if (new String(found.getRole()).equals("admin")) {
+            employee = findEmployeeById(userID);
+            employee.setActive(true);
+            return employeeDao.update(employee);
+        } else
+            return null;
+    }
+
+    public Employee setInactiveByAdmin(long selfID, long userID) {
+        Employee found = findEmployeeById(selfID);
+
+        if (found == null)
+            return null;
+
+        Employee employee;
+
+        if (new String(found.getRole()).equals("admin")) {
+            employee = findEmployeeById(userID);
+            employee.setActive(false);
+            return employeeDao.update(employee);
+        } else
+            return null;
+    }
+
+    public Employee setEmployeeRole(long selfID, long userID, String rolename) {
+        Employee found = findEmployeeById(selfID);
+
+        if (found == null)
+            return null;
+
+        Employee employee;
+
+        if (new String(found.getRole()).equals("admin")) {
+            employee = findEmployeeById(userID);
+            employee.setRole(rolename);
+            return employeeDao.update(employee);
+        } else
+            return null;
+    }
+
+
     public Employee authenthicate(String email, String password) {
         Employee employee = employeeDao.getEmployeeByEmail(email);
 
