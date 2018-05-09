@@ -36,11 +36,6 @@ public class StolenVehicleController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reportStolenVehicle(StolenVehicle stolenVehicle) {
        stolenVehicle = service.addstolenVehicle(stolenVehicle);
-
-        if (stolenVehicle == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
-        return Response.ok(stolenVehicle).build();
+       return Response.ok(stolenVehicle).build();
     }
 }

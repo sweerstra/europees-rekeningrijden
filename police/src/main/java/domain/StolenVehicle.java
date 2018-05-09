@@ -18,8 +18,9 @@ public class StolenVehicle {
 
     private String trackerid;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date date;
+
+    private String dateString;
 
     public StolenVehicle()
     {}
@@ -52,5 +53,13 @@ public class StolenVehicle {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
     }
 }

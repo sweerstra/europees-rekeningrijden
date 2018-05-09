@@ -17,7 +17,7 @@ public class ForeignVehicleService {
         super();
     }
 
-    public ForeignVehicle addForeignVehicle(ForeignVehicle foreignVehicle) {
+    public ForeignVehicle addEmployee(ForeignVehicle foreignVehicle) {
         return foreignVehicleDao.create(foreignVehicle);
     }
 

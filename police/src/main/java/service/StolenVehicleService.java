@@ -2,9 +2,11 @@ package service;
 
 import dao.IStolenVehicleDao;
 import domain.StolenVehicle;
+import utils.DateUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Date;
 
 @Stateless
 public class StolenVehicleService {
@@ -17,6 +19,11 @@ public class StolenVehicleService {
     }
 
     public StolenVehicle addstolenVehicle(StolenVehicle stolenVehicle) {
+        Date date = DateUtils.createDateFromString(stolenVehicle.getDateString(), "dd-MM-yyyy hh:mm:ss");
+        if (date == null) return null;
+
+        stolenVehicle.setDate(date);
+
         return stolenVehicleDao.create(stolenVehicle);
     }
 
