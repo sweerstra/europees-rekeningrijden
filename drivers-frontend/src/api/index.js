@@ -5,7 +5,10 @@ const ROUTE_URL = 'https://i321720.iris.fhict.nl/traxit/routes/data.php?id=';
 
 export default {
   auth: {
-    login: (username, password) => Request.post(`${API_URL}/login`, { username, password })
+    login: (username, password) => {
+      const headers = { Authorization: `Basic ${btoa(`${username}:${password}`)}` };
+      return Request.request(`${API_URL}/login`, { method: 'post', headers });
+    }
   },
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
