@@ -1,0 +1,16 @@
+.vehicles {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 80px 1fr;
+  grid-template-areas: "nav nav" "vehicles controls";
+}
+
+.vehicles__table {
+  grid-area: vehicles;
+  padding: 20px;
+}
+
+.vehicles .feather:hover {
+  stroke: var(--color-primary);
+}
