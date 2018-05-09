@@ -18,7 +18,7 @@ public class StolenVehicle {
 
     private String trackerId;
 
-    private Date dateoOfTheft;
+    private Date dateOfTheft;
 
     private String licencePlate;
 
@@ -30,7 +30,7 @@ public class StolenVehicle {
     public StolenVehicle(String trackerid, Date dateOfTheft)
     {
         this.trackerId = trackerid;
-        this.dateoOfTheft = dateOfTheft;
+        this.dateOfTheft = dateOfTheft;
     }
 
     public String getTrackerId() {
@@ -42,11 +42,11 @@ public class StolenVehicle {
     }
 
     public Date getDate() {
-        return dateoOfTheft;
+        return dateOfTheft;
     }
 
     public void setDate(Date date) {
-        this.dateoOfTheft = date;
+        this.dateOfTheft = date;
     }
 
     public long getId() {
