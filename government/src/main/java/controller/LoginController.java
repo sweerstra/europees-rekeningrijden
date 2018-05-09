@@ -34,7 +34,7 @@ public class LoginController {
 
         if (employee != null) {
             String token = Jwts.builder()
-                    .setSubject(employee.getEmail())
+                    .setSubject(String.valueOf(employee.getId()))
                     .setIssuer(uriInfo.getAbsolutePath().toString())
                     .setIssuedAt(new Date())
                     .setExpiration(DateUtils.addHours(new Date(), 12))

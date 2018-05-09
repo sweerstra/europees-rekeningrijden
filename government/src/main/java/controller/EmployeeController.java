@@ -2,11 +2,12 @@ package controller;
 
 
 import authentication.Security;
+import domain.Employee;
+import service.EmployeeService;
 
 import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.inject.Inject;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -16,10 +17,30 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class EmployeeController {
 
+    @Inject
+    private EmployeeService service;
+
     @GET
-    @Security
     public Response removethis() {
-        return Response.ok().build();
+        return Response.ok(service.findEmployeeById((long)18)).build();
+    }
+
+
+    @POST
+    @Security
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addEmployeeByAdmin(@HeaderParam("id") Integer id, Employee employee) {
+        Employee newEmployee = service.addEmployeeByAdmin(id, employee);
+
+        if (newEmployee != null)
+        {
+            return Response.ok(newEmployee).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
     }
 
 }

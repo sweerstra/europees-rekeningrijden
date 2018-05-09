@@ -30,3 +30,6 @@ hs_err_pid*
 
 # Operating System
 .DS_Store
+government-frontend/src/config/index.js
+government/src/main/resources/META-INF/persistence.xml
+government/src/main/resources/META-INF/persistence.xml

@@ -20,6 +20,17 @@ public class EmployeeService {
         return employeeDao.create(employee);
     }
 
+    public Employee addEmployeeByAdmin(long userID, Employee employee) {
+        Employee found = findEmployeeById(userID);
+
+        if (found == null)
+            return null;
+
+        if (new String(found.getRole()).equals("admin"))
+            return employeeDao.create(employee);
+        else return null;
+    }
+
     public Employee authenthicate(String email, String password) {
         Employee employee = employeeDao.getEmployeeByEmail(email);
 
