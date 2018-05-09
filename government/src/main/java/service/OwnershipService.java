@@ -105,7 +105,7 @@ public class OwnershipService {
 
     public List<Ownership> getCurrentOwnershipsByOwner(long ownerId) {
         return ownershipDao.findByOwner(ownerId).stream()
-                .filter(o -> o.getEndDate() == null)
+                .filter(o -> o.getVehicle() != null && o.getEndDate() == null)
                 .collect(Collectors.toList());
     }
 

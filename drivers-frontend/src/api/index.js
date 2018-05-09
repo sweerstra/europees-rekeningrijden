@@ -16,6 +16,6 @@ export default {
     getRoute: (id) => Request.get(ROUTE_URL + id)
   },
   vehicle: {
-    getCurrentVehiclesByOwner: (id) => Request.get(`${GOVERNMENT_API_URL}/vehicles/owner/${id}`)
+    getCurrentTrackersWithVehicleByOwner: (id) => Request.get(`${GOVERNMENT_API_URL}/vehicles/owner/${id}`)
   }
 };

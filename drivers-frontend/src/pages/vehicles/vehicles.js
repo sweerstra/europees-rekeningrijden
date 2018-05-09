@@ -10,26 +10,27 @@ class Vehicles extends Component {
     super(props);
 
     this.state = {
-      vehicles: []
+      vehicles: [],
+      selectedVehicle: {}
     };
   }
 
   componentDidMount() {
-    Api.vehicle.getCurrentVehiclesByOwner(1)
-      .then(vehicles => this.setState({ vehicles }));
+    Api.vehicle.getCurrentTrackersWithVehicleByOwner(1)
+      .then(vehicles => {
+        this.setState({ vehicles: vehicles.map(({ trackerId, vehicle }) => ({ trackerId, ...vehicle })) });
+      });
   }
 
   render() {
     const columns = [
       {
         Header: 'License Plate',
-        id: 'licensePlate',
-        accessor: d => d.vehicle ? d.vehicle.licensePlate : 'n/a'
+        accessor: 'licensePlate'
       },
       {
         Header: 'Emission Category',
-        id: 'emissionCategory',
-        accessor: d => d.vehicle ? d.vehicle.emissionCategory : 'n/a'
+        accessor: 'emissionCategory'
       },
       {
         Header: 'Tracker ID',
@@ -38,11 +39,11 @@ class Vehicles extends Component {
       {
         Header: 'Sign Over Vehicle',
         id: 'signOver',
-        accessor: d => <ShareIcon onClick={() => console.log('Sign Over')}/>
+        accessor: d => <ShareIcon onClick={() => this.setState({ selectedVehicle: d })}/>
       }
     ];
 
-    const { vehicles } = this.state;
+    const { vehicles, selectedVehicle } = this.state;
 
     return (
       <div className="vehicles">
@@ -50,6 +51,18 @@ class Vehicles extends Component {
         <div className="vehicles__table">
           <ReactTable
             data={vehicles}
+            getTrProps={(state, rowInfo) => {
+              const id = rowInfo ? rowInfo.original.id : null;
+              const isSelected = id === selectedVehicle.id;
+
+              return {
+                className: isSelected ? 'active' : '',
+                style: {
+                  color: isSelected ? 'white' : 'black',
+                  backgroundColor: isSelected ? '#3F51B5' : 'white'
+                }
+              }
+            }}
             columns={columns}
             minRows="0"
             showPagination={false}

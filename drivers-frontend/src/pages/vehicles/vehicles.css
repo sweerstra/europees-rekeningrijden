@@ -11,6 +11,9 @@
   padding: 20px;
 }
 
-.vehicles .feather:hover {
+.vehicles__table .feather:hover {
   stroke: var(--color-primary);
+  cursor: pointer;
 }
+
+.vehicles__table [role="row"].active .feather { stroke: white; }
