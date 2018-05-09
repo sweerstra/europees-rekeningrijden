@@ -43,7 +43,9 @@ class Vehicles extends Component {
       }
     ];
 
-    const { vehicles, selectedVehicle } = this.state;
+    const { vehicles, selectedVehicle, email, firstName, lastName, isVerifiedSignOverDetails, password } = this.state;
+
+    const isEmptySignOverDetails = !email || !firstName || !lastName;
 
     return (
       <div className="vehicles">
@@ -68,9 +70,68 @@ class Vehicles extends Component {
             showPagination={false}
           />
         </div>
-        <div></div>
+        {selectedVehicle.id && <form className="vehicles__sign-over">
+          <fieldset disabled={isVerifiedSignOverDetails}>
+            <h2>Vehicle Receiver Details</h2>
+
+            <section>
+              <label>
+                Email address
+                <input type="email"
+                       onChange={this.onSignOverChange}
+                       required
+                       name="email" placeholder="Email"/>
+              </label>
+            </section>
+            <section className="vehicles__sign-over__user-details">
+              <label>
+                Name
+                <input type="text"
+                       onChange={this.onSignOverChange}
+                       required
+                       name="firstName" placeholder="First name"/>
+              </label>
+              <label>
+                &nbsp;
+                <input type="text"
+                       onChange={this.onSignOverChange}
+                       required
+                       name="lastName" placeholder="Last name"/>
+              </label>
+            </section>
+            <button className="btn blue" disabled={isEmptySignOverDetails}
+                    onClick={() => this.setState({ isVerifiedSignOverDetails: true })}>Verify Receiver
+            </button>
+          </fieldset>
+
+          <fieldset disabled={!isVerifiedSignOverDetails}>
+            <section>
+              <label>
+                Confirm Your Password
+                <input type="password"
+                       onChange={this.onSignOverChange}
+                       required
+                       name="password" placeholder="Password"/>
+              </label>
+            </section>
+            {isVerifiedSignOverDetails && <section className="vehicles__sign-over__warning">
+              <span>
+                Please make sure this is the vehicle you want to sign over to&nbsp;
+                <b>{`${firstName} ${lastName}`}</b>
+              </span>
+            </section>}
+            <section className="vehicles__sign-over__confirmation">
+              <input type="text" value={selectedVehicle.licensePlate} readOnly="true"/>
+              <button className="btn red" disabled={!password}>Confirm Sign Over</button>
+            </section>
+          </fieldset>
+        </form>}
       </div>
     );
+  }
+
+  onSignOverChange = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
   }
 }
 

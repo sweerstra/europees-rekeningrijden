@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 80px 1fr;
-  grid-template-areas: "nav nav" "vehicles controls";
+  grid-template-areas: "nav nav" "vehicles sign-over";
 }
 
 .vehicles__table {
@@ -17,3 +17,53 @@
 }
 
 .vehicles__table [role="row"].active .feather { stroke: white; }
+
+.vehicles__sign-over {
+  grid-area: sign-over;
+  padding: 20px;
+}
+
+.vehicles__sign-over label {
+  font-weight: bold;
+}
+
+.vehicles__sign-over input {
+  margin-top: 4px;
+  width: 100%;
+}
+
+.vehicles__sign-over__user-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.vehicles__sign-over fieldset {
+  margin-bottom: 10px;
+  padding: 0;
+  border: 0;
+}
+
+.vehicles__sign-over__confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.vehicles__sign-over__confirmation input[readonly] {
+  margin: 0 20px;
+  width: initial;
+}
+
+.vehicles__sign-over__confirmation input { margin: 10px 0 0; }
+
+.vehicles__sign-over__confirmation button.red { margin: 0; }
+
+.vehicles__sign-over__warning {
+  color: var(--color-danger);
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+
