@@ -4,14 +4,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-public abstract class daoFacade<T> {
+public abstract class DaoFacade<T> {
 
     private Class<T> entityClass;
 
     @PersistenceContext(unitName = "PolicePU")
     private EntityManager em;
 
-    public daoFacade(Class<T> entityClass) {
+    public DaoFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
