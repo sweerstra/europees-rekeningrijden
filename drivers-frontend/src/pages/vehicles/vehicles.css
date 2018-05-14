@@ -67,10 +67,30 @@
 }
 
 .sign-over__code {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+.sign-over__code__input {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.sign-over__code__input input { margin: 0 10px 0 0; }
+
+.feather-clipboard { margin-right: 10px; }
+
+.feather-clipboard:hover {
+  stroke: var(--color-primary);
+  cursor: pointer;
+}
+
+.sign-over__code__input__copied {
+  color: var(--color-primary);
+  font-weight: bold;
 }
 
 @media (max-width: 992px) {

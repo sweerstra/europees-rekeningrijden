@@ -29,7 +29,7 @@
 }
 
 .modal-overlay {
-  opacity: 0.8;
+  opacity: 0.4;
   position: fixed;
   top: 0;
   left: 0;
@@ -40,4 +40,21 @@
   -o-filter: blur(1px);
   -ms-filter: blur(1px);
   filter: blur(1px);
+}
+
+.modal__close {
+  color: var(--color-danger);
+  font-size: 1.6em;
+  position: absolute;
+  display: block;
+  right: 0;
+  top: 0;
+  padding: 0 10px;
+  border-bottom: var(--color-tint) 1px solid;
+  border-left: var(--color-tint) 1px solid;
+  border-radius: 0 4px 0 4px;
+}
+
+.modal__close:hover {
+  cursor: pointer;
 }

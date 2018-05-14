@@ -5,6 +5,8 @@ import Api from '../../api';
 import Navigation from '../../components/Navigation/Navigation';
 import { ShareIcon } from '../../icons';
 import Modal from '../../components/Modal/Modal';
+import { ClipboardIcon } from '../../icons/index';
+import { textToClipboard } from '../../utils/text-to-clipboard';
 
 class Vehicles extends Component {
   constructor(props) {
@@ -16,8 +18,11 @@ class Vehicles extends Component {
       email: 'user@mail.com',
       firstName: 'First',
       lastName: 'Last',
+      isModalOpen: true,
+      generatedCode: 'kd9382ogouie',
       isVerifiedSignOverDetails: null,
-      isWrongPassword: false
+      isWrongPassword: false,
+      isCodeCopied: false
     };
   }
 
@@ -53,14 +58,15 @@ class Vehicles extends Component {
       vehicles, selectedVehicle,
       email, firstName, lastName,
       isVerifiedSignOverDetails,
-      password, isWrongPassword
+      password, isWrongPassword,
+      isModalOpen, generatedCode, isCodeCopied
     } = this.state;
 
     const isEmptySignOverDetails = !email || !firstName || !lastName;
 
     return (
       <div>
-        <div className="vehicles modal-overlay">
+        <div className={`vehicles ${isModalOpen ? 'modal-overlay' : ''}`}>
           <Navigation heading="Traxit Driver Vehicles"/>
           <div className="vehicles__table">
             <ReactTable
@@ -146,12 +152,18 @@ class Vehicles extends Component {
             </fieldset>
           </div>}
         </div>
-        <Modal isOpen={true}>
+        <Modal isOpen={isModalOpen}
+               onModalClose={() => this.setState({ isModalOpen: false })}>
           <div className="sign-over__code">
             <h2>Sign Over Code</h2>
-            <input type="text"
-                   value={'kd9382ogouie'}
-                   readOnly="true"/>
+            <div className="sign-over__code__input">
+              <input type="text"
+                     className="blue"
+                     value={generatedCode}
+                     readOnly="true"/>
+              <ClipboardIcon onClick={this.setCodeToCopied}/>
+            </div>
+            {isCodeCopied && <span className="sign-over__code__input__copied">Copied</span>}
           </div>
         </Modal>
       </div>
@@ -169,14 +181,26 @@ class Vehicles extends Component {
     const { password } = this.state;
 
     Api.auth.login({ username: 'user', password })
-      .then(() => this.setState({ isWrongPassword: false }))
+      .then(() => {
+        this.setState({ isWrongPassword: false, isModalOpen: true });
+      })
       .catch(err => this.setState({ isWrongPassword: true }));
   };
 
   onSignOverChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
-  }
+  };
+
+  setCodeToCopied = () => {
+    textToClipboard(this.state.generatedCode);
+
+    this.setState({ isCodeCopied: true });
+
+    setTimeout(() => {
+      this.setState({ isCodeCopied: false });
+    }, 3000);
+  };
 }
 
 export default Vehicles;
