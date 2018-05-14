@@ -3,7 +3,7 @@ import ReactTable from 'react-table';
 import './vehicles.css';
 import Api from '../../api';
 import Navigation from '../../components/Navigation/Navigation';
-import { ShareIcon } from '../../icons/index';
+import { ShareIcon } from '../../icons';
 
 class Vehicles extends Component {
   constructor(props) {
@@ -11,7 +11,12 @@ class Vehicles extends Component {
 
     this.state = {
       vehicles: [],
-      selectedVehicle: {}
+      selectedVehicle: {},
+      email: 'user@mail.com',
+      firstName: 'First',
+      lastName: 'Last',
+      isVerifiedSignOverDetails: null,
+      isWrongPassword: false
     };
   }
 
@@ -43,7 +48,12 @@ class Vehicles extends Component {
       }
     ];
 
-    const { vehicles, selectedVehicle, email, firstName, lastName, isVerifiedSignOverDetails, password } = this.state;
+    const {
+      vehicles, selectedVehicle,
+      email, firstName, lastName,
+      isVerifiedSignOverDetails,
+      password, isWrongPassword
+    } = this.state;
 
     const isEmptySignOverDetails = !email || !firstName || !lastName;
 
@@ -70,7 +80,7 @@ class Vehicles extends Component {
             showPagination={false}
           />
         </div>
-        {selectedVehicle.id && <form className="vehicles__sign-over">
+        {selectedVehicle.id && <div className="vehicles__sign-over">
           <fieldset disabled={isVerifiedSignOverDetails}>
             <h2>Vehicle Receiver Details</h2>
 
@@ -78,6 +88,7 @@ class Vehicles extends Component {
               <label>
                 Email address
                 <input type="email"
+                       value={email}
                        onChange={this.onSignOverChange}
                        required
                        name="email" placeholder="Email"/>
@@ -87,6 +98,7 @@ class Vehicles extends Component {
               <label>
                 Name
                 <input type="text"
+                       value={firstName}
                        onChange={this.onSignOverChange}
                        required
                        name="firstName" placeholder="First name"/>
@@ -94,13 +106,15 @@ class Vehicles extends Component {
               <label>
                 &nbsp;
                 <input type="text"
+                       value={lastName}
                        onChange={this.onSignOverChange}
                        required
                        name="lastName" placeholder="Last name"/>
               </label>
             </section>
-            <button className="btn blue" disabled={isEmptySignOverDetails}
-                    onClick={() => this.setState({ isVerifiedSignOverDetails: true })}>Verify Receiver
+            <button className={`btn ${isVerifiedSignOverDetails === false ? 'red' : 'blue'}`}
+                    disabled={isEmptySignOverDetails}
+                    onClick={this.onVerifyUserDetails}>Verify Receiver
             </button>
           </fieldset>
 
@@ -109,6 +123,7 @@ class Vehicles extends Component {
               <label>
                 Confirm Your Password
                 <input type="password"
+                       className={isWrongPassword ? 'red' : ''}
                        onChange={this.onSignOverChange}
                        required
                        name="password" placeholder="Password"/>
@@ -117,20 +132,38 @@ class Vehicles extends Component {
             {isVerifiedSignOverDetails && <section className="vehicles__sign-over__warning">
               <span>
                 Please make sure this is the vehicle you want to sign over to&nbsp;
-                <b>{`${firstName} ${lastName}`}</b>
+                <b>{`${firstName} ${lastName}`}</b>.
               </span>
             </section>}
             <section className="vehicles__sign-over__confirmation">
-              <input type="text" value={selectedVehicle.licensePlate} readOnly="true"/>
-              <button className="btn red" disabled={!password}>Confirm Sign Over</button>
+              <input type="text" className="red" value={selectedVehicle.licensePlate} readOnly="true"/>
+              <button className="btn red" disabled={!password}
+                      onClick={this.onConfirmSignOver}>Confirm Sign Over
+              </button>
             </section>
           </fieldset>
-        </form>}
+        </div>}
       </div>
     );
   }
 
-  onSignOverChange = ({ target: { name, value } }) => {
+  onVerifyUserDetails = () => {
+    const { email, firstName, lastName } = this.state;
+
+    Api.user.verifyUserDetails({ email, firstName, lastName })
+      .then(isVerifiedSignOverDetails => this.setState({ isVerifiedSignOverDetails }));
+  };
+
+  onConfirmSignOver = () => {
+    const { password } = this.state;
+
+    Api.auth.login({ username: 'user', password })
+      .then(() => this.setState({ isWrongPassword: false }))
+      .catch(err => this.setState({ isWrongPassword: true }));
+  };
+
+  onSignOverChange = ({ target }) => {
+    const { name, value } = target;
     this.setState({ [name]: value });
   }
 }

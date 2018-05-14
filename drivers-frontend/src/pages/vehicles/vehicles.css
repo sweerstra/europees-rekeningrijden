@@ -8,7 +8,7 @@
 
 .vehicles__table {
   grid-area: vehicles;
-  padding: 20px;
+  padding: 40px 20px 20px 40px;
 }
 
 .vehicles__table .feather:hover {
@@ -20,7 +20,7 @@
 
 .vehicles__sign-over {
   grid-area: sign-over;
-  padding: 20px;
+  padding: 20px 40px 20px 20px;
 }
 
 .vehicles__sign-over label {
@@ -64,6 +64,18 @@
   text-align: right;
   margin-top: 20px;
   margin-bottom: 8px;
+}
+
+@media (max-width: 992px) {
+  .vehicles {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "nav" "vehicles" "sign-over";
+  }
+
+  .vehicles__table { padding-left: 20px; }
+
+  .vehicles__sign-over { padding-right: 20px; }
 }
 
 
