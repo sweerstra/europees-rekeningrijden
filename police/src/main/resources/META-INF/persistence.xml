@@ -1,3 +1,4 @@
+
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
@@ -10,7 +11,7 @@
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/police"/>
             <property name="hibernate.connection.username" value="root"/>
-            <property name="hibernate.connection.password" value="soufyan12"/>
+            <property name="hibernate.connection.password" value="newrootpassword"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.transaction.jta.platform"
