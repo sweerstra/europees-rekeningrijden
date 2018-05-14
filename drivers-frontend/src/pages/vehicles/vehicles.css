@@ -66,6 +66,13 @@
   margin-bottom: 8px;
 }
 
+.sign-over__code {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 @media (max-width: 992px) {
   .vehicles {
     grid-template-columns: 1fr;
