@@ -30,3 +30,9 @@
 .login__content__forgot-password {
   font-size: 0.75em;
 }
+
+.login .error {
+  color: var(--color-danger);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
