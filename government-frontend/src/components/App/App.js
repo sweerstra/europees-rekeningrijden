@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import Login from '../../pages/login/login';
-import Register from '../../pages/register/register'
 import Trackers from '../../pages/trackers/trackers';
 import Invoices from '../../pages/invoices/invoices';
 import Region from '../../pages/region/region';
@@ -34,11 +33,6 @@ class App extends Component {
             isAuthenticated
               ? <Trackers/>
               : <Login onAuthenticate={this.handleAuthentication}/>
-          }/>
-          <Route path="/register" render={() =>
-            isAuthenticated
-              ? <Invoices/>
-              : <Register onAuthenticate={this.handleAuthentication}/>
           }/>
           <Redirect to="/login"/>
         </Switch>

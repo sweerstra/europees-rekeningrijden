@@ -40,7 +40,6 @@ class Login extends Component {
                    spellCheck="false" autoCapitalize="none"/>
             <span className="error">{error && error}</span>
             <a href="#" className="login__content__forgot-password">Forgot password?</a>
-            <a href="/register" className="login__content__create-account login__other-actions">Create a new account</a>
             <button className="btn blue">Login</button>
           </form>
         </div>
