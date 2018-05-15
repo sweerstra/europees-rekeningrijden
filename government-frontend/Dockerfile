@@ -13,7 +13,7 @@ COPY package-lock.json /usr/src/app/
 COPY . /usr/src/app
 
 RUN npm install
-RUN npm run start build
+RUN npm run build
 
 # Stage 2 - the production environment
 FROM nginx:1.12-alpine
