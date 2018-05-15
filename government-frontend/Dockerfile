@@ -9,6 +9,9 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 COPY package-lock.json /usr/src/app/
 
+# Bundle app source
+COPY . /usr/src/app
+
 RUN npm install
 RUN npm run start build
 
