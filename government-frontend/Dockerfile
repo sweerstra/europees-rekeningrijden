@@ -10,9 +10,7 @@ COPY package.json /usr/src/app/
 COPY package-lock.json /usr/src/app/
 
 RUN npm install
-
-# Bundle app source
-COPY . /usr/src/app
+RUN npm run start:build
 
 # Stage 2 - the production environment
 FROM nginx:1.12-alpine
