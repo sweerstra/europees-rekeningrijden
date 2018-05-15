@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './login.css';
 import Api from '../../api';
 
-console.log(process.env);
-
 class Login extends Component {
   onLogin = async (e) => {
     const { target } = e;
