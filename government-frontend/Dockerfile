@@ -12,7 +12,7 @@ COPY package-lock.json /usr/src/app/
 # Bundle app source
 COPY . /usr/src/app
 
-RUN npm install
+RUN npm install --quiet
 RUN npm run build
 
 # Stage 2 - the production environment
