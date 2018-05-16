@@ -137,6 +137,19 @@ section {
     cursor: default;
 }
 
+.section__item__otap__accept {
+    float: right;
+    border: white 1px solid;
+    border-radius: 50%;
+    width: 21px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.5);
+    display: inline-block;
+}
+
+.section__item__otap__accept:hover {
+    box-shadow: 0 1px 5px rgba(0,0,0,.5);
+}
+
 .section__item__otap a[href^="http"]:hover {
     background-color: var(--color-main-dark);
     border: none;

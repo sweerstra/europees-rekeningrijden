@@ -66,3 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+Array.from(document.querySelectorAll('[data-job-name]')).forEach(acceptButton => {
+    acceptButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+        // TODO: show modal here;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", encodeURI('http://192.168.24.36:8080/job/government-FP/build?token=traxit&cause=started by product owner'));
+        xhr.withCredentials = true;
+        xhr.setRequestHeader("Authorization", "Basic " + btoa('Jacques' + ':' + 'ProductOwner1'));
+        xhr.send();
+    })
+});
