@@ -5,7 +5,18 @@ const ROUTE_URL = 'https://i321720.iris.fhict.nl/traxit/routes/data.php?id=';
 
 export default {
   auth: {
-    login: (username, password) => Request.post(`${API_URL}/login`, { username, password })
+    // login: (username, password) => Request.post(`${API_URL}/login`, { username, password })
+    login: (username, password) => new Promise((resolve, reject) => {
+      if(Math.random() > 0.5) {
+        resolve();
+      } else {
+        reject();
+      }
+    })
+  },
+  user: {
+    // verifyUserDetails: (details) => Request.post(`${API_URL}/user/verify`, { details })
+    verifyUserDetails: (details) => new Promise((resolve, reject) => resolve(Math.random() > 0.5))
   },
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
