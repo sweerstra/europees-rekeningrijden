@@ -66,3 +66,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+Array.from(document.querySelectorAll('[data-job-name]')).forEach(acceptButton => {
+    acceptButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+        if (this.classList.contains('disabled')) {
+            return;
+        }
+
+        const jobName = this.getAttribute('data-job-name');
+        console.log('Starting build ' + jobName);
+        this.classList.add('disabled');
+
+        // TODO: show modal here;
+
+        const url = encodeURI(`http://192.168.24.36:8080/job/${jobName}/build?token=traxit&cause=started by product owner`);
+        const username = 'Jacques';
+        const password = 'ProductOwner1';
+        let noVPN = false;
+        try {
+            var invocation = new XMLHttpRequest();
+            invocation.open("Post", url, true, username, password);
+            invocation.withCredentials = true;
+            invocation.timeout = 2500;
+            invocation.send(null);
+            invocation.ontimeout =  () => {
+                noVPN = true;
+            }
+            invocation.onloadend = () => {
+                if (noVPN) {
+                    alert("Accepting of builds is only possible with connection to the VPN.");
+                    this.classList.remove('disabled')
+                } else {
+                    this.classList.add('accepted');
+                    this.setAttribute('title', 'accepted');
+                }
+            }
+
+        }
+        catch (error) {
+            // TODO: find way to prevent CORS exception in log
+        }
+    })
+});
