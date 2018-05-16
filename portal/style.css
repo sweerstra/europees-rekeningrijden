@@ -132,11 +132,12 @@ section {
 }
 
 .section__item__otap a:not([href^="http"]) {
+    opacity: 0.5;
     font-weight: normal;
-    text-decoration: line-through;
+    cursor: default;
 }
 
-.section__item__otap a:hover {
+.section__item__otap a[href^="http"]:hover {
     background-color: var(--color-main-dark);
     border: none;
     padding: 11px;
@@ -155,6 +156,7 @@ section {
 
 .section__item:hover,
 .section__item:active {
+    padding: 11px;
     background-color: var(--color-main-dark);
     transition: background-color 150ms ease-in;
     border: none;
