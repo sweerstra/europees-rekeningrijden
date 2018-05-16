@@ -31,10 +31,10 @@ public class EmployeeService {
         if (found == null)
             return null;
 
-        if (new String(found.getRole()).equals("admin")){
+        if (new String(found.getRole()).equals("admin")) {
             Employee loadedEmployee = employeeDao.findById(employee.getId());
 
-            if(loadedEmployee == null)
+            if (loadedEmployee == null)
                 return null;
 
             loadedEmployee.setEmail(employee.getEmail());
@@ -43,12 +43,7 @@ public class EmployeeService {
 
             return employeeDao.update(loadedEmployee);
         }
-            return null;
-    }
-
-
-    public Employee createEmployee(Employee employee) {
-            return employeeDao.create(employee);
+        return null;
     }
 
     public Employee addEmployeeByAdmin(long userID, Employee employee) {
@@ -61,65 +56,6 @@ public class EmployeeService {
             return employeeDao.create(employee);
         else return null;
     }
-
-    public Employee setActiveByAdmin(long selfID, long userID) {
-        Employee found = findEmployeeById(selfID);
-
-        if (found == null)
-            return null;
-
-        Employee employee;
-
-        if (new String(found.getRole()).equals("admin")) {
-            employee = findEmployeeById(userID);
-            employee.setActive(true);
-            return employeeDao.update(employee);
-        } else
-            return null;
-    }
-
-    public Employee setInactiveByAdmin(long selfID, long userID) {
-        Employee found = findEmployeeById(selfID);
-
-        if (found == null)
-            return null;
-
-        Employee employee;
-
-        if (new String(found.getRole()).equals("admin")) {
-            employee = findEmployeeById(userID);
-            employee.setActive(false);
-            return employeeDao.update(employee);
-        } else
-            return null;
-    }
-
-    public Employee setEmployeeRoleByAdmin(long selfID, long userID, String rolename) {
-        Employee found = findEmployeeById(selfID);
-
-        if (found == null)
-            return null;
-
-        Employee employee;
-
-        if (new String(found.getRole()).equals("admin")) {
-            employee = findEmployeeById(userID);
-            employee.setRole(rolename);
-            return employeeDao.update(employee);
-        } else
-            return null;
-    }
-
-    public Employee setEmployeeEmail(long userID, String email) {
-        Employee found = findEmployeeById(userID);
-
-        if (found == null)
-            return null;
-
-       found.setEmail(email);
-       return employeeDao.update(found);
-    }
-
 
     public Employee authenthicate(String email, String password) {
         Employee employee = employeeDao.getEmployeeByEmail(email);

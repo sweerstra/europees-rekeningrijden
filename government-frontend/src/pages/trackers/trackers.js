@@ -8,6 +8,7 @@ import TrackerModal from '../../components/TrackerModal/TrackerModal';
 import { Link } from 'react-router-dom';
 import Api from '../../api';
 import { EditIcon, RemoveIcon } from '../../images/index';
+import {isAdmin} from '../../api/auth';
 
 class Trackers extends Component {
   constructor(props) {
@@ -200,6 +201,10 @@ class Trackers extends Component {
               <button className="btn blue" onClick={() => this.showModal(true)}>Add tracker</button>
               <Link to="/invoices">View invoices</Link>
               <Link to="/region">View regions</Link>
+              { isAdmin() ?
+              <Link to="/employees">View employees</Link>
+                : null
+              }
             </div>
           </div>
           <div className="trackers__administration__history">
