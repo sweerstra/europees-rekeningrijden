@@ -104,7 +104,7 @@ document.credentials.addEventListener('submit', e => {
     const password = e.target.password.value;
 
     if (jobName && acceptButton) {
-        const url = encodeURI(`http://192.168.24.36:8080/job/${SelectedJobSpan.textContent}/build?token=traxit&cause=started by product owner`);
+        const url = encodeURI(`http://192.168.24.36:8080/job/${jobName}/build?token=traxit&cause=started by product owner`);
 
         let noVPN = false;
 
