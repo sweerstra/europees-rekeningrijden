@@ -5,6 +5,11 @@ export default {
   auth: {
     login: (email, password) => Request.post(`${API_URL}/login`, { email, password })
   },
+  employee: {
+    add: (employee) => Request.post(`${API_URL}/employee`, employee),
+    getAll: () => Request.get(`${API_URL}/employee/all`),
+    edit: (employee) => Request.put(`${API_URL}/employee/edit`, employee)
+  },
   ownership: {
     add: (ownership) => Request.post(`${API_URL}/ownership`, ownership),
     edit: (ownership) => Request.put(`${API_URL}/ownership`, ownership),

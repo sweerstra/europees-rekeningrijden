@@ -21,6 +21,25 @@ public class EmployeeController {
     private EmployeeService service;
 
 
+    @GET
+    @Path("/all")
+    public Response getAllEmployees() {
+        return Response.ok(service.getAllEmployees()).build();
+    }
+
+    @POST
+    public Response createEmployee(Employee employee) {
+        return Response.ok(service.createEmployee(employee)).build();
+    }
+
+    @PUT
+    @Path("/edit")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editEmployeeByAdmin(Employee employee) {
+        return Response.ok(service.editEmployee(employee)).build();
+    }
+
+
     @POST
     @Security
     @Consumes(MediaType.APPLICATION_JSON)
@@ -57,7 +76,7 @@ public class EmployeeController {
 
     @PUT
     @Security
-    @Path("/setActive/{id}")
+    @Path("/setInactive/{id}")
     public Response setEmployeeInactive (@HeaderParam("id") Integer selfid, @PathParam("id") String id) {
         Employee updatedEmployee = service.setInactiveByAdmin(selfid, Long.parseLong(id));
 
@@ -77,7 +96,24 @@ public class EmployeeController {
     @Path("/setRole/{id}/{rolename}")
     public Response setEmployeeRole (@HeaderParam("id") Integer selfID, @PathParam("rolename") String rolename
             , @PathParam("id") String userID) {
-        Employee updatedEmployee = service.setEmployeeRole(selfID, Long.parseLong(userID), rolename);
+        Employee updatedEmployee = service.setEmployeeRoleByAdmin(selfID, Long.parseLong(userID), rolename);
+
+        if (updatedEmployee != null)
+        {
+            return Response.ok(updatedEmployee).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+    }
+
+    @PUT
+    @Security
+    @Path("/setEmail/{email}")
+    public Response setEmployeeEmail (@HeaderParam("id") Integer userID, @PathParam("email") String email) {
+        Employee updatedEmployee = service.setEmployeeEmail(userID, email);
 
         if (updatedEmployee != null)
         {

@@ -5,6 +5,7 @@ import domain.Employee;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 @Stateless
 public class EmployeeService {
@@ -18,6 +19,28 @@ public class EmployeeService {
 
     public Employee addEmployee(Employee employee) {
         return employeeDao.create(employee);
+    }
+
+    public List<Employee> getAllEmployees() {
+        return employeeDao.findAll();
+    }
+
+    public Employee editEmployee(Employee employee) {
+        Employee loadedEmployee = employeeDao.findById(employee.getId());
+
+        if(loadedEmployee == null)
+            return null;
+
+        loadedEmployee.setEmail(employee.getEmail());
+        loadedEmployee.setRole(employee.getRole());
+        loadedEmployee.setActive(employee.getActive());
+
+        return employeeDao.update(loadedEmployee);
+    }
+
+
+    public Employee createEmployee(Employee employee) {
+            return employeeDao.create(employee);
     }
 
     public Employee addEmployeeByAdmin(long userID, Employee employee) {
@@ -63,7 +86,7 @@ public class EmployeeService {
             return null;
     }
 
-    public Employee setEmployeeRole(long selfID, long userID, String rolename) {
+    public Employee setEmployeeRoleByAdmin(long selfID, long userID, String rolename) {
         Employee found = findEmployeeById(selfID);
 
         if (found == null)
@@ -77,6 +100,16 @@ public class EmployeeService {
             return employeeDao.update(employee);
         } else
             return null;
+    }
+
+    public Employee setEmployeeEmail(long userID, String email) {
+        Employee found = findEmployeeById(userID);
+
+        if (found == null)
+            return null;
+
+       found.setEmail(email);
+       return employeeDao.update(found);
     }
 
 

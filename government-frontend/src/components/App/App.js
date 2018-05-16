@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import Login from '../../pages/login/login';
+import Employees from '../../pages/users/employees';
 import Register from '../../pages/register/register'
 import Trackers from '../../pages/trackers/trackers';
 import Invoices from '../../pages/invoices/invoices';
@@ -30,6 +31,7 @@ class App extends Component {
           <PrivateRoute path="/invoices" authenticated={isAuthenticated} component={Invoices}/>
           <PrivateRoute path="/region" authenticated={isAuthenticated} component={Region}/>
           <PrivateRoute path="/settings" authenticated={isAuthenticated} component={Settings}/>
+          <Route path="/employees" render={() => <Employees/>}/>
           <Route path="/login" render={() =>
             isAuthenticated
               ? <Trackers/>
