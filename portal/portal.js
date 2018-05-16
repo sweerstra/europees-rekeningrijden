@@ -77,6 +77,7 @@ Array.from(document.querySelectorAll('[data-job-name]')).forEach(acceptButton =>
         xhr.open("POST", encodeURI('http://192.168.24.36:8080/job/government-FP/build?token=traxit&cause=started by product owner'));
         xhr.withCredentials = true;
         xhr.setRequestHeader("Authorization", "Basic " + btoa('Jacques' + ':' + 'ProductOwner1'));
-        xhr.send();
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(null);
     })
 });
