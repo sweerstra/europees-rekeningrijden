@@ -8,7 +8,7 @@ export default {
   employee: {
     add: (employee) => Request.post(`${API_URL}/employee`, employee),
     getAll: () => Request.get(`${API_URL}/employee/all`),
-    edit: (employee) => Request.put(`${API_URL}/employee/edit`, employee)
+    edit: (employee) => Request.put(`${API_URL}/employee`, employee)
   },
   ownership: {
     add: (ownership) => Request.post(`${API_URL}/ownership`, ownership),

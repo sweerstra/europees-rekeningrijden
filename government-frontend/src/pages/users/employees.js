@@ -33,9 +33,6 @@ class Employees extends Component {
       value = checked;
     }
 
-
-    console.log({ name, value });
-
     this.setState(state => ({
       employee: {
         ...state.employee,
@@ -55,8 +52,9 @@ class Employees extends Component {
   };
 
   createEmployee = () => {
-    delete this.state.employee.id;
-    Api.employee.add(this.state.employee).then(() => {
+    const {employee} = this.state;
+    delete employee.id;
+    Api.employee.add(employee).then(() => {
       this.loadEmployees();
     });
   };

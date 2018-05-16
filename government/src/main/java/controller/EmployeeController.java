@@ -29,7 +29,6 @@ public class EmployeeController {
 
     @PUT
     @Security
-    @Path("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response editEmployeeByAdmin(@HeaderParam("id") Integer id, Employee employee) {
         Employee newEmployee = service.editEmployeeByAdmin(Long.valueOf(id), employee);
