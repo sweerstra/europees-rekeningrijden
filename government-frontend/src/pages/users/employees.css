@@ -1,0 +1,43 @@
+.employees {
+  display: grid;
+  grid-template-columns: 7fr 3fr;
+  grid-template-rows: 80px 1fr;
+  grid-template-areas: "nav nav" "table edit";
+}
+
+.employees__table {
+  grid-area: table;
+  padding: 20px;
+}
+
+.employees__administration {
+  grid-area: edit;
+  width: 100%;
+  padding: 20px;
+}
+
+.employees__administration button {
+  width: 100%
+}
+
+.employees__administration section label {
+  font-weight: bold;
+}
+
+.employees__administration section input:not([type="checkbox"]) {
+  width: 100%;
+}
+
+.employees__administration section input {
+  margin-top: 4px;
+
+}
+
+.employees__administration section select {
+  margin-top: 4px;
+  width: 100%;
+}
+
+.employees__administration__button {
+  margin-top: 20px;
+}

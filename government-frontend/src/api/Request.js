@@ -1,3 +1,5 @@
+import { getToken } from './auth';
+
 class Request {
   get(url) {
     return this._request(url);
@@ -24,8 +26,15 @@ class Request {
     });
   }
 
-  _request(url, options) {
-    const headers = { 'Content-Type': 'application/json' };
+  _request(url, options = {}) {
+    const headers = { ...options.headers, 'Content-Type': 'application/json' };
+
+    const token = getToken();
+
+    if (token) {
+      headers.Authorization = token;
+    }
+
     return fetch(url, { ...options, headers })
       .then(resp => resp.json());
   };

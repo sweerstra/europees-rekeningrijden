@@ -1,6 +1,5 @@
 import { decodeToken } from '../utils/decodeToken';
-
-const TOKEN_KEY = 'access_token';
+import { TOKEN_KEY } from '../config';
 
 export const getLoggedInEmail = () => {
   const token = getToken();
@@ -12,11 +11,15 @@ export const getLoggedInEmail = () => {
   }
 };
 
+export const isAdmin = () => {
+  return Boolean(decodeToken(getToken()).isAdmin);
+};
+
 export const isLoggedIn = () => {
   return Boolean(getToken());
 };
 
-const getToken = () => {
+export const getToken = () => {
   return localStorage.getItem(TOKEN_KEY);
 };
 
