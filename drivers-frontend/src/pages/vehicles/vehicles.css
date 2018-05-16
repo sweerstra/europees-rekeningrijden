@@ -93,6 +93,11 @@
   font-weight: bold;
 }
 
+/* react-table */
+.vehicles__table [role="rowgroup"] {
+  cursor: pointer;
+}
+
 @media (max-width: 992px) {
   .vehicles {
     grid-template-columns: 1fr;

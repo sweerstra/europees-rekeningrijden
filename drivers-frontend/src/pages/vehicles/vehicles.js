@@ -50,7 +50,7 @@ class Vehicles extends Component {
       {
         Header: 'Sign Over Vehicle',
         id: 'signOver',
-        accessor: d => <ShareIcon onClick={() => this.setState({ selectedVehicle: d })}/>
+        accessor: d => <ShareIcon/>
       }
     ];
 
@@ -76,6 +76,11 @@ class Vehicles extends Component {
                 const isSelected = id === selectedVehicle.id;
 
                 return {
+                  onClick: () => {
+                    if (id) {
+                      this.setState({ selectedVehicle: rowInfo.original });
+                    }
+                  },
                   className: isSelected ? 'active' : '',
                   style: {
                     color: isSelected ? 'white' : 'black',

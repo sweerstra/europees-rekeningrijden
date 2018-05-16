@@ -7,7 +7,7 @@ export default {
   auth: {
     // login: (username, password) => Request.post(`${API_URL}/login`, { username, password })
     login: (username, password) => new Promise((resolve, reject) => {
-      if(Math.random() > 0.5) {
+      if (Math.random() > 0.5) {
         resolve();
       } else {
         reject();
@@ -28,5 +28,19 @@ export default {
   },
   vehicle: {
     getCurrentTrackersWithVehicleByOwner: (id) => Request.get(`${GOVERNMENT_API_URL}/vehicles/owner/${id}`)
+  },
+  signOver: {
+    createCode: length => {
+      // TODO: Refactor code to drivers backend
+      const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%.?-=+&';
+
+      let code = '';
+
+      for (let i = 0; i <= length; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+
+      return code;
+    }
   }
 };
