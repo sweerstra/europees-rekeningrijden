@@ -67,46 +67,73 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+/* logging in with Jenkins account */
+
+const Modal = document.getElementById('modal');
+const SelectedJobSpan = document.getElementById('selected-job');
+const CloseModalButton = document.getElementById('close-modal');
+
+const setModal = (show) => Modal.style.visibility = show ? 'visible' : 'hidden';
+
 Array.from(document.querySelectorAll('[data-job-name]')).forEach(acceptButton => {
     acceptButton.addEventListener('click', function (event) {
         event.stopPropagation();
         event.preventDefault();
+
         if (this.classList.contains('disabled')) {
             return;
         }
 
-        const jobName = this.getAttribute('data-job-name');
-        console.log('Starting build ' + jobName);
         this.classList.add('disabled');
 
-        // TODO: show modal here;
+        setModal(true);
 
-        const url = encodeURI(`http://192.168.24.36:8080/job/${jobName}/build?token=traxit&cause=started by product owner`);
-        const username = 'Jacques';
-        const password = 'ProductOwner1';
+        SelectedJobSpan.textContent = this.getAttribute('data-job-name');
+    })
+});
+
+CloseModalButton.addEventListener('click', () => setModal(false));
+
+document.credentials.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const jobName = SelectedJobSpan.textContent;
+    const acceptButton = document.querySelector(`[data-job-name="${jobName}"]`);
+
+    const username = e.target.username.value;
+    const password = e.target.password.value;
+
+    if (jobName && acceptButton) {
+        const url = encodeURI(`http://192.168.24.36:8080/job/${SelectedJobSpan.textContent}/build?token=traxit&cause=started by product owner`);
+
         let noVPN = false;
+
         try {
-            var invocation = new XMLHttpRequest();
-            invocation.open("Post", url, true, username, password);
+            const invocation = new XMLHttpRequest();
+            invocation.open('post', url, true, username, password);
             invocation.withCredentials = true;
             invocation.timeout = 2500;
-            invocation.send(null);
-            invocation.ontimeout =  () => {
-                noVPN = true;
-            }
+
+            invocation.ontimeout = () => noVPN = true;
+
             invocation.onloadend = () => {
                 if (noVPN) {
-                    alert("Accepting of builds is only possible with connection to the VPN.");
-                    this.classList.remove('disabled')
+                    alert('Het is alleen mogelijk een Jenkins build te starten met VPN verbinding.');
+                    acceptButton.classList.remove('disabled')
                 } else {
-                    this.classList.add('accepted');
-                    this.setAttribute('title', 'accepted');
+                    acceptButton.classList.add('accepted');
+                    acceptButton.setAttribute('title', 'Accepted');
                 }
-            }
+                setModal(false);
+            };
 
+            invocation.send(null);
         }
         catch (error) {
             // TODO: find way to prevent CORS exception in log
         }
-    })
+    } else {
+        alert('Er is nog geen Jenkins build verbonden met dit systeem.');
+        setModal(false);
+    }
 });
