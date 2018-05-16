@@ -14,6 +14,7 @@ class Employees extends Component {
       employee: {},
       isEditing: false
     };
+    this.state.employee.role = "admin";
   }
 
   componentDidMount() {
@@ -48,12 +49,16 @@ class Employees extends Component {
   };
 
   editEmployee = () => {
-    Api.employee.edit(this.state.employee).then(this.loadEmployees());
+    Api.employee.edit(this.state.employee).then(() => {
+      this.loadEmployees();
+    });
   };
 
   createEmployee = () => {
-    console.log(this.state.employee);
-    Api.employee.add(this.state.employee).then(this.loadEmployees());
+    delete this.state.employee.id;
+    Api.employee.add(this.state.employee).then(() => {
+      this.loadEmployees();
+    });
   };
 
   render() {

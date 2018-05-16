@@ -25,17 +25,25 @@ public class EmployeeService {
         return employeeDao.findAll();
     }
 
-    public Employee editEmployee(Employee employee) {
-        Employee loadedEmployee = employeeDao.findById(employee.getId());
+    public Employee editEmployeeByAdmin(Long userID, Employee employee) {
+        Employee found = findEmployeeById(userID);
 
-        if(loadedEmployee == null)
+        if (found == null)
             return null;
 
-        loadedEmployee.setEmail(employee.getEmail());
-        loadedEmployee.setRole(employee.getRole());
-        loadedEmployee.setActive(employee.getActive());
+        if (new String(found.getRole()).equals("admin")){
+            Employee loadedEmployee = employeeDao.findById(employee.getId());
 
-        return employeeDao.update(loadedEmployee);
+            if(loadedEmployee == null)
+                return null;
+
+            loadedEmployee.setEmail(employee.getEmail());
+            loadedEmployee.setRole(employee.getRole());
+            loadedEmployee.setActive(employee.getActive());
+
+            return employeeDao.update(loadedEmployee);
+        }
+            return null;
     }
 
 

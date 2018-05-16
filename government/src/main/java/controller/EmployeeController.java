@@ -28,15 +28,26 @@ public class EmployeeController {
     }
 
     @POST
+    @Path("/add")
     public Response createEmployee(Employee employee) {
         return Response.ok(service.createEmployee(employee)).build();
     }
 
     @PUT
+    @Security
     @Path("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editEmployeeByAdmin(Employee employee) {
-        return Response.ok(service.editEmployee(employee)).build();
+    public Response editEmployeeByAdmin(@HeaderParam("id") Integer id,Employee employee) {
+        Employee newEmployee = service.editEmployeeByAdmin(Long.valueOf(id), employee);
+
+        if (newEmployee != null)
+        {
+            return Response.ok(newEmployee).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
     }
 
 
