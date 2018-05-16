@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import './App.css';
 import Login from '../../pages/login/login';
-import StolenCar from '../../pages/stolen-car/stolen-car';
+import StolenVehicle from '../../pages/stolen-car/stolen-vehicle';
 
 class App extends Component {
     state = {
@@ -15,10 +15,10 @@ class App extends Component {
                 <Switch>
                     <Route path="/login" render={() =>
                         this.state.isAuthenticated
-                            ? <StolenCar/>
+                            ? <StolenVehicle/>
                             : <Login onAuthenticate={this.onAuthenticate}/>
                     }/>
-                    <Route path="/stolencar" component={StolenCar}/>
+                    <Route path="/stolencar" component={StolenVehicle}/>
                     <Redirect to="/login"/>
                 </Switch>
 
