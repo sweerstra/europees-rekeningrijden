@@ -18,3 +18,8 @@
 .route-invoices__table [role="row"].active .feather:hover { stroke: white; }
 
 .route-invoices__map { grid-area: route-map; }
+
+/* react-table */
+.route-invoices [role="rowgroup"] {
+  cursor: pointer;
+}

@@ -6,10 +6,6 @@ body {
 }
 
 /* react-table */
-[role="rowgroup"] {
-  cursor: pointer;
-}
-
 [role="gridcell"] {
   text-align: center;
 }

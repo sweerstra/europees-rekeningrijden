@@ -201,10 +201,7 @@ class Trackers extends Component {
               <button className="btn blue" onClick={() => this.showModal(true)}>Add tracker</button>
               <Link to="/invoices">View invoices</Link>
               <Link to="/region">View regions</Link>
-              { isAdmin() ?
-              <Link to="/employees">View employees</Link>
-                : null
-              }
+              {isAdmin() && <Link to="/employees">View employees</Link>}
             </div>
           </div>
           <div className="trackers__administration__history">
