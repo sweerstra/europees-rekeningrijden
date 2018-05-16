@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class OwnershipService {
@@ -98,8 +99,14 @@ public class OwnershipService {
         return ownershipDao.findLatest();
     }
 
-    public List<Ownership> getOwnershipsByOwner(long id) {
-        return ownershipDao.findByOwner(id);
+    public List<Ownership> getOwnershipsByOwner(long ownerId) {
+        return ownershipDao.findByOwner(ownerId);
+    }
+
+    public List<Ownership> getCurrentOwnershipsByOwner(long ownerId) {
+        return ownershipDao.findByOwner(ownerId).stream()
+                .filter(o -> o.getVehicle() != null && o.getEndDate() == null)
+                .collect(Collectors.toList());
     }
 
     public List<Ownership> getOwnershipsByTrackerId(String trackerId) {

@@ -23,7 +23,7 @@ public class CoordinateGeneratorTest {
     private static long INITIAL_DELAY = 1000;
     private static int RADIUS_IN_METERS = 1000;
     private static long PERIOD = 10000;
-    private static int PERIOD_COUNTER = 300;
+    private static int PERIOD_COUNTER = 1;
 //    private String TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
     private String API_URL = "http://localhost:8080/movement/api/movement";
