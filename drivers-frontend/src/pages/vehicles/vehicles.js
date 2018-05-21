@@ -161,6 +161,7 @@ class Vehicles extends Component {
                onModalClose={() => this.setState({ isModalOpen: false })}>
           <div className="sign-over__code">
             <h2>Sign Over Code</h2>
+            <p>Share this code with <b>{`${firstName} ${lastName}`}</b> to confirm the Sign Over.</p>
             <div className="sign-over__code__input">
               <input type="text"
                      className="blue"

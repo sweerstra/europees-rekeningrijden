@@ -41,6 +41,16 @@ export default {
       }
 
       return code;
+    },
+    getDetailsForCode: code => {
+      return new Promise((resolve, reject) => resolve({
+        licensePlate: 'LG-976-TR',
+        sender: {
+          firstName: 'Dennis',
+          lastName: 'van Gils'
+        },
+        receiver: {}
+      }));
     }
   }
 };
