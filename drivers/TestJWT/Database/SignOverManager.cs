@@ -38,6 +38,16 @@ namespace Drivers.Database
             }
             request.Sender = verifiedSender;
 
+            Driver verifiedReceiver = driverManager.GetDriver(request.Receiver.Email);
+
+            if (verifiedReceiver == null)
+            {
+                //receiver email incorrect
+                return null;
+            }
+
+            request.Receiver = verifiedReceiver;
+
             using (ManagedConnection connection = new ManagedConnection())
             {
                 string licensePlate = request.LicensePlate;
