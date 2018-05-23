@@ -7,6 +7,7 @@ import utils.DateUtils;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.Date;
+import java.util.List;
 
 @Stateless
 public class StolenVehicleService {
@@ -19,7 +20,7 @@ public class StolenVehicleService {
     }
 
     public StolenVehicle addstolenVehicle(StolenVehicle stolenVehicle) {
-        Date date = DateUtils.createDateFromString(stolenVehicle.getDateString(), "dd-MM-yyyy hh:mm:ss");
+        Date date = DateUtils.createDateFromString(stolenVehicle.getDateString(), "dd-MM-yyyy hh:mm");
         if (date == null) return null;
 
         stolenVehicle.setDate(date);
@@ -37,5 +38,9 @@ public class StolenVehicleService {
 
     public StolenVehicle findStolenVehicleById(Long id) {
         return stolenVehicleDao.findById(id);
+    }
+
+    public List<StolenVehicle> findAll() {
+        return stolenVehicleDao.findAll();
     }
 }

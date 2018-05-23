@@ -30,7 +30,5 @@ hs_err_pid*
 
 # Operating System
 .DS_Store
-government-frontend/src/config/index.js
-government/src/main/resources/META-INF/persistence.xml
-government/src/main/resources/META-INF/persistence.xml
+
 drivers/packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.Build.Tasks.CodeAnalysis.dll
