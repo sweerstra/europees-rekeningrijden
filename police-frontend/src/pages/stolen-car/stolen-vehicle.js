@@ -33,6 +33,11 @@ class StolenVehicle extends Component {
         });
     };
 
+    // trackStolenVehicle() {
+    //     Api.vehicle.getLatestMovement(this.state.selectedRow)
+    //         .then(vehicle => this.setState({ vehicle }))
+    // }
+
 
     render() {
         const columns = [
@@ -67,6 +72,7 @@ class StolenVehicle extends Component {
                                     onClick: () => {
                                         const {trackerId} = rowInfo.original;
                                         this.setState({selectedRow: trackerId});
+                                        // this.trackStolenVehicle();
                                     },
                                     style: {
                                         color: isSelected ? 'white' : 'black',
@@ -88,7 +94,7 @@ class StolenVehicle extends Component {
                        onModalClose={this.toggleModal}>
                     <h1>Report stolen Vehicle</h1>
                     <label>
-                        Trackerid:
+                        Tracker identification number
                         <input type="text" name="name"/>
                     </label>
                     <label>
@@ -96,7 +102,7 @@ class StolenVehicle extends Component {
                         <input type="text" name="name"/>
                     </label>
                     <label>
-                        date of theft
+                        Date of theft
                         <input type="date" name="name"/>
                     </label>
                     <button className="btn blue" onClick={this.onAddStolencar}>

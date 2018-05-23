@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @XmlRootElement
-public class Movement {
+public class Movement implements Comparable<Movement>{
     @Id
     @GeneratedValue
     private long id;
@@ -74,5 +74,10 @@ public class Movement {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    @Override
+    public int compareTo(Movement m) {
+        return getDateTime().compareTo(m.getDateTime());
     }
 }

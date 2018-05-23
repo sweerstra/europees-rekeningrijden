@@ -1,5 +1,5 @@
 import Request from './request';
-import { API_URL } from '../config/index';
+import { API_URL, MOV_API_URL } from '../config/index';
 
 export default {
     auth: {
@@ -7,6 +7,7 @@ export default {
     },
     stolenCar: {
         add: (stolencar) => Request.post(`${API_URL}/stolencar`, stolencar),
-        getAll: () => Request.get(`${API_URL}/stolencar/all`)
+        getAll: () => Request.get(`${API_URL}/stolencar/all`),
+        getLatestMovement: (trackerId) => Request.get(`${MOV_API_URL}/movement/latest/${trackerId}`)
     }
 };
