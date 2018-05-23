@@ -14,6 +14,8 @@ namespace drivers.Models
         public Driver Receiver { get; set; }
         public string Token { get; set; }
         public string HashedToken { get; set; }
-        public DateTime TransferDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? ConfirmDate { get; set; }
+        public DateTime? VerifyDate { get; set; }
     }
 }

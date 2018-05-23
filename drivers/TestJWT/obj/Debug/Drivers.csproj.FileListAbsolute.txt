@@ -61,3 +61,4 @@ C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.
 C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Web.Http.WebHost.xml
 C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\obj\Debug\Drivers.dll
 C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\obj\Debug\Drivers.pdb
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\obj\Debug\Drivers.csprojResolveAssemblyReference.cache

@@ -57,7 +57,7 @@ namespace Drivers.Database
             return drivers;
         }
 
-        public Driver GetDriver(int id)
+        public Driver GetDriver(long id)
         {
             return GetAllDrivers().FirstOrDefault(d => d.Id == id);
         }

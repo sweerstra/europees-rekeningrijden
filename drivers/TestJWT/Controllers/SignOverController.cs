@@ -17,7 +17,14 @@ namespace Drivers.Controllers
         [HttpPost]
         public IHttpActionResult CreateSignOverRequest(SignOver signOver)
         {
-             _manager.CreateSignOverRequest(signOver);
+            SignOver result = _manager.CreateSignOverRequest(signOver);
+
+            if (result == null)
+            {
+                return BadRequest("Data supplied was invalid");
+            }
+
+            return Ok(result);
         }
     }
 }
