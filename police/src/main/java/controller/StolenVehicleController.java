@@ -32,6 +32,18 @@ public class StolenVehicleController {
         return Response.ok(stolenVehicle).build();
     }
 
+    @GET
+    public Response getstolenVehicles() {
+        List<StolenVehicle> stolenVehicles = service.findAll();
+
+        if (stolenVehicles == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(stolenVehicles).build();
+    }
+
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reportStolenVehicle(StolenVehicle stolenVehicle) {

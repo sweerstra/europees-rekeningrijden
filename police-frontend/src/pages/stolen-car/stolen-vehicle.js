@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './stolen-vehicle.css';
 import Api from '../../api';
 import ReactTable from 'react-table';
@@ -6,6 +6,7 @@ import 'react-table/react-table.css';
 import Map from '../../components/Map/Map';
 import Modal from '../../components/Modal/Modal'
 import Navigation from "../../components/Navigation/Navigation";
+import { debounce } from '../../utils/debounce';
 
 class StolenVehicle extends Component {
     constructor(props) {
@@ -14,17 +15,46 @@ class StolenVehicle extends Component {
         this.state = {
             stolenVehicles: [],
             selectedRow: null,
-            isModalOpen: false
+            isModalOpen: false,
+            stolenVehicle: { trackerId: '', licencePlate: '', dateString: '' },
+            trackerId: '',
+            trackerNotFound: true
         };
     }
 
     componentDidMount() {
-        // Api.stolenCar.getAll()
-        //     .then(stolenVehicles => this.setState({stolenVehicles}));
+        Api.stolenCar.getAll()
+            .then(stolenVehicles => this.setState({ stolenVehicles }));
+
+        this.licensePlateCallback = debounce(e => {
+            const { value } = e.target;
+            Api.vehicle.getTrackerbyLicensePlate(value)
+                .then(tracker => this.setState({ trackerId: tracker.trackerId, trackerNotFound: false }))
+                .catch(() => this.setState({ trackerNotFound: true }));
+        }, 600);
     }
 
-    onAddStolencar = (stolencar) => {
-        Api.ownership.add(stolencar);
+    onLicenseChange = (e) => {
+        e.persist();
+        this.onStolenVehicleChange(e);
+        this.licensePlateCallback(e);
+    };
+
+
+    onAddStolenVehicle = () => {
+        const { stolenVehicle, trackerId } = this.state;
+        const { dateString } = stolenVehicle;
+
+        stolenVehicle.dateString = new Date(dateString).toLocaleString();
+        stolenVehicle.trackerId = trackerId;
+
+        console.log(stolenVehicle);
+
+        Api.stolenCar.add(stolenVehicle)
+            .then(addedStolenVehicle => this.setState(state => ({
+                stolenVehicles: [...state.stolenVehicles, addedStolenVehicle],
+                isModalOpen: false
+            })));
     };
 
     toggleModal = () => {
@@ -33,6 +63,15 @@ class StolenVehicle extends Component {
         });
     };
 
+    onStolenVehicleChange = (e) => {
+        const { name, value } = e.target;
+        this.setState(state => ({
+            stolenVehicle: {
+                ...state.stolenVehicle,
+                [name]: value
+            }
+        }))
+    };
 
     render() {
         const columns = [
@@ -42,15 +81,15 @@ class StolenVehicle extends Component {
             },
             {
                 Header: 'License Plate',
-                accessor: 'licensePlate'
+                accessor: 'licencePlate'
             },
             {
                 Header: 'Reported',
-                accessor: 'dateOfTheft'
+                accessor: 'dateString'
             }
         ];
 
-        const {stolenVehicles, selectedRow, isModalOpen} = this.state;
+        const { stolenVehicles, selectedRow, isModalOpen, stolenVehicle, trackerId, trackerNotFound } = this.state;
 
         return (
             <div>
@@ -65,8 +104,8 @@ class StolenVehicle extends Component {
 
                                 return {
                                     onClick: () => {
-                                        const {trackerId} = rowInfo.original;
-                                        this.setState({selectedRow: trackerId});
+                                        const { trackerId } = rowInfo.original;
+                                        this.setState({ selectedRow: trackerId });
                                     },
                                     style: {
                                         color: isSelected ? 'white' : 'black',
@@ -78,7 +117,7 @@ class StolenVehicle extends Component {
                             showPagination={false}
                         />
                         <div className="stolen-vehicles__navigation__buttons">
-                            <button className="btn green" onClick={this.toggleModal}>Report stolen car</button>
+                            <button className="btn blue" onClick={this.toggleModal}>Report stolen car</button>
                         </div>
                     </div>
                     <Map/>
@@ -88,18 +127,23 @@ class StolenVehicle extends Component {
                        onModalClose={this.toggleModal}>
                     <h1>Report stolen Vehicle</h1>
                     <label>
-                        Trackerid:
-                        <input type="text" name="name"/>
+                        License Plate
+                        <input type="text" name="licencePlate"
+                               className={trackerNotFound ? 'red' : 'green'}
+                               onChange={this.onLicenseChange}
+                               value={stolenVehicle.licensePlate}/>
                     </label>
                     <label>
-                        Licenseplate
-                        <input type="text" name="name"/>
+                        Tracker ID
+                        <input type="text" name="trackerId" value={trackerId}/>
                     </label>
                     <label>
-                        date of theft
-                        <input type="date" name="name"/>
+                        Date of Theft
+                        <input type="datetime-local" name="dateString"
+                               onChange={this.onStolenVehicleChange}
+                               value={stolenVehicle.dateString}/>
                     </label>
-                    <button className="btn blue" onClick={this.onAddStolencar}>
+                    <button className="btn blue" onClick={this.onAddStolenVehicle}>
                         Report
                     </button>
                 </Modal>
