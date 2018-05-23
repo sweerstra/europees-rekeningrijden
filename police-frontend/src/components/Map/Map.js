@@ -7,15 +7,14 @@ GoogleMapsLoader.KEY = GOOGLE_MAPS_API_KEY;
 
 class Map extends Component {
     state = {
-        id: 0,
+        movementId: 0,
         map: {},
-        polylines: []
     };
 
     componentDidMount() {
         GoogleMapsLoader.load((google) => {
             window.google = google;
-
+            console.log(window.google);
             const mapOptions = {
                 zoom: 7,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -28,37 +27,30 @@ class Map extends Component {
         });
     }
 
-    // // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    //     const { id, coordinates } = nextProps.route;
-    //     if (prevState.id === id || coordinates.length === 0) return null;
-    //
-    //     // access the coordinates obtained from parent component, transform them
-    //     const path = coordinates.map(c => ({ lat: c.latitude, lng: c.longitude }));
-    //
-    //     // https://developers.google.com/maps/documentation/javascript/reference/3/#Polyline
-    //     const polyline = new window.google.maps.Polyline({
-    //         path,
-    //         geodesic: true,
-    //         strokeColor: '#3F51B5',
-    //         strokeWeight: 4,
-    //         strokeOpacity: 1.0
-    //     });
+    // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { movement: { id } } = nextProps;
+        const { map } = prevState;
+        if (prevState.movementId === id) return null;
 
-    //     const { map, polylines } = prevState;
-    //     map.setCenter(path[0]);
-    //     map.setZoom(9);
-    //
-    //     polylines.forEach(p => p.setMap(null));
-    //     polyline.setMap(map);
-    //     polylines.push(polyline);
-    //
-    //     return { id, polylines };
-    // }
+        // https://developers.google.com/maps/documentation/javascript/reference/3/#Marker
+        var marker = new window.google.maps.Marker({
+            position: {lat: movement.latitude, lng: movement.longitude},
+            icon: {
+                path: window.google.maps.SymbolPath.CIRCLE,
+                strokeColor: '#3F51B5',
+                scale: 10
+            },
+            draggable: false,
+            map
+        });
+
+        return { movementId: id };
+    }
 
     render() {
         return (
-            <div className="google-map stolen-vehicles-map" style={{ height: '100%' }}></div>
+            <div className="google-map stolen-vehicles-map" style={{height: '100%'}}></div>
         );
     }
 }

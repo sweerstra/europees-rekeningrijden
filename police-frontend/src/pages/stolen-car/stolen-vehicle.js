@@ -18,7 +18,10 @@ class StolenVehicle extends Component {
             isModalOpen: false,
             stolenVehicle: { trackerId: '', licencePlate: '', dateString: '' },
             trackerId: '',
-            trackerNotFound: true
+            trackerNotFound: true,
+            movement: {
+                id: 0
+            }
         };
     }
 
@@ -39,7 +42,6 @@ class StolenVehicle extends Component {
         this.onStolenVehicleChange(e);
         this.licensePlateCallback(e);
     };
-
 
     onAddStolenVehicle = () => {
         const { stolenVehicle, trackerId } = this.state;
@@ -63,6 +65,11 @@ class StolenVehicle extends Component {
         });
     };
 
+    trackStolenVehicle = (trackerId) => {
+        Api.stolenCar.getLatestMovement(trackerId)
+            .then(movement => this.setState({ movement }));
+    };
+    
     onStolenVehicleChange = (e) => {
         const { name, value } = e.target;
         this.setState(state => ({
@@ -70,7 +77,7 @@ class StolenVehicle extends Component {
                 ...state.stolenVehicle,
                 [name]: value
             }
-        }))
+        }));
     };
 
     render() {
@@ -89,7 +96,7 @@ class StolenVehicle extends Component {
             }
         ];
 
-        const { stolenVehicles, selectedRow, isModalOpen, stolenVehicle, trackerId, trackerNotFound } = this.state;
+        const { stolenVehicles, selectedRow, isModalOpen, stolenVehicle, trackerId, trackerNotFound, movement } = this.state;
 
         return (
             <div>
@@ -106,6 +113,7 @@ class StolenVehicle extends Component {
                                     onClick: () => {
                                         const { trackerId } = rowInfo.original;
                                         this.setState({ selectedRow: trackerId });
+                                        this.trackStolenVehicle(trackerId);
                                     },
                                     style: {
                                         color: isSelected ? 'white' : 'black',
@@ -120,7 +128,7 @@ class StolenVehicle extends Component {
                             <button className="btn blue" onClick={this.toggleModal}>Report stolen car</button>
                         </div>
                     </div>
-                    <Map/>
+                    <Map movement={movement}/>
                 </div>
 
                 <Modal isOpen={isModalOpen}
