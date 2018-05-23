@@ -57,7 +57,6 @@ public class MovementService {
 
         if(!movements.isEmpty()) {
             Collections.sort(movements);
-            Collections.reverse(movements);
 
             return movements.get(movements.size() - 1);
         }

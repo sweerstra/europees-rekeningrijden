@@ -14,7 +14,10 @@ class StolenVehicle extends Component {
         this.state = {
             stolenVehicles: [],
             selectedRow: null,
-            isModalOpen: false
+            isModalOpen: false,
+            movement: {
+                id: 0
+            }
         };
     }
 
@@ -33,11 +36,10 @@ class StolenVehicle extends Component {
         });
     };
 
-    // trackStolenVehicle() {
-    //     Api.vehicle.getLatestMovement(this.state.selectedRow)
-    //         .then(vehicle => this.setState({ vehicle }))
-    // }
-
+    trackStolenVehicle = (trackerId) => {
+        Api.stolenCar.getLatestMovement(trackerId)
+            .then(movement => this.setState({ movement }));
+    };
 
     render() {
         const columns = [
@@ -55,7 +57,7 @@ class StolenVehicle extends Component {
             }
         ];
 
-        const {stolenVehicles, selectedRow, isModalOpen} = this.state;
+        const {stolenVehicles, selectedRow, isModalOpen, movement} = this.state;
 
         return (
             <div>
@@ -72,7 +74,7 @@ class StolenVehicle extends Component {
                                     onClick: () => {
                                         const {trackerId} = rowInfo.original;
                                         this.setState({selectedRow: trackerId});
-                                        // this.trackStolenVehicle();
+                                        this.trackStolenVehicle(trackerId);
                                     },
                                     style: {
                                         color: isSelected ? 'white' : 'black',
@@ -87,7 +89,7 @@ class StolenVehicle extends Component {
                             <button className="btn green" onClick={this.toggleModal}>Report stolen car</button>
                         </div>
                     </div>
-                    <Map/>
+                    <Map movement={movement}/>
                 </div>
 
                 <Modal isOpen={isModalOpen}
