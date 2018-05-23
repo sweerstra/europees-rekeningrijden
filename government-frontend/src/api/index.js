@@ -5,6 +5,11 @@ export default {
   auth: {
     login: (email, password) => Request.post(`${API_URL}/login`, { email, password })
   },
+  employee: {
+    add: (employee) => Request.post(`${API_URL}/employee`, employee),
+    getAll: () => Request.get(`${API_URL}/employee/all`),
+    edit: (employee) => Request.put(`${API_URL}/employee`, employee)
+  },
   ownership: {
     add: (ownership) => Request.post(`${API_URL}/ownership`, ownership),
     edit: (ownership) => Request.put(`${API_URL}/ownership`, ownership),
@@ -19,7 +24,7 @@ export default {
     getAll: () => Request.get(`${API_URL}/owners`)
   },
   vehicle: {
-    getByLicensePlate: (licensePlate) => Request.get(`${API_URL}/vehicle/${licensePlate}`)
+    getByLicensePlate: (licensePlate) => Request.get(`${API_URL}/vehicle/${licensePlate}`),
   },
   region: {
     addRegion: (region) => Request.post(`${API_URL}/region`, region),

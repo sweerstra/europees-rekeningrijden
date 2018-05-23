@@ -10,6 +10,10 @@ export default {
       return Request.request(`${API_URL}/login`, { method: 'post', headers });
     }
   },
+  user: {
+    // verifyUserDetails: (details) => Request.post(`${API_URL}/user/verify`, { details })
+    verifyUserDetails: (details) => new Promise((resolve, reject) => resolve(Math.random() > 0.5))
+  },
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
     downloadInvoice: (id) => Request.get(`${GOVERNMENT_API_URL}/invoice/generate/${id}`),
@@ -17,5 +21,8 @@ export default {
   },
   route: {
     getRoute: (id) => Request.get(ROUTE_URL + id)
+  },
+  vehicle: {
+    getCurrentTrackersWithVehicleByOwner: (id) => Request.get(`${GOVERNMENT_API_URL}/vehicles/owner/${id}`)
   }
 };

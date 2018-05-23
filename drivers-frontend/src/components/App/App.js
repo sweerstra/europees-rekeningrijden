@@ -4,6 +4,7 @@ import PrivateRoute from '../PrivateRoute';
 import Login from '../../pages/login/login';
 import Register from "../../pages/register/register";
 import RouteInvoices from '../../pages/route-invoices/route-invoices';
+import Vehicles from '../../pages/vehicles/vehicles';
 import { getLoggedInEmail, isLoggedIn, setToken } from '../../api/auth';
 import './App.css';
 
@@ -28,8 +29,9 @@ class App extends Component {
               ? <RouteInvoices/>
               : <Login onAuthenticate={this.handleAuthentication}/>
           }/>
-          <PrivateRoute path="/register" isAutenticated={isAuthenticated} component={Register}/>
-          <PrivateRoute path="/routes" isAutenticated={isAuthenticated} component={RouteInvoices}/>
+          <Route path="/register" component={Register}/>
+          <PrivateRoute path="/routes" component={RouteInvoices}/>
+          <PrivateRoute path="/vehicles" component={Vehicles}/>
           <Redirect to="/login"/>
         </Switch>
       </div>

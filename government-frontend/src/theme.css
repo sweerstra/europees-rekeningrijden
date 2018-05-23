@@ -26,7 +26,7 @@ body {
   box-sizing: inherit;
 }
 
-.btn, input, a {
+.btn, input, a, select {
   margin-bottom: 10px;
 }
 
@@ -46,10 +46,11 @@ body {
 
 .btn:active { box-shadow: none; }
 
-.btn:disabled, input:disabled {
+.btn:disabled, input:disabled, select:disabled {
   box-shadow: none;
   color: var(--color-disabled);
   border-color: var(--color-disabled);
+  -webkit-appearance: none;
 }
 
 .btn:disabled:hover {
@@ -104,7 +105,47 @@ input::placeholder {
   font-weight: normal;
 }
 
-button:focus, input:focus { outline: none; }
+/* -------- checkbox -------- */
+
+input[type=checkbox] {
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  background-color: white;
+  border: 2px solid var(--color-tint);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-appearance: none;
+}
+
+input[type=checkbox]:checked {
+  color: var(--color-tint);
+}
+
+input[type=checkbox]::after {
+  content: '\2714';
+  font-size: 15px;
+  color: var(--color-disabled);
+}
+
+input[type=checkbox]:checked::after {
+  color: var(--color-tint);
+}
+
+/* -------- select -------- */
+
+select {
+  padding: 8px;
+  font-size: 16px;
+  color: var(--color-tint);
+  border: 2px solid var(--color-tint);
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+button:focus, input:focus, select:focus { outline: none; }
 
 h1, .h1 { font-size: 2em; }
 

@@ -59,7 +59,7 @@ public class VehicleController {
 
     @GET
     @Path("/{licensePlate}/tracker")
-    public Response getTrackerByLicensePlate(@PathParam("licensePlate") String licensePlate) {
+    public Response getCurrentTrackerByLicensePlate(@PathParam("licensePlate") String licensePlate) {
         Vehicle vehicle = vehicleService.findByLicencePlate(licensePlate);
         if (vehicle == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
