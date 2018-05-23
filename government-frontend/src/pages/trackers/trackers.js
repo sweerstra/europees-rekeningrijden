@@ -198,11 +198,11 @@ class Trackers extends Component {
                    onChange={e => this.setState({ search: e.target.value })}/>
             <hr/>
             <div className="trackers__navigation__buttons">
-              <button className="btn blue" onClick={() => this.showModal(true)}>Add tracker</button>
+            <button className="btn blue" onClick={() => this.showModal(true)}>Add tracker</button>
               <Link to="/invoices">View invoices</Link>
               <Link to="/region">View regions</Link>
               {isAdmin() && <Link to="/employees">View employees</Link>}
-            </div>
+          </div>
           </div>
           <div className="trackers__administration__history">
             <h2>Vehicle History</h2>
