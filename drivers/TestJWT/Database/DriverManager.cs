@@ -69,10 +69,15 @@ namespace Drivers.Database
 
         public Driver Verify(string email, string password)
         {
+            if (string.IsNullOrEmpty(email))
+            {
+                return null;
+            }
+
             Driver driver = null;
             using (ManagedConnection connection = new ManagedConnection())
             {
-                string query = "SELECT * FROM user where email = @email";
+                string query = "SELECT * FROM Driver where email = @email";
                 var cmd = new MySqlCommand(query, connection.Connection);
 
                 cmd.Parameters.AddWithValue("@email", email);
@@ -96,7 +101,7 @@ namespace Drivers.Database
             Driver driver = null;
             using (ManagedConnection connection = new ManagedConnection())
             {
-                string query = "SELECT * FROM user where email = @email";
+                string query = "SELECT * FROM Driver where email = @email";
                 var cmd = new MySqlCommand(query, connection.Connection);
                 cmd.Parameters.AddWithValue("@email", email);
                 var reader = cmd.ExecuteReader();
@@ -107,7 +112,7 @@ namespace Drivers.Database
                 reader.Dispose();
                 cmd.Dispose();
 
-                query = "INSERT INTO user ('id', 'email', 'hashedpassword') VALUES (2, '@email', '@hashedPassword')";
+                query = "INSERT INTO Driver ('id', 'email', 'hashedpassword') VALUES (2, '@email', '@hashedPassword')";
                 string hashedPassword = SecurityManager.CreateHash(password);
                 cmd = new MySqlCommand(query, connection.Connection);
                 cmd.Parameters.AddWithValue("@email", email);

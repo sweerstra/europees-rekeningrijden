@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using drivers.Models;
+using Drivers.Models;
 using Drivers.Models;
 using Drivers.Security;
 using MySql.Data.MySqlClient;
+using System.Security.Cryptography;
+using System.Text;
+using System.Globalization;
 
 namespace Drivers.Database
 {
@@ -19,13 +22,27 @@ namespace Drivers.Database
             _driverManager = new DriverManager();
         }
 
-        public SignOver CreateSignOverRequest(SignOver signOver)
+        public SignOver CreateSignOverRequest(SignOverRequest request)
         {
+            if (request == null || request.Sender == null || request.Receiver == null || string.IsNullOrEmpty(request.LicensePlate) || string.IsNullOrEmpty(request.Password))
+            {
+                return null;
+            }
+
+            DriverManager driverManager = new DriverManager();
+            Driver verifiedSender = driverManager.Verify(request.Sender.Email, request.Password);
+            if (verifiedSender == null)
+            {
+                //Verifiy password failed, or user was not found by email
+                return null;
+            }
+            request.Sender = verifiedSender;
+
             using (ManagedConnection connection = new ManagedConnection())
             {
-                string licensePlate = signOver.LicensePlate;
-                long senderId = signOver.Sender.Id;
-                long receiverId = signOver.Receiver.Id;
+                string licensePlate = request.LicensePlate;
+                long senderId = request.Sender.Id;
+                long receiverId = request.Receiver.Id;
 
                 if (senderId == 0 || receiverId == 0 || string.IsNullOrEmpty(licensePlate)) return null;
 
@@ -34,9 +51,10 @@ namespace Drivers.Database
 
                 if (sender == null || receiver == null) return null;
 
-                DateTime startDate = DateTime.Now;
+                //Use UTC so timezones don't matter if we start checking the signover date
+                DateTime startDate = DateTime.UtcNow;
 
-                string query = "INSERT INTO `drivers`.`sign_over` (`license_plate`, `sender_id`, `receiver_id`, `hashed_token` `start_date`) " +
+                string query = "INSERT INTO `drivers`.`sign_over` (`LicensePlate`, `sender_id`, `receiver_id`, `HashedToken` `StartDate`) " +
                                "VALUES (@licensePlate, @senderId, @receiverId, @hashedToken, @startDate)";
 
                 string token = GenerateSignOverToken();
@@ -48,8 +66,10 @@ namespace Drivers.Database
                 cmd.Parameters.AddWithValue("@receiverId", (int)receiverId);
                 cmd.Parameters.AddWithValue("@hashedToken", hashedToken);
                 cmd.Parameters.AddWithValue("@startDate", startDate);
-                
+
                 cmd.ExecuteNonQuery();
+
+                SignOver signOver = new SignOver();
 
                 signOver.Sender = sender;
                 signOver.Receiver = receiver;
@@ -71,12 +91,13 @@ namespace Drivers.Database
 
             using (ManagedConnection connection = new ManagedConnection())
             {
-                request.ConfirmDate = DateTime.Now;
+                request.AcceptDate = DateTime.UtcNow;
 
-                string query = "UPDATE `drivers`.`sign_over` SET confirm_date WHERE `id` = @id; ";
-                
+                string query = "UPDATE `drivers`.`sign_over` SET AcceptDate = @date WHERE `id` = @id;";
+
                 MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
                 cmd.Parameters.AddWithValue("@id", signOverId);
+                cmd.Parameters.AddWithValue("@date", request.AcceptDate.Value.ToString("yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture));
 
                 cmd.ExecuteNonQuery();
 
@@ -95,12 +116,13 @@ namespace Drivers.Database
 
             using (ManagedConnection connection = new ManagedConnection())
             {
-                request.ConfirmDate = DateTime.Now;
+                request.ConfirmDate = DateTime.UtcNow;
 
-                string query = "UPDATE `drivers`.`sign_over` SET verify_date WHERE `id` = @id; ";
+                string query = "UPDATE `drivers`.`sign_over` SET ConfirmDate = @date WHERE `id` = @id;";
 
                 MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
                 cmd.Parameters.AddWithValue("@id", signOverId);
+                cmd.Parameters.AddWithValue("@date", request.ConfirmDate.Value.ToString("yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture));
 
                 cmd.ExecuteNonQuery();
 
@@ -125,18 +147,55 @@ namespace Drivers.Database
             return signOver;
         }
 
+        public SignOver GetSignOverRequest(string email, string token)
+        {
+            DriverManager driverManager = new DriverManager();
+            Driver driver = driverManager.GetDriver(email);
+
+            if (driver == null)
+            {
+                return null;
+            }
+            List<SignOver> possibleSignovers;
+
+            using (ManagedConnection connection = new ManagedConnection())
+            {
+                string query = "SELECT * FROM sign_over WHERE sender_id = @id OR receiver_id = @id;";
+                var cmd = new MySqlCommand(query, connection.Connection);
+
+                cmd.Parameters.AddWithValue("@id", driver.Id);
+                var reader = cmd.ExecuteReader();
+                possibleSignovers = reader.AutoMap<SignOver>();
+            }
+
+            foreach (var signOver in possibleSignovers)
+            {
+                if (SecurityManager.VerifyHash(token, signOver.HashedToken))
+                {
+                    return signOver;
+                }
+            }
+
+            return null;
+        }
+
         private string GenerateSignOverToken()
         {
             string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%.?-=+&", code = string.Empty;
 
-            Random random = new Random();
-
-            for (var i = 0; i <= SignOverTokenLength; i++)
+            byte[] data = new byte[1];
+            using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
             {
-                code += chars[random.Next(chars.Length)];
+                crypto.GetNonZeroBytes(data);
+                data = new byte[SignOverTokenLength];
+                crypto.GetNonZeroBytes(data);
             }
-
-            return code;
+            StringBuilder result = new StringBuilder(SignOverTokenLength);
+            foreach (byte b in data)
+            {
+                result.Append(chars[b % (chars.Length)]);
+            }
+            return result.ToString();
         }
     }
 }

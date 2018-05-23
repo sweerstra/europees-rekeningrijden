@@ -10,7 +10,6 @@ namespace Drivers.Database
 {
     public static class DatabaseUtilities
     {
-
         public static List<T> AutoMap<T>(this MySqlDataReader reader) where T : new()
         {
             string idName = typeof(T).GetProperties().FirstOrDefault(p => p.Name.ToLowerInvariant() == "id" && (p.PropertyType == typeof(int) || p.PropertyType == typeof(long))).Name;
@@ -32,7 +31,14 @@ namespace Drivers.Database
                     PropertyInfo currentProperty = props.FirstOrDefault(p => p.Name.ToLowerInvariant() == fieldName.ToLowerInvariant());
                     if (currentProperty != null)
                     {
-                        currentProperty.SetValue(returnValue, reader.GetValue(i));
+                        if (reader.IsDBNull(i))
+                        {
+                            currentProperty.SetValue(returnValue, null);
+                        }
+                        else
+                        {
+                            currentProperty.SetValue(returnValue, reader.GetValue(i));
+                        }
                     }
                 }
 

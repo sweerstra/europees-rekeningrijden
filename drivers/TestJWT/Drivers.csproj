@@ -148,6 +148,8 @@
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\SignOver.cs" />
+    <Compile Include="Models\SignOverRequest.cs" />
+    <Compile Include="Models\SignOverVerification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\BasicAuthenticationAttribute.cs" />
     <Compile Include="Security\SecurityAttribute.cs" />
