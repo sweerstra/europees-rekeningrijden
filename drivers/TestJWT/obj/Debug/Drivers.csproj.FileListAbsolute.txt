@@ -1,0 +1,127 @@
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\csc.exe
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\csc.exe.config
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\csc.rsp
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\csi.exe
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\csi.rsp
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\System.AppContext.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\vbc.exe
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\vbc.exe.config
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\vbc.rsp
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\VBCSCompiler.exe
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Drivers.dll.config
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Drivers.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Drivers.pdb
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\EntityFramework.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\EntityFramework.SqlServer.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Google.Protobuf.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Microsoft.IdentityModel.Logging.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Microsoft.IdentityModel.Tokens.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\MySql.Data.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\MySql.Data.Entity.EF6.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Newtonsoft.Json.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Net.Http.Formatting.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Web.Cors.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Web.Http.Cors.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Web.Http.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Web.Http.WebHost.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\EntityFramework.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\EntityFramework.SqlServer.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Google.Protobuf.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Microsoft.IdentityModel.Logging.pdb
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Microsoft.IdentityModel.Logging.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Microsoft.IdentityModel.Tokens.pdb
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Microsoft.IdentityModel.Tokens.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\MySql.Data.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\MySql.Data.Entity.EF6.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\Newtonsoft.Json.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.IdentityModel.Tokens.Jwt.pdb
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Net.Http.Formatting.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Web.Http.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Web.Http.Cors.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\bin\System.Web.Http.WebHost.xml
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\obj\Debug\Drivers.dll
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\obj\Debug\Drivers.pdb
+C:\Users\sinne\Documents\Visual Studio 2017\Projects\TestJWT\TestJWT\obj\Debug\Drivers.csprojResolveAssemblyReference.cache
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\csc.exe
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\csc.exe.config
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\csc.rsp
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\csi.exe
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\csi.rsp
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\System.AppContext.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\System.Collections.Immutable.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\System.IO.FileSystem.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\System.Reflection.Metadata.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\vbc.exe
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\vbc.exe.config
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\vbc.rsp
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\VBCSCompiler.exe
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\roslyn\VBCSCompiler.exe.config
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Drivers.dll.config
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Drivers.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Drivers.pdb
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\EntityFramework.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\EntityFramework.SqlServer.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Google.Protobuf.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Microsoft.IdentityModel.Logging.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Microsoft.IdentityModel.Tokens.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\MySql.Data.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\MySql.Data.Entity.EF6.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Newtonsoft.Json.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.IdentityModel.Tokens.Jwt.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.Net.Http.Formatting.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.Web.Cors.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.Web.Http.Cors.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.Web.Http.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.Web.Http.WebHost.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\EntityFramework.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\EntityFramework.SqlServer.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Google.Protobuf.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Microsoft.IdentityModel.Logging.pdb
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Microsoft.IdentityModel.Logging.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Microsoft.IdentityModel.Tokens.pdb
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Microsoft.IdentityModel.Tokens.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\MySql.Data.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\MySql.Data.Entity.EF6.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\Newtonsoft.Json.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.IdentityModel.Tokens.Jwt.pdb
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.IdentityModel.Tokens.Jwt.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.Net.Http.Formatting.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.Web.Http.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.Web.Http.Cors.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\bin\System.Web.Http.WebHost.xml
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\obj\Debug\Drivers.csprojResolveAssemblyReference.cache
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\obj\Debug\Drivers.dll
+D:\denni\Documents\School\S6\PT (ESD6)\Github\europees-rekeningrijden\drivers\TestJWT\obj\Debug\Drivers.pdb
