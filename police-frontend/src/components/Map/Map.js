@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {GOOGLE_MAPS_API_KEY} from '../../config';
+import React, { Component } from 'react';
+import { GOOGLE_MAPS_API_KEY } from '../../config';
 
 // https://www.npmjs.com/package/google-maps
 const GoogleMapsLoader = require('google-maps');
@@ -23,17 +23,17 @@ class Map extends Component {
 
             const map = new google.maps.Map(document.querySelector('.google-map'), mapOptions);
 
-            this.setState({map});
+            this.setState({ map });
         });
     }
 
     // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
     static getDerivedStateFromProps(nextProps, prevState) {
-        const {movement} = nextProps;
-        const {map} = prevState;
-        if (prevState.movementId === movement.id) return null;
+        const { movement: { id } } = nextProps;
+        const { map } = prevState;
+        if (prevState.movementId === id) return null;
 
-        // https://developers.google.com/maps/documentation/javascript/reference/3/#Polyline
+        // https://developers.google.com/maps/documentation/javascript/reference/3/#Marker
         var marker = new window.google.maps.Marker({
             position: {lat: movement.latitude, lng: movement.longitude},
             icon: {
@@ -45,15 +45,7 @@ class Map extends Component {
             map
         });
 
-        // const { map, polylines } = prevState;
-        // map.setCenter(path[0]);
-        // map.setZoom(9);
-        //
-        // polylines.forEach(p => p.setMap(null));
-        // polyline.setMap(map);
-        // polylines.push(polyline);
-
-        return {movementId: movement.id};
+        return { movementId: id };
     }
 
     render() {
