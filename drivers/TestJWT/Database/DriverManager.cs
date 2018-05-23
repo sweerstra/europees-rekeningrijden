@@ -98,7 +98,6 @@ namespace Drivers.Database
 
         public Driver Register(string email, string password)
         {
-            Driver driver = null;
             using (ManagedConnection connection = new ManagedConnection())
             {
                 string query = "SELECT * FROM Driver where email = @email";
@@ -112,21 +111,16 @@ namespace Drivers.Database
                 reader.Dispose();
                 cmd.Dispose();
 
-                query = "INSERT INTO Driver ('id', 'email', 'hashedpassword') VALUES (2, '@email', '@hashedPassword')";
+                query = "INSERT INTO Driver ('email', 'hashedpassword') VALUES ('@email', '@hashedPassword')";
                 string hashedPassword = SecurityManager.CreateHash(password);
                 cmd = new MySqlCommand(query, connection.Connection);
                 cmd.Parameters.AddWithValue("@email", email);
                 cmd.Parameters.AddWithValue("@hashedPassword", hashedPassword);
-                cmd.ExecuteNonQuery();
-
-                driver = new Driver()
+                if (cmd.ExecuteNonQuery() > 0)
                 {
-                    Email = email,
-                    HashedPassword = hashedPassword,
-                    Invoices = new List<Invoice>(),
-                    Id = 2
-                };
-                return driver;
+                    return GetDriver(email);
+                }
+                return null;
             }
         }
     }

@@ -43,7 +43,7 @@ namespace Drivers.Database
                 {
                     return false;
                 }
-                string connstring = $"Server=192.168.24.36; database=drivers; UID=root; password=Traxit123; SslMode=none";
+                string connstring = $"Server={server}; database={databaseName}; UID={userName}; password={password}; SslMode=none";
 
                 try
                 {
