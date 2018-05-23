@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './login.css';
 import Api from '../../api';
-import { PasswordIcon, UserIcon } from "../../icons";
+import { PasswordIcon, UserIcon } from '../../icons';
+import { setToken } from '../../api/auth';
 
 class Login extends Component {
   onLogin = async (e) => {
@@ -11,17 +12,9 @@ class Login extends Component {
     const email = target.email.value;
     const password = target.password.value;
 
-    /* Api.auth.login(email, password)
-      .then(this.props.onAuthenticate); */
-
-    // TODO: replace temporary workaround with auth
-    this.props.history.push('/routes');
-
-    let index = email.indexOf('@');
-
-    index = index === -1 ? email.length : index;
-
-    localStorage.setItem('user', email.slice(0, index));
+    Api.auth.login(email, password)
+      .then(this.props.onAuthenticate)
+      .catch(err => console.log(err));
   };
 
   render() {

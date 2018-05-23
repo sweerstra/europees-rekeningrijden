@@ -148,7 +148,6 @@ class StolenVehicle extends Component {
                     </button>
                 </Modal>
             </div>
-
         );
     }
 }
