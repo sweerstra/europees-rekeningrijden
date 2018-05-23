@@ -58,4 +58,12 @@ public class MovementController {
 
         return Response.ok(movements).build();
     }
+
+    @GET
+    @Path("/latest/{trackerId}")
+    public Response getLatestMovement(@PathParam("trackerId") String trackerId) {
+        Movement latestMovement = service.getLatestMovement(trackerId);
+
+        return latestMovement != null ? Response.ok(latestMovement).build() : Response.status(Response.Status.NOT_FOUND).build();
+    }
 }
