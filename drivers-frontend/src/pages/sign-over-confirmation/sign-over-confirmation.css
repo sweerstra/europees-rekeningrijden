@@ -23,3 +23,8 @@
   margin-top: 0;
   color: var(--color-danger);
 }
+
+.sign-over-confirmation__confirmed {
+  color: var(--color-success);
+  font-weight: bold;
+}

@@ -28,7 +28,7 @@ class App extends Component {
           <Route path="/register" component={Register}/>
           <Route path="/routes" component={RouteInvoices}/>
           <Route exact path="/vehicles" component={Vehicles}/>
-          <Route exact path="/vehicles/sign-over/:code" component={SignOverConfirmation}/>
+          <Route exact path="/vehicles/sign-over" component={SignOverConfirmation}/>
           <Redirect to="/login"/>
         </Switch>
       </div>

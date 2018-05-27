@@ -15,8 +15,14 @@ export default {
     })
   },
   user: {
-    // verifyUserDetails: (details) => Request.post(`${API_URL}/user/verify`, { details })
-    verifyUserDetails: (details) => new Promise((resolve, reject) => resolve(Math.random() > 0.5))
+    // verifyUserDetails: (details) => Request.post(`${API_URL}/driver`, details)
+    verifyUserDetails: (details) => new Promise((resolve, reject) => {
+      if (Math.random() > 0.5) {
+        resolve();
+      } else {
+        reject();
+      }
+    })
   },
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
@@ -30,18 +36,9 @@ export default {
     getCurrentTrackersWithVehicleByOwner: (id) => Request.get(`${GOVERNMENT_API_URL}/vehicles/owner/${id}`)
   },
   signOver: {
-    createCode: length => {
-      // TODO: Refactor code to drivers backend
-      const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%.?-=+&';
-
-      let code = '';
-
-      for (let i = 0; i <= length; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-
-      return code;
-    },
+    createRequest: (details) => Request.post(`${API_URL}/sign-over/request`, details),
+    // createCode: (licensePlate, sender, receiver, password) => Request,
+    confirmRequest: (verification) => Request.post(`${API_URL}/sign-over/confirm`, verification),
     getDetailsForCode: code => {
       return new Promise((resolve, reject) => resolve({
         licensePlate: 'LG-976-TR',
