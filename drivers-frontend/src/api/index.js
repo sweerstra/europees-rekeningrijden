@@ -19,14 +19,14 @@ export default {
     }
   },
   user: {
-    // verifyUserDetails: (details) => Request.post(`${API_URL}/driver`, details)
-    verifyUserDetails: (details) => new Promise((resolve, reject) => {
+    verifyUserDetails: (details) => Request.post(`${API_URL}/driver`, details)
+    /* verifyUserDetails: (details) => new Promise((resolve, reject) => {
       if (Math.random() > 0.5) {
         resolve();
       } else {
         reject();
       }
-    })
+    }) */
   },
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
