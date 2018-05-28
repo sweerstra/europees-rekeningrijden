@@ -18,6 +18,10 @@
 
 .vehicles__table [role="row"].active .feather { stroke: white; }
 
+.vehicles__table__sign-over-link {
+  margin-bottom: 30px;
+}
+
 .vehicles__sign-over {
   grid-area: sign-over;
   padding: 20px 40px 20px 20px;
@@ -91,6 +95,11 @@
 .sign-over__code__input__copied {
   color: var(--color-primary);
   font-weight: bold;
+}
+
+/* react-table */
+.vehicles__table [role="rowgroup"] {
+  cursor: pointer;
 }
 
 @media (max-width: 992px) {

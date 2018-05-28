@@ -5,14 +5,28 @@ const ROUTE_URL = 'https://i321720.iris.fhict.nl/traxit/routes/data.php?id=';
 
 export default {
   auth: {
+    // login: (username, password) => Request.post(`${API_URL}/login`, { username, password })
+    /* login: (username, password) => new Promise((resolve, reject) => {
+      if (Math.random() > 0.5) {
+        resolve();
+      } else {
+        reject();
+      }
+    }) */
     login: (username, password) => {
       const headers = { Authorization: `Basic ${btoa(`${username}:${password}`)}` };
       return Request.request(`${API_URL}/login`, { method: 'post', headers });
     }
   },
   user: {
-    // verifyUserDetails: (details) => Request.post(`${API_URL}/user/verify`, { details })
-    verifyUserDetails: (details) => new Promise((resolve, reject) => resolve(Math.random() > 0.5))
+    verifyUserDetails: (details) => Request.post(`${API_URL}/driver`, details)
+    /* verifyUserDetails: (details) => new Promise((resolve, reject) => {
+      if (Math.random() > 0.5) {
+        resolve();
+      } else {
+        reject();
+      }
+    }) */
   },
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
@@ -24,5 +38,20 @@ export default {
   },
   vehicle: {
     getCurrentTrackersWithVehicleByOwner: (id) => Request.get(`${GOVERNMENT_API_URL}/vehicles/owner/${id}`)
+  },
+  signOver: {
+    createRequest: (details) => Request.post(`${API_URL}/sign-over/request`, details),
+    // createCode: (licensePlate, sender, receiver, password) => Request,
+    confirmRequest: (verification) => Request.post(`${API_URL}/sign-over/confirm`, verification),
+    getDetailsForCode: code => {
+      return new Promise((resolve, reject) => resolve({
+        licensePlate: 'LG-976-TR',
+        sender: {
+          firstName: 'Dennis',
+          lastName: 'van Gils'
+        },
+        receiver: {}
+      }));
+    }
   }
 };
