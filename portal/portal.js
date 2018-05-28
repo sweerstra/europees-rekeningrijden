@@ -66,3 +66,74 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+/* logging in with Jenkins account */
+
+const Modal = document.getElementById('modal');
+const SelectedJobSpan = document.getElementById('selected-job');
+const CloseModalButton = document.getElementById('close-modal');
+
+const setModal = (show) => Modal.style.visibility = show ? 'visible' : 'hidden';
+
+Array.from(document.querySelectorAll('[data-job-name]')).forEach(acceptButton => {
+    acceptButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        if (this.classList.contains('disabled')) {
+            return;
+        }
+
+        this.classList.add('disabled');
+
+        setModal(true);
+
+        SelectedJobSpan.textContent = this.getAttribute('data-job-name');
+    })
+});
+
+CloseModalButton.addEventListener('click', () => setModal(false));
+
+document.credentials.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const jobName = SelectedJobSpan.textContent;
+    const acceptButton = document.querySelector(`[data-job-name="${jobName}"]`);
+
+    const username = e.target.username.value;
+    const password = e.target.password.value;
+
+    if (jobName && acceptButton) {
+        const url = encodeURI(`http://192.168.24.36:8080/job/${jobName}/build?token=traxit&cause=started by product owner`);
+
+        let noVPN = false;
+
+        try {
+            const invocation = new XMLHttpRequest();
+            invocation.open('post', url, true, username, password);
+            invocation.withCredentials = true;
+            invocation.timeout = 2500;
+
+            invocation.ontimeout = () => noVPN = true;
+
+            invocation.onloadend = () => {
+                if (noVPN) {
+                    alert('Het is alleen mogelijk een Jenkins build te starten met VPN verbinding.');
+                    acceptButton.classList.remove('disabled')
+                } else {
+                    acceptButton.classList.add('accepted');
+                    acceptButton.setAttribute('title', 'Accepted');
+                }
+                setModal(false);
+            };
+
+            invocation.send(null);
+        }
+        catch (error) {
+            // TODO: find way to prevent CORS exception in log
+        }
+    } else {
+        alert('Er is nog geen Jenkins build verbonden met dit systeem.');
+        setModal(false);
+    }
+});

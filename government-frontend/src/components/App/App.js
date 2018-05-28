@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from '../../pages/login/login';
-import Register from '../../pages/register/register'
+import Employees from '../../pages/users/employees';
 import Trackers from '../../pages/trackers/trackers';
 import Invoices from '../../pages/invoices/invoices';
 import Region from '../../pages/region/region';
 import Settings from '../../pages/settings/settings';
 import PrivateRoute from '../PrivateRoute';
-import {getLoggedInEmail, isLoggedIn, setToken} from '../../api/auth';
+import { getLoggedInEmail, isAdmin, isLoggedIn, setToken } from '../../api/auth';
 import './App.css';
 
 class App extends Component {
@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   render() {
-    const {isAuthenticated} = this.state;
+    const { isAuthenticated } = this.state;
 
     return (
       <div className="App">
@@ -30,15 +30,11 @@ class App extends Component {
           <PrivateRoute path="/invoices" authenticated={isAuthenticated} component={Invoices}/>
           <PrivateRoute path="/region" authenticated={isAuthenticated} component={Region}/>
           <PrivateRoute path="/settings" authenticated={isAuthenticated} component={Settings}/>
+          <PrivateRoute path="/employees" authenticated={isAuthenticated && isAdmin()} component={Employees}/>
           <Route path="/login" render={() =>
             isAuthenticated
               ? <Trackers/>
               : <Login onAuthenticate={this.handleAuthentication}/>
-          }/>
-          <Route path="/register" render={() =>
-            isAuthenticated
-              ? <Invoices/>
-              : <Register onAuthenticate={this.handleAuthentication}/>
           }/>
           <Redirect to="/login"/>
         </Switch>
@@ -48,7 +44,7 @@ class App extends Component {
 
   handleAuthentication = (token) => {
     setToken(token);
-    this.setState({isAuthenticated: true, loggedInEmail: getLoggedInEmail()});
+    this.setState({ isAuthenticated: true, loggedInEmail: getLoggedInEmail() });
   };
 }
 

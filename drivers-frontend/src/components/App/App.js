@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import PrivateRoute from '../PrivateRoute';
 import Login from '../../pages/login/login';
 import Register from "../../pages/register/register";
 import RouteInvoices from '../../pages/route-invoices/route-invoices';
@@ -24,11 +25,15 @@ class App extends Component {
     return (
       <div className="App">
         <Switch>
-          <Route path="/login" component={Login}/>
+          <Route path="/login" render={() =>
+            isAuthenticated
+              ? <RouteInvoices/>
+              : <Login onAuthenticate={this.handleAuthentication}/>
+          }/>
           <Route path="/register" component={Register}/>
-          <Route path="/routes" component={RouteInvoices}/>
-          <Route exact path="/vehicles" component={Vehicles}/>
-          <Route exact path="/vehicles/sign-over" component={SignOverConfirmation}/>
+          <PrivateRoute path="/routes" component={RouteInvoices}/>
+          <PrivateRoute path="/vehicles" component={Vehicles}/>
+          <PrivateRoute exact path="/vehicles/sign-over" component={SignOverConfirmation}/>
           <Redirect to="/login"/>
         </Switch>
       </div>

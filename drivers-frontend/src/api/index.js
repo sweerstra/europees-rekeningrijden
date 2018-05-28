@@ -6,13 +6,17 @@ const ROUTE_URL = 'https://i321720.iris.fhict.nl/traxit/routes/data.php?id=';
 export default {
   auth: {
     // login: (username, password) => Request.post(`${API_URL}/login`, { username, password })
-    login: (username, password) => new Promise((resolve, reject) => {
+    /* login: (username, password) => new Promise((resolve, reject) => {
       if (Math.random() > 0.5) {
         resolve();
       } else {
         reject();
       }
-    })
+    }) */
+    login: (username, password) => {
+      const headers = { Authorization: `Basic ${btoa(`${username}:${password}`)}` };
+      return Request.request(`${API_URL}/login`, { method: 'post', headers });
+    }
   },
   user: {
     // verifyUserDetails: (details) => Request.post(`${API_URL}/driver`, details)

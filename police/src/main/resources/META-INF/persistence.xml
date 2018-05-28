@@ -1,20 +1,22 @@
+
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
-            http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
+           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
     <persistence-unit name="PolicePU">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jta-data-source>jdbc/police</jta-data-source>
+        <jta-data-source>java:app/jdbc/police</jta-data-source>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/police"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://192.168.24.36:3306/police"/>
             <property name="hibernate.connection.username" value="root"/>
-            <property name="hibernate.connection.password" value="soufyan12"/>
+            <property name="hibernate.connection.password" value="Traxit123"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.transaction.jta.platform"
                       value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
         </properties>
     </persistence-unit>
 </persistence>

@@ -7,6 +7,7 @@ import utils.DateUtils;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -49,5 +50,19 @@ public class MovementService {
 
     public List<Movement> getAllMovements() {
         return movementDao.findAll();
+    }
+
+    public Movement getLatestMovement(String trackerId) {
+        List<Movement> movements = movementDao.findByTrackerId(trackerId);
+
+        if(!movements.isEmpty()) {
+            Collections.sort(movements);
+
+            return movements.get(movements.size() - 1);
+        }
+        else{
+            return null;
+        }
+
     }
 }

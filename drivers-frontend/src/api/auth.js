@@ -16,7 +16,7 @@ export const isLoggedIn = () => {
   return Boolean(getToken() && !isExpiredToken(getToken()));
 };
 
-const getToken = () => {
+export const getToken = () => {
   return localStorage.getItem(TOKEN_KEY);
 };
 
@@ -29,12 +29,12 @@ export const logout = () => {
 };
 
 export const isExpiredToken = (token) => {
-    try {
-        const jwt = decodeToken(token);
-        const currentTime = Date.now() / 1000;
-        return jwt.exp < currentTime;
-    } catch (e) {
-        console.error(e);
-        return true;
-    }
+  try {
+    const jwt = decodeToken(token);
+    const currentTime = Date.now() / 1000;
+    return jwt.exp < currentTime;
+  } catch (e) {
+    console.error(e);
+    return true;
+  }
 };

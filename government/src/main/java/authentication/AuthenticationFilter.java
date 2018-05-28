@@ -20,7 +20,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         String token = authorizationHeader.substring("Bearer".length()).trim();
 
         try {
-            Jwts.parser().setSigningKey("GovernmentKey").parseClaimsJws(token);
+            requestContext.getHeaders().add("id", Jwts.parser().setSigningKey("GovernmentKey").parseClaimsJws(token).getBody().getSubject());
+
         } catch (Exception e) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }

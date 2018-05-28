@@ -1,0 +1,21 @@
+.stolen-vehicles {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 6fr 4fr;
+    grid-template-rows: 80px 1fr;
+    grid-template-areas: "nav nav" "stolen-vehicles map";
+}
+
+.stolen-vehicles__table {
+    grid-area: stolen-vehicles;
+    padding: 40px;
+}
+
+.stolen-vehicles__navigation__buttons {
+    margin-top: 10px;
+}
+
+.stolen-vehicles-map{
+    height: 100%;
+    grid-area: map;
+}
