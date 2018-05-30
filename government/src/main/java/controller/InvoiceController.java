@@ -4,6 +4,7 @@ import domain.Invoice;
 import domain.Ownership;
 import service.InvoiceService;
 import service.OwnershipService;
+import support.InvoiceCalculator;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -24,8 +25,8 @@ public class InvoiceController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addInvoice(Invoice invoice) {
-       Invoice added = service.create(invoice);
-       invoice.createCurrentDateOfPayment();
+        Invoice added = service.create(invoice);
+        invoice.createCurrentDateOfPayment();
 
         if (added == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

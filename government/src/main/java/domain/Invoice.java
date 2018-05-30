@@ -21,7 +21,9 @@ public class Invoice {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date dateOfPayment;
     private PaymentStatus paid;
-    private int billingMonth;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+    private Date billingDate;
     private double distanceTravelled;
     private String emissionCategory;
 
@@ -32,22 +34,22 @@ public class Invoice {
     @JsonIgnore
     private ArrayList<String> conditions;
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCategory, Vehicle vehicle) {
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, Date billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle) {
         this.trackerId = trackerId;
         this.paid = paid;
         this.totalAmount = totalAmount;
-        this.billingMonth = billingMonth;
+        this.billingDate = billingDate;
         this.distanceTravelled = distanceTravelled;
         this.emissionCategory = emissionCategory;
         this.vehicle = vehicle;
         conditions = new ArrayList<>();
     }
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCategory, Vehicle vehicle, ArrayList<String> conditions) {
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, Date billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle, ArrayList<String> conditions) {
         this.trackerId = trackerId;
         this.paid = paid;
         this.totalAmount = totalAmount;
-        this.billingMonth = billingMonth;
+        this.billingDate = billingDate;
         this.distanceTravelled = distanceTravelled;
         this.emissionCategory = emissionCategory;
         this.vehicle = vehicle;
@@ -109,12 +111,12 @@ public class Invoice {
         this.dateOfPayment = new Timestamp(System.currentTimeMillis());
     }
 
-    public int getBillingMonth() {
-        return billingMonth;
+    public Date getBillingDate() {
+        return billingDate;
     }
 
-    public void setBillingMonth(int billingMonth) {
-        this.billingMonth = billingMonth;
+    public void setBillingDate(Date billingDate) {
+        this.billingDate = billingDate;
     }
 
     public String getEmissionCategory() {
