@@ -35,11 +35,27 @@ main {
 .control input {
     width: 100%;
     margin-top: 10px;
+    border: 0;
+    border-bottom: 2px solid var(--color-tint);
+}
+
+input.invalid {
+    border-color: var(--color-danger);
+}
+
+.feather-check {
+    stroke: var(--color-tint);
+    position: relative;
 }
 
 hr {
     margin-top: 40px;
     border: 1px solid var(--color-tint);
+}
+
+.active-text {
+    border: 2px solid var(--color-tint);
+    padding: 0 8px;
 }
 
 @media (max-width: 700px) {

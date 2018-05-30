@@ -1,0 +1,30 @@
+.sign-over-confirmation {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign-over-confirmation p {
+  text-align: center;
+}
+
+.sign-over-confirmation label {
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+.sign-over-confirmation label input {
+  margin: 4px 0 0;
+}
+
+.sign-over-confirmation__wrong-credentials {
+  margin-top: 0;
+  color: var(--color-danger);
+}
+
+.sign-over-confirmation__confirmed {
+  color: var(--color-success);
+  font-weight: bold;
+}

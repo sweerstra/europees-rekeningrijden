@@ -1,63 +1,69 @@
 const directionsService = new google.maps.DirectionsService();
-
+const licensePlateInput = document.getElementById('license-plate');
 const fromInput = document.getElementById('from');
 const toInput = document.getElementById('to');
 const speedInput = document.getElementById('speed');
-const generateRouteButton = document.getElementById('generate-route');
-
-const MOVEMENT_API_URL = 'localhost:8080/movement/api/movement';
-const SIMULATION_API_URL = 'localhost:8080/simulation/api/generate';
-
+const generateSimulationButton = document.getElementById('generate-simulation');
+const addSimulationButton = document.getElementById('add-simulation');
+const simulationAmountText = document.getElementById('simulation-amount');
+const MOVEMENT_API_URL = 'http://localhost:60858/movement/api/movement';
+const SIMULATION_API_URL = 'http://localhost:8080/simulation/api/route';
+const LICENSE_PLATE_CHECK_URL = 'http://localhost:60858/government/api/vehicle';
 const defaultStrokeColor = localStorage.getItem('--color-main') || '#4CAF50';
 
-const ROUTES = [
-    { from: '51.538433, -0.14467214', to: '51.527092, -0.14466009' },
-    { from: '51.525867, -0.13448699', to: '51.529404, -0.14631915' },
-    { from: '51.533173, -0.14858663', to: '51.538433, -0.14467214' }
-];
-
-let trackerId = 1;
 let map;
+let currentTrackers = [];
+let trackerId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     const mapOptions = {
-        zoom: 14,
+        zoom: 7,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        center: new google.maps.LatLng(51.509865, -0.118092)
+        center: new google.maps.LatLng(52.489471, -1.898575)
     };
 
     map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
 
-    document.simulation.addEventListener('submit', (e) => {
-        e.preventDefault();
+    licensePlateInput.addEventListener('input', debounce(({ target }) => {
+        const { value } = target;
 
-        calcRoute(fromInput.value, toInput.value, (result) => {
-            console.log('Calc route result', result);
-        });
-    });
-
-    generateRouteButton.addEventListener('click', function () {
-        const { value } = speedInput;
-
-        if (value) {
-            // get two coordinates from simulation API based on speed value
-            /* post(SIMULATION_API_URL, { speed: parseFloat(value) })
-                .then(resp => resp); */
-
-            const randomIndex = Math.floor(Math.random() * ROUTES.length);
-            const randomRoute = ROUTES[randomIndex];
-            if (randomRoute === undefined) return;
-
-            ROUTES.splice(randomIndex, 1);
-            calcRoute(randomRoute.from, randomRoute.to, (result) => {
-                console.log('Generate route result', result);
+        get(`${LICENSE_PLATE_CHECK_URL}/${value}/tracker`)
+            .then(tracker => {
+                target.classList.remove('invalid');
+                trackerId = tracker.trackerId;
+            })
+            .catch(() => {
+                target.classList.add('invalid');
+                trackerId = null;
             });
+    }, 500));
+
+    generateSimulationButton.addEventListener('click', () => {
+        const speed = parseFloat(speedInput.value);
+
+        if (speed && trackerId) {
+            // get two coordinates from simulation API based on speed value
+            post(`${SIMULATION_API_URL}/${speed}`)
+                .then(({ startCoordinate, endCoordinate }) => {
+                    const from = `${startCoordinate.longitude}, ${startCoordinate.latitude}`;
+                    const to = `${endCoordinate.longitude}, ${endCoordinate.latitude}`;
+
+                    calcRoute(from, to, speed);
+                });
         } else {
-            console.warn('Please enter a speed value.');
+            console.warn('Please enter the correct field values.');
         }
     });
 
-    // add basic input attributes
+    addSimulationButton.addEventListener('click', () => {
+        const speed = parseFloat(speedInput.value);
+
+        if (speed && trackerId) {
+            calcRoute(fromInput.value, toInput.value, speed);
+        }
+    });
+
+    // add basic attributes to input
     document.querySelectorAll('input').forEach(input => {
         input.setAttribute('autocomplete', 'off');
         input.setAttribute('spellcheck', 'false');
@@ -69,9 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function calcRoute(from, to, callback) {
+function calcRoute(from, to, speed) {
     if (!from || !to) {
-        console.warn('From or to coordinates were null or undefined.');
+        console.warn('From coordinates, to coordinates or speed was null or undefined.');
         return;
     }
 
@@ -82,56 +88,72 @@ function calcRoute(from, to, callback) {
     };
 
     directionsService.route(requestOptions, (response, status) => {
-        const isOk = status === google.maps.DirectionsStatus.OK;
-        if (isOk) {
+        if (status === google.maps.DirectionsStatus.OK) {
             const polyline = createPolyline(response);
             const [route] = response.routes;
-            addSimulation(route, polyline);
+            addSimulation(route, polyline, speed);
 
             const [firstPath] = route.overview_path;
             const lat = firstPath.lat();
             const lng = firstPath.lng();
-
             map.setCenter({ lat, lng });
         } else {
             console.error('Coordinates or location was not valid.');
         }
-        callback(isOk);
     });
 }
 
-function addSimulation(route, polyline) {
+function addSimulation(route, polyline, speed) {
     const path = route.overview_path;
-    const { length } = path;
+    const pathLength = path.length;
+    const distance = route.legs[0].distance.value;
+    const stepSize = distance / pathLength;
+    const timeBetweenSteps = 1000 / ((speed / 3.6) / stepSize);
 
     let movementCount = 1;
 
     const interval = setInterval(() => {
-        if (movementCount <= length) {
-            animateStep(polyline, movementCount, length);
+        if (movementCount <= pathLength) {
+            animateStep(polyline, movementCount, pathLength);
 
             const { lat, lng } = path[movementCount - 1];
-            const { trackerId, movementId, time } = polyline;
+            const { trackerId } = polyline;
 
             const routeResult = {
+                trackerId,
                 latitude: lat(),
                 longitude: lng(),
-                trackerId, movementId, time
+                time: new Date().toLocaleString()
             };
 
             console.log(routeResult);
 
             // make post request to save movement
-            /* post(MOVEMENT_API_URL, routeResult)
+            post(MOVEMENT_API_URL, routeResult)
                 .catch(err => {
                     console.error(err.message);
                     clearInterval(interval);
-                }); */
+                });
         } else {
             clearInterval(interval);
+            polyline.setMap(null);
+            currentTrackers.splice(currentTrackers.indexOf(polyline.trackerId), 1);
+            simulationAmountText.textContent = currentTrackers.length.toString();
         }
         movementCount++;
-    }, 1000);
+    }, timeBetweenSteps);
+
+    currentTrackers.push(trackerId);
+    simulationAmountText.textContent = currentTrackers.length.toString();
+}
+
+function get(url) {
+    const options = {
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(url, options)
+        .then(resp => resp.json());
 }
 
 function post(url, data) {
@@ -146,7 +168,7 @@ function post(url, data) {
 }
 
 function createPolyline(directionResult) {
-    const line = new google.maps.Polyline({
+    const polyline = new google.maps.Polyline({
         path: directionResult.routes[0].overview_path,
         strokeColor: '#F44336',
         strokeOpacity: 0.4,
@@ -160,18 +182,25 @@ function createPolyline(directionResult) {
             },
             offset: '0%'
         }],
-        trackerId: trackerId++,
-        time: new Date()
+        trackerId
     });
 
-    line.setVisible(true);
-    line.setMap(map);
-    return line;
+    polyline.setMap(map);
+    return polyline;
 }
 
 function animateStep(polyline, movementCount, pathLength) {
     const icons = polyline.get('icons');
     icons[0].offset = ((movementCount / pathLength) * 100) + '%';
     polyline.set('icons', icons);
-    polyline.movementId = movementCount;
+}
+
+function debounce(fn, time) {
+    let timeout;
+
+    return function () {
+        const call = () => fn.apply(this, arguments);
+        clearTimeout(timeout);
+        timeout = setTimeout(call, time);
+    }
 }

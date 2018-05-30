@@ -1,40 +1,32 @@
 package domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
 @XmlRootElement
-public class Movement {
+public class Movement implements Comparable<Movement>{
     @Id
     @GeneratedValue
     private long id;
 
-    @ManyToOne
-    private Tracker tracker;
-    private String serialNumber;
+    private String trackerId;
     private double longitude;
     private double latitude;
+    private Date dateTime;
+    private String time;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private Date time;
-
-    public Movement(String serialNumber, double longitude, double latitude, Date time) {
-        this.serialNumber = serialNumber;
+    public Movement(String trackerId, double longitude, double latitude, String time) {
+        this.trackerId = trackerId;
         this.longitude = longitude;
         this.latitude = latitude;
         this.time = time;
     }
 
-    public Movement() {
-    }
+    public Movement() { }
 
     public long getId() {
         return id;
@@ -44,20 +36,12 @@ public class Movement {
         this.id = id;
     }
 
-    public Tracker getTracker() {
-        return tracker;
+    public String getTrackerId() {
+        return trackerId;
     }
 
-    public void setTracker(Tracker tracker) {
-        this.tracker = tracker;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setTrackerId(String trackerId) {
+        this.trackerId = trackerId;
     }
 
     public double getLongitude() {
@@ -76,11 +60,24 @@ public class Movement {
         this.latitude = latitude;
     }
 
-    public Date getTime() {
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getTime() {
         return time;
     }
 
-    public void setTime() {
-        this.time = new Timestamp(System.currentTimeMillis());
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    @Override
+    public int compareTo(Movement m) {
+        return getDateTime().compareTo(m.getDateTime());
     }
 }

@@ -1,0 +1,73 @@
+.trackers {
+  display: grid;
+  grid-template-columns: 7fr 3fr;
+  grid-template-rows: 80px 1fr;
+  grid-template-areas: "nav nav" "table controls";
+}
+
+.trackers__table {
+  grid-area: table;
+  padding: 20px 0 10px 20px;
+}
+
+.trackers__administration {
+  grid-area: controls;
+  padding: 20px;
+}
+
+hr {
+  margin: 20px 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-tint);
+}
+
+.trackers__navigation__buttons {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.trackers__navigation__buttons button { grid-column: 1 / -1; }
+
+.trackers__navigation__buttons a { text-align: center; }
+
+.trackers__administration__controls { }
+
+.trackers__administration__controls input { width: 100%; }
+
+.trackers__administration__history { }
+
+.history {
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  border: 2px solid var(--color-tint);
+  border-radius: var(--border-radius);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.history__date {
+  text-align: center;
+}
+
+@media (max-width: 992px) {
+  .trackers {
+    grid-template-columns: 1fr;
+    grid-template-areas: "nav" "table" "controls";
+  }
+}
+
+/* react-table */
+[role="rowgroup"] {
+  cursor: pointer;
+}
+
+[role="gridcell"] {
+  text-align: center;
+}
+
+[role="columnheader"] {
+  font-weight: bold;
+}
+

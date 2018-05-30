@@ -22,13 +22,33 @@ public class MovementController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addMovement(Movement movement) {
-        Movement added = service.addMovement(movement);
+        Movement addedMovement = service.addMovement(movement);
 
-        if (added == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        if (addedMovement == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         return Response.ok(movement).build();
+    }
+
+    @GET
+    @Path("/{trackerId}")
+    public Response getByTrackerId(@PathParam("trackerId") String trackerId) {
+        List<Movement> movements = service.getMovementsByTrackerId(trackerId);
+
+        return Response.ok(movements).build();
+    }
+
+    @GET
+    @Path("/{trackerId}/{startDate}/{endDate}")
+    public Response getByStartAndEndDate(@PathParam("trackerId") String trackerId, @PathParam("startDate") String startDate, @PathParam("endDate") String endDate) {
+        List<Movement> movements = service.getMovementsBetweenDates(trackerId, startDate, endDate);
+
+        if (movements == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        return Response.ok(movements).build();
     }
 
     @GET
@@ -36,10 +56,14 @@ public class MovementController {
     public Response getMovements() {
         List<Movement> movements = service.getAllMovements();
 
-        if (movements == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
         return Response.ok(movements).build();
+    }
+
+    @GET
+    @Path("/latest/{trackerId}")
+    public Response getLatestMovement(@PathParam("trackerId") String trackerId) {
+        Movement latestMovement = service.getLatestMovement(trackerId);
+
+        return latestMovement != null ? Response.ok(latestMovement).build() : Response.status(Response.Status.NOT_FOUND).build();
     }
 }

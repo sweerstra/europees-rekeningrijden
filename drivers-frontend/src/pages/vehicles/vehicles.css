@@ -1,0 +1,117 @@
+.vehicles {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 80px 1fr;
+  grid-template-areas: "nav nav" "vehicles sign-over";
+}
+
+.vehicles__table {
+  grid-area: vehicles;
+  padding: 40px 20px 20px 40px;
+}
+
+.vehicles__table .feather:hover {
+  stroke: var(--color-primary);
+  cursor: pointer;
+}
+
+.vehicles__table [role="row"].active .feather { stroke: white; }
+
+.vehicles__table__sign-over-link {
+  margin-bottom: 30px;
+}
+
+.vehicles__sign-over {
+  grid-area: sign-over;
+  padding: 20px 40px 20px 20px;
+}
+
+.vehicles__sign-over label {
+  font-weight: bold;
+}
+
+.vehicles__sign-over input {
+  margin-top: 4px;
+  width: 100%;
+}
+
+.vehicles__sign-over__user-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.vehicles__sign-over fieldset {
+  margin-bottom: 10px;
+  padding: 0;
+  border: 0;
+}
+
+.vehicles__sign-over__confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.vehicles__sign-over__confirmation input[readonly] {
+  margin: 0 20px;
+  width: initial;
+}
+
+.vehicles__sign-over__confirmation input { margin: 10px 0 0; }
+
+.vehicles__sign-over__confirmation button.red { margin: 0; }
+
+.vehicles__sign-over__warning {
+  color: var(--color-danger);
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.sign-over__code {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign-over__code__input {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.sign-over__code__input input { margin: 0 10px 0 0; }
+
+.feather-clipboard { margin-right: 10px; }
+
+.feather-clipboard:hover {
+  stroke: var(--color-primary);
+  cursor: pointer;
+}
+
+.sign-over__code__input__copied {
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+/* react-table */
+.vehicles__table [role="rowgroup"] {
+  cursor: pointer;
+}
+
+@media (max-width: 992px) {
+  .vehicles {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "nav" "vehicles" "sign-over";
+  }
+
+  .vehicles__table { padding-left: 20px; }
+
+  .vehicles__sign-over { padding-right: 20px; }
+}
+
+
