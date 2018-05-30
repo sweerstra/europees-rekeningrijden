@@ -31,3 +31,16 @@
 .stolen-vehicles__add-modal button {
     margin-top: 10px;
 }
+
+.trackers__administration__history{
+    margin-top: 10px;
+}
+
+.history {
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border: 2px solid var(--color-tint);
+    border-radius: var(--border-radius);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
