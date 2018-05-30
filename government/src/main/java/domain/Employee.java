@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 public class Employee {
-
     @Id
     @GeneratedValue
     private long id;
