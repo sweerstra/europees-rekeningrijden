@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './TrackerModal.css';
-import OwnersSelect from '../OwnersSelect/OwnersSelect';
 import Api from '../../api';
 import { debounce } from '../../utils/debounce';
 
@@ -13,9 +12,9 @@ class TrackerModal extends Component {
     this.state = {
       id: trackerToEdit.id || 0,
       trackerId: trackerToEdit.trackerId || '',
-      owner: {citizenServiceNumber: null},
-      vehicle: { emissionCategory: null },
-      ownerNotFound: true
+      owner: { citizenServiceNumber: null },
+      ownerNotFound: true,
+      vehicle: { emissionCategory: null }
     };
   }
 
@@ -30,11 +29,10 @@ class TrackerModal extends Component {
 
     this.bsnCallBack = debounce(e => {
       const { value } = e.target;
-      Api.owner.getBycitizenServiceNumber(value)
-        .then(owner => this.setState({ owner, ownernotfound: false }))
-        .catch(() => this.setState({ owner: { citizenServiceNumber: null, ownerNotFound:true } }));
-    }, 600);
-
+      Api.owner.getByCitizenServiceNumber(value)
+        .then(owner => this.setState({ owner, ownerNotFound: false }))
+        .catch(() => this.setState({ ownerNotFound: true }));
+    }, 1000);
   }
 
   onBSNChange = (e) => {
@@ -57,7 +55,7 @@ class TrackerModal extends Component {
   };
 
   render() {
-    const { owners, owner, ownerNotFound,trackerId, vehicle: { emissionCategory } } = this.state;
+    const { owner, ownerNotFound, trackerId, vehicle: { emissionCategory } } = this.state;
 
     return (
       <div className="tracker-modal">
@@ -74,13 +72,6 @@ class TrackerModal extends Component {
 
         <section className="horizontal">
           <label>
-            Citizen Service Number
-            <input type="text"
-                   className={ownerNotFound ? 'red' : 'green'}
-                   onChange={this.onBSNChange}
-                   name="BSN" placeholder="Enter BSN here"/>
-          </label>
-          <label>
             License Plate
             <input type="text"
                    onChange={this.onLicenseChange}
@@ -95,14 +86,17 @@ class TrackerModal extends Component {
           </label>
         </section>
 
-        <label>
-          Owner
-        </label>
-
         <section className="horizontal">
-          <OwnersSelect owners={owners} onSelect={owner => this.setState({ owner })}/>
+          <label>
+            Citizen Service Number
+            <input type="text"
+                   className={ownerNotFound ? 'red' : 'green'}
+                   onChange={this.onBSNChange}
+                   name="BSN" placeholder="Enter BSN here"
+                   spellCheck="false"/>
+          </label>
 
-          {owner && <div className="tracker-modal__owner">
+          {!ownerNotFound && <div className="tracker-modal__owner">
             <label>
               Name
               <div className="read-only">{`${owner.firstName} ${owner.lastName}`}</div>

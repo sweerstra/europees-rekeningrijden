@@ -22,7 +22,7 @@ export default {
   },
   owner: {
     getAll: () => Request.get(`${API_URL}/owners`),
-    getBycitizenServiceNumber: (bsn)  => Request.get(`${API_URL}/${bsn}`)
+    getByCitizenServiceNumber: (bsn)  => Request.get(`${API_URL}/owner/bsn/${bsn}`)
   },
   vehicle: {
     getByLicensePlate: (licensePlate) => Request.get(`${API_URL}/vehicle/${licensePlate}`),

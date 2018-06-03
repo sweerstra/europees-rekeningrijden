@@ -32,7 +32,7 @@ public class OwnerController {
     }
 
     @GET
-    @Path("/{bsn}")
+    @Path("/bsn/{bsn}")
     public Response getOwnerbyBSN(@PathParam("bsn") String citizenServiceNumber) {
         Owner owner = service.getByBSN(citizenServiceNumber);
 
@@ -42,5 +42,4 @@ public class OwnerController {
 
         return Response.ok(owner).build();
     }
-
 }
