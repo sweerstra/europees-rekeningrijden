@@ -13,22 +13,34 @@ class TrackerModal extends Component {
     this.state = {
       id: trackerToEdit.id || 0,
       trackerId: trackerToEdit.trackerId || '',
-      owners: [],
-      owner: null,
-      vehicle: { emissionCategory: null }
+      owner: {citizenServiceNumber: null},
+      vehicle: { emissionCategory: null },
+      ownerNotFound: true
     };
   }
 
   componentDidMount() {
-    Api.owner.getAll().then(owners => this.setState({ owners }));
-
     this.licensePlateCallback = debounce(e => {
       const { value } = e.target;
       Api.vehicle.getByLicensePlate(value)
         .then(vehicle => this.setState({ vehicle }))
         .catch(() => this.setState({ vehicle: { emissionCategory: null } }));
     }, 600);
+
+
+    this.bsnCallBack = debounce(e => {
+      const { value } = e.target;
+      Api.owner.getBycitizenServiceNumber(value)
+        .then(owner => this.setState({ owner, ownernotfound: false }))
+        .catch(() => this.setState({ owner: { citizenServiceNumber: null, ownerNotFound:true } }));
+    }, 600);
+
   }
+
+  onBSNChange = (e) => {
+    e.persist();
+    this.bsnCallBack(e);
+  };
 
   onTrackerIdChange = (e) => {
     this.setState({ trackerId: e.target.value });
@@ -45,7 +57,7 @@ class TrackerModal extends Component {
   };
 
   render() {
-    const { owners, owner, trackerId, vehicle: { emissionCategory } } = this.state;
+    const { owners, owner, ownerNotFound,trackerId, vehicle: { emissionCategory } } = this.state;
 
     return (
       <div className="tracker-modal">
@@ -61,6 +73,13 @@ class TrackerModal extends Component {
         </label>
 
         <section className="horizontal">
+          <label>
+            Citizen Service Number
+            <input type="text"
+                   className={ownerNotFound ? 'red' : 'green'}
+                   onChange={this.onBSNChange}
+                   name="BSN" placeholder="Enter BSN here"/>
+          </label>
           <label>
             License Plate
             <input type="text"
