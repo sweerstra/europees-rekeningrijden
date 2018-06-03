@@ -6,9 +6,8 @@ const speedInput = document.getElementById('speed');
 const generateSimulationButton = document.getElementById('generate-simulation');
 const addSimulationButton = document.getElementById('add-simulation');
 const simulationAmountText = document.getElementById('simulation-amount');
-const MOVEMENT_API_URL = 'http://localhost:60858/movement/api/movement';
-const SIMULATION_API_URL = 'http://localhost:8080/simulation/api/route';
-const LICENSE_PLATE_CHECK_URL = 'http://localhost:60858/government/api/vehicle';
+const SIMULATION_API_URL = 'http://192.168.24.36:10080/simulation/api/route';
+const LICENSE_PLATE_CHECK_URL = 'http://192.168.24.36:11080/government/api/vehicle';
 const defaultStrokeColor = localStorage.getItem('--color-main') || '#4CAF50';
 
 let map;
@@ -126,14 +125,14 @@ function addSimulation(route, polyline, speed) {
                 time: new Date().toLocaleString()
             };
 
-            console.log(routeResult);
+            console.log(JSON.stringify(routeResult));
 
             // make post request to save movement
-            post(MOVEMENT_API_URL, routeResult)
+            /* post(MOVEMENT_API_URL, routeResult)
                 .catch(err => {
                     console.error(err.message);
                     clearInterval(interval);
-                });
+                }); */
         } else {
             clearInterval(interval);
             polyline.setMap(null);
@@ -146,6 +145,9 @@ function addSimulation(route, polyline, speed) {
     currentTrackers.push(trackerId);
     simulationAmountText.textContent = currentTrackers.length.toString();
 }
+
+postToQueue('movements', { trackerId: 'ENG1111', latitude: 51.50986, longitude: -0.11812, time: '3-6-2018 13:52:37' })
+    .then(text => console.log(text));
 
 function get(url) {
     const options = {
@@ -164,7 +166,19 @@ function post(url, data) {
     };
 
     return fetch(url, options)
-        .then(resp => resp.json());
+        .then(resp => resp.json())
+}
+
+function postToQueue(queue, data) {
+    const options = {
+        method: 'post',
+        body: JSON.stringify(data)
+    };
+
+    const url = `http://localhost:8161/api/message?destination=queue://${queue}`;
+
+    return fetch(url, options)
+        .then(resp => resp.text());
 }
 
 function createPolyline(directionResult) {

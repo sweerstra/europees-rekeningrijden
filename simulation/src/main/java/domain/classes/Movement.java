@@ -1,72 +1,51 @@
 package domain.classes;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import java.io.Serializable;
 
-public class Movement {
-    private Tracker tracker;
-    private String serialNumber;
-    private float longitude;
-    private float latitude;
+public class Movement implements Serializable {
+    private String trackerId;
+    private double longitude;
+    private double latitude;
     private String time;
 
-    private transient String LAND_CODE = "ENG";
-    private transient String TIME_FORMAT = "yyyy-MM-dd HH:mm";
-    private transient String TIMEZONE = "UTC";
-
-    public Movement(Tracker tracker, float longitude, float latitude) {
-        this.tracker = tracker;
+    public Movement(String trackerId, double longitude, double latitude, String time) {
+        this.trackerId = trackerId;
         this.longitude = longitude;
         this.latitude = latitude;
-
-        Date date_now = new Date();
-
-        DateFormat formatterUTC = new SimpleDateFormat(TIME_FORMAT);
-        formatterUTC.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
-        time = formatterUTC.format(date_now);
-
-        serialNumber = generateRandomSerialNumber();
+        this.time = time;
     }
 
-    private String generateRandomSerialNumber(){
-        int randomDigits = (int)(Math.random()*9000)+1000;
-        return LAND_CODE + randomDigits;
+    public Movement() { }
+
+    public String getTrackerId() {
+        return trackerId;
     }
 
-
-    //region getters and setters
-    public Tracker getTracker() {
-        return tracker;
+    public void setTrackerId(String trackerId) {
+        this.trackerId = trackerId;
     }
 
-    public void setTracker(Tracker tracker) {
-        this.tracker = tracker;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
-    //endregion
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 }
