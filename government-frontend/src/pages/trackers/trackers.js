@@ -141,7 +141,7 @@ class Trackers extends Component {
     const filtered = search
       ? trackers.filter(({ trackerId, vehicle, owner }) => {
         vehicle = vehicle || { typeTracker: '', emissionCategory: '', licensePlate: '' };
-        owner = owner || { firstName: '', lastName: '' };
+        owner = owner || { firstName: '', lastName: '' , citizenServiceNumber: ""};
 
         return trackerId.toLowerCase().includes(search)
           || vehicle.typeTracker.toLowerCase().includes(search)
@@ -149,6 +149,7 @@ class Trackers extends Component {
           || vehicle.licensePlate.toLowerCase().includes(search)
           || owner.firstName.toLowerCase().includes(search)
           || owner.lastName.toLowerCase().includes(search)
+          || owner.citizenServiceNumber.toLowerCase().includes(search)
       })
       : trackers;
 
