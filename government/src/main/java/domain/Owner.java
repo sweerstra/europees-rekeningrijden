@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @XmlRootElement
 public class Owner {
+
     @Id
     @GeneratedValue
     private long id;
@@ -27,13 +28,14 @@ public class Owner {
     private String phone;
     private String email;
     private Date dateOfBirth;
+    private String citizenServiceNumber;
 
     @OneToMany
     @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Ownership> ownerships;
 
-    public Owner(String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth) {
+    public Owner(String firstName, String lastName, String address, String postalCode, String city, String phone, String email, Date dateOfBirth, String citizenServiceNumber) {
         this.usesBillriderWebsite = false;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,6 +45,7 @@ public class Owner {
         this.phone = phone;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.citizenServiceNumber = citizenServiceNumber;
     }
 
     public Owner() {}
@@ -143,5 +146,14 @@ public class Owner {
             }
         }
         return false;
+    }
+
+
+    public String getCitizenServiceNumber() {
+        return citizenServiceNumber;
+    }
+
+    public void setCitizenServiceNumber(String citizenServiceNumber) {
+        this.citizenServiceNumber = citizenServiceNumber;
     }
 }

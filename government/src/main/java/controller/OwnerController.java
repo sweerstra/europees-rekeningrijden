@@ -30,4 +30,17 @@ public class OwnerController {
 
         return Response.ok(owner).build();
     }
+
+    @GET
+    @Path("/{bsn}")
+    public Response getOwnerbyBSN(@PathParam("bsn") String citizenServiceNumber) {
+        Owner owner = service.getByBSN(citizenServiceNumber);
+
+        if (owner == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(owner).build();
+    }
+
 }
