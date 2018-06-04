@@ -21,7 +21,8 @@ export default {
     remove: (id) => Request.put(`${API_URL}/ownership/${id}`)
   },
   owner: {
-    getAll: () => Request.get(`${API_URL}/owners`)
+    getAll: () => Request.get(`${API_URL}/owners`),
+    getByCitizenServiceNumber: (bsn)  => Request.get(`${API_URL}/owner/bsn/${bsn}`)
   },
   vehicle: {
     getByLicensePlate: (licensePlate) => Request.get(`${API_URL}/vehicle/${licensePlate}`),
