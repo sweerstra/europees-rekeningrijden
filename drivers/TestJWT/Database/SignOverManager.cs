@@ -64,7 +64,7 @@ namespace Drivers.Database
                 //Use UTC so timezones don't matter if we start checking the signover date
                 DateTime startDate = DateTime.UtcNow;
 
-                string query = "INSERT INTO `drivers`.`sign_over` (`LicensePlate`, `sender_id`, `receiver_id`, `HashedToken` `StartDate`) " +
+                string query = "INSERT INTO `drivers`.`sign_over` (`LicensePlate`, `sender_id`, `receiver_id`, `HashedToken`, `StartDate`) " +
                                "VALUES (@licensePlate, @senderId, @receiverId, @hashedToken, @startDate)";
 
                 string token = GenerateSignOverToken();
@@ -75,7 +75,7 @@ namespace Drivers.Database
                 cmd.Parameters.AddWithValue("@senderId", (int)senderId);
                 cmd.Parameters.AddWithValue("@receiverId", (int)receiverId);
                 cmd.Parameters.AddWithValue("@hashedToken", hashedToken);
-                cmd.Parameters.AddWithValue("@startDate", startDate);
+                cmd.Parameters.AddWithValue("@startDate", startDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
 
                 cmd.ExecuteNonQuery();
 

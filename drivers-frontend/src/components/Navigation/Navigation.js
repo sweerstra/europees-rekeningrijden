@@ -19,7 +19,7 @@ class Navigation extends Component {
           <NavLink to="/vehicles">Vehicles</NavLink>
         </div>
 
-        <div>Logged in as <b>{localStorage.getItem('user')}</b></div>
+        <div>Logged in as <b>{getLoggedInEmail()}</b></div>
 
         <div className="nav__logout">
           <Link to="/login" className="btn light" onClick={this.onLogout}>
