@@ -1,9 +1,7 @@
 package service;
 
 import dao.IInvoiceDao;
-import domain.Invoice;
-import domain.Ownership;
-import domain.Vehicle;
+import domain.*;
 import support.HttpHelper;
 import support.InvoiceCalculator;
 import support.InvoiceGenerator;
@@ -50,7 +48,11 @@ public class InvoiceService {
 
     public InputStream generateInvoicePdf(long id, Ownership ownership) {
         Invoice invoice = findById(id);
-        invoiceGenerator.calculateInvoice(regionService.findAll(), emissionService.findAll());
+        List<Region> regions = regionService.findAll();
+        List<EmissionCategory> emissionCategories = emissionService.findAll();
+
+        if(regions.isEmpty() || emissionCategories.isEmpty()) return null;
+        invoiceGenerator.calculateInvoice(invoice, regions, emissionCategories);
         return invoiceGenerator.objectToPdf(invoice, ownership);
     }
 

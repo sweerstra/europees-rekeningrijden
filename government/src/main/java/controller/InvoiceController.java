@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
@@ -57,7 +58,11 @@ public class InvoiceController {
         }
 
         Ownership ownership = ownershipService.getLatestOwnership(invoice.getVehicle().getId());
-        return Response.ok(service.generateInvoicePdf(id, ownership), "application/pdf").build();
+
+        InputStream in = service.generateInvoicePdf(id, ownership);
+        if(in == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(in, "application/pdf").build();
     }
 
     @PUT

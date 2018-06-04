@@ -359,10 +359,12 @@ public class InvoiceGenerator {
         return new DateFormatSymbols(Locale.UK).getMonths()[month];
     }
 
-    public void calculateInvoice(List<Region> regions, List<EmissionCategory> emissionCategories){
+    public void calculateInvoice(Invoice invoice, List<Region> regions, List<EmissionCategory> emissionCategories){
         List<Movement> movements = new ArrayList<>();
         drivenLines = new ArrayList<>();
         Gson gson = new Gson();
+        calendar = Calendar.getInstance();
+        invoiceToGenerate = invoice;
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -371,12 +373,17 @@ public class InvoiceGenerator {
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         String endDate = sdf.format(calendar.getTime());
 
+        String _temp1 = String.format("http://192.168.24.36:11080/government/api/movement/%s/%s/%s",
+                this.invoiceToGenerate.getTrackerId(),
+                startDate,
+                endDate);
+        String _temp = HttpHelper.get(_temp1);
         try {
-            movements = gson.fromJson(HttpHelper.get(String.format("http://192.168.24.36:11080/government/api/movement/%s/%s/%s",
+            String movement = gson.fromJson(HttpHelper.get(String.format("http://192.168.24.36:11080/government/api/movement/%s/%s/%s",
                     this.invoiceToGenerate.getTrackerId(),
                     startDate,
-                    endDate)),
-                    new TypeToken<List<Movement>>(){}.getType());
+                    endDate)), String.class);
+//                    new TypeToken<List<Movement>>(){}.getType());
             System.out.println(movements);
         }
 
