@@ -71,9 +71,6 @@ public class InvoiceGenerator {
             Chunk invoiceTitle = new Chunk("MONTHLY BILLED DRIVING INVOICE", font);
             document.add(invoiceTitle);
             addWhiteLines(1);
-            Chunk billingMonth = new Chunk((getMonth(invoiceToGenerate.getBillingMonth()).toUpperCase()), font);
-            document.add(billingMonth);
-
             addWhiteLines(1);
             addVehicleInformation(document, trackerId, currVehicle);
 

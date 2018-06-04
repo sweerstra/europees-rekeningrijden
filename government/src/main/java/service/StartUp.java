@@ -30,6 +30,9 @@ public class StartUp {
     private EmployeeService employeeService;
 
     @Inject
+    private EmissionService emissioService;
+
+    @Inject
     private InvoiceService invoiceService;
 
     @PostConstruct
@@ -73,9 +76,26 @@ public class StartUp {
 
         employeeService.addEmployee(new Employee("employee@mail.com", "password", "admin"));
 
-        Invoice invoice1 = invoiceService.create(new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 131.19, 5, 29.18, "EURO 4", vehicle1));
-        Invoice invoice2 = invoiceService.create(new Invoice("ENG6345", Invoice.PaymentStatus.CANCELLED, 81.54, 5, 10.30, "EURO 4", vehicle2));
-        Invoice invoice3 = invoiceService.create(new Invoice("ENG5786", Invoice.PaymentStatus.OPEN, 778.23, 5, 150.50, "EURO 4", vehicle3));
+        Invoice invoice2 = invoiceService.create(new Invoice("ENG6345", Invoice.PaymentStatus.CANCELLED, 81.54, "2013-09-18", 10.30, "EURO 4", vehicle2));
+        Invoice invoice3 = invoiceService.create(new Invoice("ENG5786", Invoice.PaymentStatus.OPEN, 778.23, "2013-09-18", 150.50, "EURO 4", vehicle3));
+
+        EmissionCategory euro1 = new EmissionCategory("Euro1",0.2);
+        EmissionCategory euro2 = new EmissionCategory("Euro2",0.2);
+        EmissionCategory euro3 = new EmissionCategory("Euro3",0.2);
+        EmissionCategory euro4 = new EmissionCategory("Euro4",0.2);
+        EmissionCategory euro5 = new EmissionCategory("Euro5",0.2);
+
+        List<EmissionCategory> created = new ArrayList<>();
+
+        created.add(euro1);
+        created.add(euro2);
+        created.add(euro3);
+        created.add(euro4);
+        created.add(euro5);
+
+        emissioService.create(created);
+
+
     }
 
     private Date createDate(String format) {

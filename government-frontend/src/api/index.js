@@ -38,7 +38,7 @@ export default {
     getEmissions: () => Request.get(`${API_URL}/emissions/all`)
   },
   defaultRate: {
-    add: (rate) => Request.post(`${API_URL}/emissions`, rate),
+    add: (rate) => Request.post(`${API_URL}/rate`, { rate }),
     getRate: () => Request.get(`${API_URL}/rate/all`)
   }
 };

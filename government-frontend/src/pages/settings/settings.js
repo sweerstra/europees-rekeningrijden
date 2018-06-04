@@ -5,31 +5,34 @@ import Navigation from '../../components/Navigation/Navigation';
 
 class Settings extends Component {
   state = {
-    defaultRate: 0,
+    defaultRate: {
+      rate: 0
+    },
     emissions: [
+
       {
         name: 'Euro1',
-        defaultRate: 0.2
+        rate: 0.2
       },
       {
         name: 'Euro2',
-        defaultRate: 0.2
+        rate: 0.2
       },
       {
         name: 'Euro3',
-        defaultRate: 0.3
+        rate: 0.3
       },
       {
         name: 'Euro4',
-        defaultRate: 0.3
+        rate: 0.3
       },
       {
         name: 'Euro5',
-        defaultRate: 0.4
+        rate: 0.4
       },
       {
         name: 'Euro6',
-        defaultRate: 0.4
+        rate: 0.4
       }
     ]
   };
@@ -41,9 +44,17 @@ class Settings extends Component {
           this.setState({ emissions });
         }
       });
+
+    Api.defaultRate.getRate()
+      .then(defaultRates => {
+        if (!defaultRates || defaultRates.length === 0) return;
+
+        const defaultRate = defaultRates[defaultRates.length - 1];
+        this.setState({ defaultRate });
+      });
   }
 
-  onSave = (e) => {
+  onSave = () => {
     const { emissions } = this.state;
 
     console.log(emissions);
@@ -51,9 +62,11 @@ class Settings extends Component {
   };
 
   onSaveDefaultRate = () => {
-    const { defaultRate } = this.state;
+    const { rate } = this.state.defaultRate;
 
-    Api.defaultRate.add(defaultRate);
+    if (rate) {
+      Api.defaultRate.add(parseFloat(rate));
+    }
   };
 
   onEmissionChange = (e, index) => {
@@ -62,7 +75,7 @@ class Settings extends Component {
     this.setState(state => {
       const { emissions } = state;
 
-      emissions[index].defaultRate = value;
+      emissions[index].defaultRate = parseFloat(value);
 
       return ({ emissions });
     });
@@ -85,7 +98,7 @@ class Settings extends Component {
           <div className="settings__emissions">
             <h2>Emission Category</h2>
             {this.state.emissions.map(({ name, rate }, index) =>
-              <label className="settings__emission">
+              <label className="settings__emission" key={index}>
                 {name}
                 <input type="text" value={rate} onChange={e => this.onEmissionChange(e, index)}/>
               </label>

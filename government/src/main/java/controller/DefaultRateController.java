@@ -1,6 +1,7 @@
 package controller;
 
 import domain.DefaultRate;
+import domain.EmissionCategory;
 import domain.Ownership;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.annotation.JSONP;
 import service.DefaultRateService;
@@ -8,18 +9,15 @@ import service.InvoiceService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/rate")
 public class DefaultRateController {
-
     @Inject
     private DefaultRateService service;
 
@@ -31,5 +29,11 @@ public class DefaultRateController {
         return Response.ok(createdRate).build();
     }
 
+    @GET
+    @Path("/all")
+    public Response getAllRate() {
+        List<DefaultRate> rates = service.findAll();
 
+        return Response.ok(rates).build();
+    }
 }

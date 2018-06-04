@@ -1,16 +1,16 @@
 package service;
 
 import dao.IDefaultRateDao;
-import dao.IOwnerDao;
 import domain.DefaultRate;
-import domain.Owner;
-import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.annotation.JSONP;
+import domain.Region;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.List;
 
-public class DefaultRateService {
 
+@Stateless
+public class DefaultRateService {
     @Inject
     private IDefaultRateDao dao;
 
@@ -22,5 +22,7 @@ public class DefaultRateService {
         return dao.create(entity);
     }
 
-
+    public List<DefaultRate> findAll() {
+        return dao.findAll();
+    }
 }
