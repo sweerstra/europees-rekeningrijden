@@ -1,5 +1,5 @@
 import Request from './Request';
-import { API_URL } from '../config/index';
+import { API_URL } from '../config';
 
 export default {
   auth: {

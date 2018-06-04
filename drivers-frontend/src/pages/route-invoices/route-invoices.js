@@ -70,6 +70,11 @@ class RouteInvoices extends Component {
           const url = Api.invoice.getDownloadUrl(d.id);
           window.open(url, '_blank');
         }}/>
+      },
+      {
+        Header: 'Pay',
+        id: 'pay',
+        accessor: d => <a href="#">{'Pay'}</a>
       }
     ];
 
