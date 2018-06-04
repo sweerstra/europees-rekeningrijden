@@ -40,7 +40,7 @@ class Region extends Component {
 
   onAddRegionRow = () => {
     this.setState(state => ({
-      regionTimes: [...state.regionTimes, { startTime: '', endTime: '', rate: 0 }],
+      regionTimes: [...state.regionTimes, { startTime: '', endTime: '', defaultRate: 0 }],
       isValid: false
     }));
   };

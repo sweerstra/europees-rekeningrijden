@@ -22,7 +22,7 @@ export default {
   },
   owner: {
     getAll: () => Request.get(`${API_URL}/owners`),
-    getByCitizenServiceNumber: (bsn)  => Request.get(`${API_URL}/owner/bsn/${bsn}`)
+    getByCitizenServiceNumber: (bsn) => Request.get(`${API_URL}/owner/bsn/${bsn}`)
   },
   vehicle: {
     getByLicensePlate: (licensePlate) => Request.get(`${API_URL}/vehicle/${licensePlate}`),
@@ -36,5 +36,9 @@ export default {
   emissions: {
     addEmissions: (emissions) => Request.post(`${API_URL}/emissions`, emissions),
     getEmissions: () => Request.get(`${API_URL}/emissions/all`)
+  },
+  defaultRate: {
+    add: (rate) => Request.post(`${API_URL}/emissions`, rate),
+    getRate: () => Request.get(`${API_URL}/rate/all`)
   }
 };
