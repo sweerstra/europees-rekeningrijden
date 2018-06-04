@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  drivers:
+    image: drivers
+    build:
+      context: .\TestJWT
+      dockerfile: Dockerfile

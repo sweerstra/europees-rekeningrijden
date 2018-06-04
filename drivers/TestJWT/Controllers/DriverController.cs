@@ -1,9 +1,11 @@
 ﻿using System.Web.Http;
 using Drivers.Models;
 using Drivers.Database;
+using System.Web.Http.Cors;
 
 namespace Drivers.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class DriverController : ApiController
     {
         private DriverManager _manager = new DriverManager();
@@ -15,7 +17,7 @@ namespace Drivers.Controllers
 
             if (verified)
             {
-                return Ok();
+                return Ok("Ok");
             }
 
             return NotFound();

@@ -7,10 +7,12 @@ using System.Web.Http;
 using Drivers.Models;
 using Drivers.Database;
 using Drivers.Security;
+using System.Web.Http.Cors;
 
 namespace Drivers.Controllers
 {
     [RoutePrefix("api/sign-over")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SignOverController : ApiController
     {
         SignOverManager _manager = new SignOverManager();

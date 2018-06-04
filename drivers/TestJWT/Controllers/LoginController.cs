@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Http;
 using Drivers.Security;
 using System.Web.Http.Cors;
+using Drivers.Database;
+using Drivers.Models;
 
 namespace Drivers.Controllers
 {
@@ -27,7 +29,9 @@ namespace Drivers.Controllers
 
             //check here in db if user can be found!! 
             //  if (SecurityManager.VerifyHash(password as string, hashedpassword))
-            if (password.ToString() == email.ToString())
+            DriverManager driverManager = new DriverManager();
+            Driver verifiedSender = driverManager.Verify(email as string, password as string);
+            if (verifiedSender != null)
             {
                 string token = createToken(email.ToString());
 
