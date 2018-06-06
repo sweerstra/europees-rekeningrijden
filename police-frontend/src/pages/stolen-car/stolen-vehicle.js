@@ -66,10 +66,13 @@ class StolenVehicle extends Component {
     };
 
     trackStolenVehicle = (trackerId) => {
-        Api.stolenCar.getLatestMovement(trackerId)
-            .then(movement => this.setState({ movement }));
+        Api.vehicle.getLatestMovement(trackerId)
+            .then(movement => {
+                console.log(movement);
+                this.setState({ movement });
+            });
     };
-    
+
     onStolenVehicleChange = (e) => {
         const { name, value } = e.target;
         this.setState(state => ({
@@ -101,8 +104,9 @@ class StolenVehicle extends Component {
         return (
             <div>
                 <div className={`stolen-vehicles ${isModalOpen ? 'modal-overlay' : ''}`}>
-                    <Navigation heading="Police Stolen Cars"/>
+                    <Navigation heading="Traxit Police"/>
                     <div className="stolen-vehicles__table">
+                        <h2>Stolen Cars</h2>
                         <ReactTable
                             data={stolenVehicles}
                             columns={columns}
@@ -125,25 +129,28 @@ class StolenVehicle extends Component {
                             showPagination={false}
                         />
                         <div className="stolen-vehicles__navigation__buttons">
-                            <button className="btn blue" onClick={this.toggleModal}>Report stolen car</button>
+                            <button className="btn blue" onClick={this.toggleModal}>Report Stolen Vehicle</button>
                         </div>
                     </div>
                     <Map movement={movement}/>
                 </div>
 
                 <Modal isOpen={isModalOpen}
-                       onModalClose={this.toggleModal}>
-                    <h1>Report stolen Vehicle</h1>
+                       onModalClose={this.toggleModal}
+                       className="stolen-vehicles__add-modal">
+                    <h1>Report Stolen Vehicle</h1>
                     <label>
                         License Plate
                         <input type="text" name="licencePlate"
                                className={trackerNotFound ? 'red' : 'green'}
                                onChange={this.onLicenseChange}
-                               value={stolenVehicle.licensePlate}/>
+                               value={stolenVehicle.licensePlate}
+                               placeholder="License Plate"
+                        />
                     </label>
                     <label>
                         Tracker ID
-                        <input type="text" name="trackerId" value={trackerId}/>
+                        <input type="text" name="trackerId" value={trackerId} placeholder="Tracker ID"/>
                     </label>
                     <label>
                         Date of Theft

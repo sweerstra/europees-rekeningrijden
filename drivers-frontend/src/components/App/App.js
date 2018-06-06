@@ -5,6 +5,7 @@ import Login from '../../pages/login/login';
 import Register from "../../pages/register/register";
 import RouteInvoices from '../../pages/route-invoices/route-invoices';
 import Vehicles from '../../pages/vehicles/vehicles';
+import Payment from '../../pages/payment/payment';
 import SignOverConfirmation from '../../pages/sign-over-confirmation/sign-over-confirmation';
 import { getLoggedInEmail, isLoggedIn, setToken } from '../../api/auth';
 import './App.css';
@@ -34,6 +35,8 @@ class App extends Component {
           <PrivateRoute path="/routes" component={RouteInvoices}/>
           <PrivateRoute path="/vehicles" component={Vehicles}/>
           <PrivateRoute exact path="/vehicles/sign-over" component={SignOverConfirmation}/>
+          <Route path="/payment/:invoiceId" render={routeProps => <Payment isSuccessful={true} {...routeProps}/>}/>
+          <Route path="/payment-failed" render={routeProps => <Payment isSuccessful={false} {...routeProps}/>}/>
           <Redirect to="/login"/>
         </Switch>
       </div>

@@ -1,8 +1,19 @@
 @import "./theme.css";
 
-
 body {
   margin: 0;
   padding: 0;
+}
 
+/* react-table */
+[role="rowgroup"] {
+  cursor: pointer;
+}
+
+[role="gridcell"] {
+  text-align: center;
+}
+
+[role="columnheader"] {
+  font-weight: bold;
 }

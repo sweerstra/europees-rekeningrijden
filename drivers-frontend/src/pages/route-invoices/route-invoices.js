@@ -4,7 +4,7 @@ import Navigation from '../../components/Navigation/Navigation';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import RouteMap from '../../components/RouteMap/RouteMap';
-import { FileTextIcon } from '../../icons';
+import { CreditCardIcon, FileTextIcon } from '../../icons';
 import Api from '../../api';
 
 class RouteInvoices extends Component {
@@ -69,6 +69,19 @@ class RouteInvoices extends Component {
 
           const url = Api.invoice.getDownloadUrl(d.id);
           window.open(url, '_blank');
+        }}/>
+      },
+      {
+        Header: 'Pay',
+        id: 'pay',
+        accessor: d => <CreditCardIcon onClick={e => {
+          // prevent selection of invoice, we just want to download
+          e.stopPropagation();
+
+          Api.invoice.getPaypalUrl(d.id, d.totalAmount)
+            .then(url => {
+              window.location.replace(url);
+            });
         }}/>
       }
     ];

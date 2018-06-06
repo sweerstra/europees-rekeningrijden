@@ -7,9 +7,9 @@ class Navigation extends Component {
     return (
       <nav className="nav">
         <h1 className="nav__heading">{this.props.heading}</h1>
-        <div>Logged in as <b>{'Nog Niet'}</b></div>
+        <div>Logged in as <b>{'police'}</b></div>
         <div className="nav__logout">
-          <Link to="/login" className="btn red" onClick={this.onLogout}>
+          <Link to="/login" className="btn light" onClick={this.onLogout}>
             Logout
           </Link>
         </div>
