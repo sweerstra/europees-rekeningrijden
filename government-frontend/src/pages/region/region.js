@@ -9,7 +9,7 @@ class Region extends Component {
   onCreateRegion = () => {
     const region = {
       name: this.state.name,
-      defaultRate: parseFloat(this.state.defaultRate),
+      rate: parseFloat(this.state.rate),
       regionTimes: this.state.regionTimes,
       coordinates: this.state.coordinates
     };
@@ -20,7 +20,7 @@ class Region extends Component {
 
   onEditRegion = () => {
     const { selectedRegion, name, defaultRate, regionTimes, coordinates } = this.state;
-    const region = { name, defaultRate: parseFloat(defaultRate), regionTimes, coordinates };
+    const region = { name, rate: parseFloat(defaultRate), regionTimes, coordinates };
 
     Api.region.editRegion(selectedRegion.id, region);
   };
@@ -31,7 +31,7 @@ class Region extends Component {
         this.setState({
           selectedRegion,
           name,
-          defaultRate,
+          defaultRate: rate,
           regionTimes,
           coordinates,
           isValid: true
@@ -40,7 +40,7 @@ class Region extends Component {
 
   onAddRegionRow = () => {
     this.setState(state => ({
-      regionTimes: [...state.regionTimes, { startTime: '', endTime: '', defaultRate: 0 }],
+      regionTimes: [...state.regionTimes, { startTime: '', endTime: '', rate: 0 }],
       isValid: false
     }));
   };
@@ -55,7 +55,7 @@ class Region extends Component {
     const { value } = target;
 
     this.setState({
-      defaultRate: value,
+      rate: value,
       isValid: !isNaN(value)
     });
   };
@@ -116,8 +116,8 @@ class Region extends Component {
       },
       {
         Header: 'Default Rate',
-        id: 'defaultRate',
-        accessor: d => <span>&#163; {d.defaultRate.toFixed(2)}</span>
+        id: 'rate',
+        accessor: d => <span>&#163; {d.rate.toFixed(2)}</span>
       },
     ];
 
