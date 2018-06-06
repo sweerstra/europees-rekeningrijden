@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class InvoiceGenerator {
     private Invoice invoiceToGenerate;
@@ -367,28 +369,48 @@ public class InvoiceGenerator {
         invoiceToGenerate = invoice;
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String startDate = sdf.format(calendar.getTime());
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         String endDate = sdf.format(calendar.getTime());
 
-        String _temp1 = String.format("http://192.168.24.36:11080/government/api/movement/%s/%s/%s",
-                this.invoiceToGenerate.getTrackerId(),
-                startDate,
-                endDate);
-        String _temp = HttpHelper.get(_temp1);
         try {
-            String movement = gson.fromJson(HttpHelper.get(String.format("http://192.168.24.36:11080/government/api/movement/%s/%s/%s",
+            movements = gson.fromJson(HttpHelper.get(String.format("http://192.168.24.36:9080/movement/api/movement/%s/%s/%s",
                     this.invoiceToGenerate.getTrackerId(),
                     startDate,
-                    endDate)), String.class);
-//                    new TypeToken<List<Movement>>(){}.getType());
-            System.out.println(movements);
+                    endDate)),
+                    new TypeToken<List<Movement>>(){}.getType());
         }
-
         catch (Exception e){
             e.printStackTrace();
         }
+
+        List<Double> coordinateLat = movements.stream().map(Movement::getLatitude).collect(Collectors.toList());
+        List<Double> coordinateLong = movements.stream().map(Movement::getLongitude).collect(Collectors.toList());
+
+        double totalDistance = 0;
+        for(int i = 0; i < movements.size() - 1; i++) {
+            totalDistance += distance(coordinateLat.get(i), coordinateLong.get(i), coordinateLat.get(i+1), coordinateLong.get(i+1));
+        }
+        totalDistance = Double.valueOf(new DecimalFormat(".##").format(totalDistance).replace(',', '.'));
+    }
+
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        dist = dist * 1.609344;
+        return (dist);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
     }
 }
