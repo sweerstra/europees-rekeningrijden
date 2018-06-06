@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './TrackerModal.css';
 import Api from '../../api';
 import { debounce } from '../../utils/debounce';
+import OwnersSelect from '../OwnersSelect/OwnersSelect';
 
 class TrackerModal extends Component {
   constructor(props) {
@@ -87,6 +88,7 @@ class TrackerModal extends Component {
         </section>
 
         <section className="horizontal">
+          <OwnersSelect onSelect={owner => this.setState({ owner, ownerNotFound: false })}/>
           <label>
             Citizen Service Number
             <input type="text"

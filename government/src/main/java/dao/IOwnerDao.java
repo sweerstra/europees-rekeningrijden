@@ -10,6 +10,8 @@ public interface IOwnerDao {
 
     Owner findByBSN(String citizenServiceNumber);
 
+    List findByName(String name);
+
     List<Owner> findAll();
 
     Owner create(Owner entity);
