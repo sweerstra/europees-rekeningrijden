@@ -1,0 +1,42 @@
+.owners-select {
+  width: 250px;
+  margin-top: 4px;
+  border: 2px solid var(--color-tint);
+  border-radius: var(--border-radius);
+}
+
+.owners-select input[type=text] {
+  width: 100%;
+  margin: 0;
+  border: none;
+  border-bottom: 2px solid var(--color-tint);
+  border-radius: 0;
+}
+
+.owners-select ul {
+  width: 100%;
+  height: 200px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.owners-select ul li {
+  padding: 10px;
+  border-bottom: 1px solid black;
+}
+
+.owners-select ul li.active {
+  color: white;
+  background-color: var(--color-primary);
+}
+
+.owners-select ul li:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.owners-select__no-owners {
+  padding: 10px;
+}
