@@ -13,7 +13,6 @@ namespace Drivers.Controllers
  
     public class SecurityTestController : ApiController
     {
-    [Security.Security]
         public String Get()
         {
             return "Success";
