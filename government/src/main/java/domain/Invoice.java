@@ -18,36 +18,36 @@ public class Invoice {
     private String trackerId;
     private double totalAmount;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    private Date dateOfPayment;
+    private String dateOfPayment;
     private PaymentStatus paid;
-    private int billingMonth;
+
+    private String billingDate;
     private double distanceTravelled;
     private String emissionCategory;
 
     @OneToOne
-    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @JoinColumn(name ="vehicle_id", referencedColumnName = "id")
     private Vehicle vehicle;
 
     @JsonIgnore
     private ArrayList<String> conditions;
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCategory, Vehicle vehicle) {
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, String billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle) {
         this.trackerId = trackerId;
         this.paid = paid;
         this.totalAmount = totalAmount;
-        this.billingMonth = billingMonth;
+        this.billingDate = billingDate;
         this.distanceTravelled = distanceTravelled;
         this.emissionCategory = emissionCategory;
         this.vehicle = vehicle;
         conditions = new ArrayList<>();
     }
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, int billingMonth, double distanceTravelled, String emissionCategory, Vehicle vehicle, ArrayList<String> conditions) {
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, String billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle, ArrayList<String> conditions) {
         this.trackerId = trackerId;
         this.paid = paid;
         this.totalAmount = totalAmount;
-        this.billingMonth = billingMonth;
+        this.billingDate = billingDate;
         this.distanceTravelled = distanceTravelled;
         this.emissionCategory = emissionCategory;
         this.vehicle = vehicle;
@@ -97,25 +97,7 @@ public class Invoice {
         this.paid = paid;
     }
 
-    public Date getDateOfPayment() {
-        return dateOfPayment;
-    }
 
-    public void setDateOfPayment(Date dateOfPayment) {
-        this.dateOfPayment = dateOfPayment;
-    }
-
-    public void createCurrentDateOfPayment() {
-        this.dateOfPayment = new Timestamp(System.currentTimeMillis());
-    }
-
-    public int getBillingMonth() {
-        return billingMonth;
-    }
-
-    public void setBillingMonth(int billingMonth) {
-        this.billingMonth = billingMonth;
-    }
 
     public String getEmissionCategory() {
         return emissionCategory;
@@ -139,6 +121,22 @@ public class Invoice {
 
     public void setConditions(ArrayList<String> conditions) {
         this.conditions = conditions;
+    }
+
+    public String getDateOfPayment() {
+        return dateOfPayment;
+    }
+
+    public void setDateOfPayment(String dateOfPayment) {
+        this.dateOfPayment = dateOfPayment;
+    }
+
+    public String getBillingDate() {
+        return billingDate;
+    }
+
+    public void setBillingDate(String billingDate) {
+        this.billingDate = billingDate;
     }
 
     public enum PaymentStatus {

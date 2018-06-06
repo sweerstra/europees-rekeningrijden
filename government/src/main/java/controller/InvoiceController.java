@@ -25,7 +25,6 @@ public class InvoiceController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addInvoice(Invoice invoice) {
        Invoice added = service.create(invoice);
-       invoice.createCurrentDateOfPayment();
 
         if (added == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
