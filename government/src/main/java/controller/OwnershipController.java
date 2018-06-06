@@ -22,9 +22,6 @@ public class OwnershipController {
     public Response getOwner(@PathParam("id") long id) {
         Ownership ownership = service.getById(id);
 
-        if (ownership == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
 
         return Response.ok(ownership).build();
     }

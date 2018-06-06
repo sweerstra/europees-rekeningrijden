@@ -7,13 +7,13 @@ class OwnersSelect extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { search: '', owners: [{"address":"Dorpsstraat 4B","citizenServiceNumber":"ENG21587234","city":"Goirle","dateOfBirth":"2018-06-06T11:42:12Z[UTC]","email":"danny.janssen@student.fontys.nl","firstName":"Danny","id":1,"lastName":"Janssen","ownerships":[],"phone":"0611785527","postalCode":"5051CK","usesBillriderWebsite":true}], selectedId: null };
+    this.state = { search: '', owners: [], selectedId: null };
   }
 
   componentDidMount() {
     this.ownerSearchCallBack = debounce(e => {
       const { value } = e.target;
-      Api.owner.search(value)
+      Api.owner.searchByName(value)
         .then(owners => this.setState({ owners }))
         .catch(() => this.setState({ selectedId: null }));
     }, 600);
@@ -57,6 +57,7 @@ class OwnersSelect extends Component {
   onSearch = ({ target }) => {
     const { value } = target;
     this.setState({ search: value });
+
   }
 }
 
