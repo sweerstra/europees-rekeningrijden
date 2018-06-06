@@ -18,7 +18,7 @@ public class Invoice {
     private String trackerId;
     private double totalAmount;
 
-    private String dateOfPayment;
+    private Date dateOfPayment;
     private PaymentStatus paid;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
@@ -134,20 +134,12 @@ public class Invoice {
         this.conditions = conditions;
     }
 
-    public String getDateOfPayment() {
+    public Date getDateOfPayment() {
         return dateOfPayment;
     }
 
-    public void setDateOfPayment(String dateOfPayment) {
+    public void setDateOfPayment(Date dateOfPayment) {
         this.dateOfPayment = dateOfPayment;
-    }
-
-    public String getBillingDate() {
-        return billingDate;
-    }
-
-    public void setBillingDate(String billingDate) {
-        this.billingDate = billingDate;
     }
 
     public enum PaymentStatus {

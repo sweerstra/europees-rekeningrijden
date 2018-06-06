@@ -6,6 +6,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import domain.*;
 import model.Movement;
+import model.RegionMovement;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,12 +14,8 @@ import java.io.InputStream;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class InvoiceGenerator {
@@ -361,7 +358,7 @@ public class InvoiceGenerator {
         return new DateFormatSymbols(Locale.UK).getMonths()[month];
     }
 
-    public void calculateInvoice(Invoice invoice, List<Region> regions, List<EmissionCategory> emissionCategories){
+    public void calculateInvoice(Invoice invoice, List<Region> regions, List<EmissionCategory> emissionCategories) {
         List<Movement> movements = new ArrayList<>();
         drivenLines = new ArrayList<>();
         Gson gson = new Gson();
@@ -380,9 +377,9 @@ public class InvoiceGenerator {
                     this.invoiceToGenerate.getTrackerId(),
                     startDate,
                     endDate)),
-                    new TypeToken<List<Movement>>(){}.getType());
-        }
-        catch (Exception e){
+                    new TypeToken<List<Movement>>() {
+                    }.getType());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -390,10 +387,28 @@ public class InvoiceGenerator {
         List<Double> coordinateLong = movements.stream().map(Movement::getLongitude).collect(Collectors.toList());
 
         double totalDistance = 0;
-        for(int i = 0; i < movements.size() - 1; i++) {
-            totalDistance += distance(coordinateLat.get(i), coordinateLong.get(i), coordinateLat.get(i+1), coordinateLong.get(i+1));
+        for (int i = 0; i < movements.size() - 1; i++) {
+            totalDistance += distance(coordinateLat.get(i), coordinateLong.get(i), coordinateLat.get(i + 1), coordinateLong.get(i + 1));
         }
         totalDistance = Double.valueOf(new DecimalFormat(".##").format(totalDistance).replace(',', '.'));
+
+        List<RegionMovement> regionMovementsList = new ArrayList<>();
+
+        for(Region r : regions){
+            regionMovementsList.add(new RegionMovement(r, new ArrayList<>()));
+        }
+
+        for (Movement mv : movements) {
+            for (Region r : regions) {
+                if (RegionUtil.coordinateInRegion(r, new Coordinate(mv.getLatitude(), mv.getLongitude()))) {
+                    for(RegionMovement rm : regionMovementsList){
+                        if(rm.getRegion().getName().equals(r.getName())){
+                            rm.getMovements().add(mv);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private double distance(double lat1, double lon1, double lat2, double lon2) {
