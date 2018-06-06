@@ -5,7 +5,7 @@ import Navigation from '../../components/Navigation/Navigation';
 
 class Settings extends Component {
   state = {
-    rate: {
+    defaultRate: {
       rate: 0
     },
     emissions: [
@@ -45,12 +45,12 @@ class Settings extends Component {
         }
       });
 
-    Api.rate.getRate()
+    Api.defaultRate.getRate()
       .then(defaultRates => {
         if (!defaultRates || defaultRates.length === 0) return;
 
         const defaultRate = defaultRates[defaultRates.length - 1];
-        this.setState({ defaultRate: rate });
+        this.setState({ defaultRate });
       });
   }
 
@@ -62,10 +62,10 @@ class Settings extends Component {
   };
 
   onSaveDefaultRate = () => {
-    const { rate } = this.state.rate;
+    const { rate } = this.state.defaultRate;
 
     if (rate) {
-      Api.rate.add(parseFloat(rate));
+      Api.defaultRate.add(parseFloat(rate));
     }
   };
 
@@ -75,7 +75,7 @@ class Settings extends Component {
     this.setState(state => {
       const { emissions } = state;
 
-      emissions[index].rate = parseFloat(value);
+      emissions[index].defaultRate = parseFloat(value);
 
       return ({ emissions });
     });
@@ -83,7 +83,7 @@ class Settings extends Component {
 
   onDefaultRateChange = (e) => {
     const { target } = e;
-    this.setState({ rate: target.value });
+    this.setState({ defaultRate: target.value });
   };
 
   render() {
