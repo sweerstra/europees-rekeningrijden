@@ -35,8 +35,8 @@ class App extends Component {
           <PrivateRoute path="/routes" component={RouteInvoices}/>
           <PrivateRoute path="/vehicles" component={Vehicles}/>
           <PrivateRoute exact path="/vehicles/sign-over" component={SignOverConfirmation}/>
-          <PrivateRoute path="/payment/:invoiceId" authenticated={isAuthenticated} component={Payment}/>
-          <PrivateRoute path="/payment-failed" authenticated={isAuthenticated} component={Payment}/>
+          <Route path="/payment/:invoiceId" render={routeProps => <Payment isSuccessful={true} {...routeProps}/>}/>
+          <Route path="/payment-failed" render={routeProps => <Payment isSuccessful={false} {...routeProps}/>}/>
           <Redirect to="/login"/>
         </Switch>
       </div>

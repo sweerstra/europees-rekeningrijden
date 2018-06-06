@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using Drivers.Models;
 using Drivers.Service;
 using PayPal;
 using PayPal.Api;
@@ -12,11 +14,12 @@ using PayPal.Api;
 namespace Drivers.Controllers
 {
     [RoutePrefix("api/payment")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PaymentController : ApiController
     {
         [HttpPost]
-        [Route("{invoiceId}/{price}/{returnUri=returnUri}/{cancelUri=cancelUri}")]
-        public IHttpActionResult Pay(int invoiceId, double price, string returnUri, string cancelUri)
+        [Route("{returnUri=returnUri}/{cancelUri=cancelUri}")]
+        public IHttpActionResult Pay(PaymentRequest request, string returnUri, string cancelUri)
         {
             var apiContext = PaypalConfiguration.GetAPIContext();
 
@@ -29,7 +32,10 @@ namespace Drivers.Controllers
                 cancel_url = cancelUri
             };
 
-            var itemList = new ItemList
+            string price = request.Price.ToString(CultureInfo.InvariantCulture);
+
+
+                      var itemList = new ItemList
             {
                 items = new List<Item>
                 {
@@ -37,7 +43,7 @@ namespace Drivers.Controllers
                     {
                         name = "Route Invoice",
                         currency = "GBP",
-                        price = price.ToString(CultureInfo.InvariantCulture),
+                        price = price,
                         quantity = "1",
                         sku = "Traxit"
                     }
@@ -48,13 +54,13 @@ namespace Drivers.Controllers
             {
                 tax = "0",
                 shipping = "0",
-                subtotal = price.ToString()
+                subtotal = price
             };
 
             var amount = new Amount
             {
                 currency = "GBP",
-                total = price.ToString(),
+                total = price,
                 details = details
             };
 
@@ -63,7 +69,7 @@ namespace Drivers.Controllers
                 new Transaction
                 {
                     description = "Traxit route invoice",
-                    invoice_number = invoiceId.ToString(),
+                    invoice_number = request.InvoiceId.ToString(),
                     amount = amount,
                     item_list = itemList
                 }
@@ -93,8 +99,8 @@ namespace Drivers.Controllers
         }
 
         [HttpGet]
-        [Route("complete/{paymentId=paymentId}/{PayerID=payerId}")]
-        public IHttpActionResult CompletePayment(string paymentId, string payerId, string redirectUri)
+        [Route("complete")]
+        public IHttpActionResult CompletePayment(string paymentId, string payerId)
         {
             var apiContext = PaypalConfiguration.GetAPIContext();
             var paymentExecution = new PaymentExecution() {payer_id = payerId};
@@ -105,7 +111,7 @@ namespace Drivers.Controllers
 
             var transaction = executedPayment.transactions.First();
             
-            return Redirect(new Uri($"{"http://localhost:3000/payment"}?invoiceId={transaction.invoice_number}"));
+            return Redirect(new Uri($"{"http://localhost:3000/payment/" + paymentId}?invoiceId={transaction.invoice_number}"));
         }
     }
 }

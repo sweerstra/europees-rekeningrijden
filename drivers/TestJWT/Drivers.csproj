@@ -152,6 +152,7 @@
     </Compile>
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\PaymentRequest.cs" />
     <Compile Include="Models\SignOver.cs" />
     <Compile Include="Models\SignOverRequest.cs" />
     <Compile Include="Models\SignOverVerification.cs" />

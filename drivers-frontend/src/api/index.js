@@ -31,7 +31,11 @@ export default {
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
     downloadInvoice: (id) => Request.get(`${GOVERNMENT_API_URL}/invoice/generate/${id}`),
-    getDownloadUrl: (id) => `${GOVERNMENT_API_URL}/invoice/generate/${id}`
+    getDownloadUrl: (id) => `${GOVERNMENT_API_URL}/invoice/generate/${id}`,
+    getPaypalUrl: (invoiceId, price) => Request.post(`http://localhost:60573/api/payment?returnUri=http://localhost:60573/api/payment/complete&cancelUri=http://localhost:3000/payment-failed`, {
+      invoiceId,
+      price
+    })
   },
   route: {
     getRoute: (id) => Request.get(ROUTE_URL + id)

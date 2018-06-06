@@ -62,11 +62,22 @@ export const ShareIcon = ({ onClick }) => (
 );
 
 export const ClipboardIcon = ({ onClick }) => (
-  <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+  <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+       stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-clipboard"
        color="#384047">
     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
     <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
     <title>Copy</title>
+  </svg>
+);
+
+export const CreditCardIcon = ({ onClick }) => (
+  <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+       stroke="currentColor"
+       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-credit-card"
+       color="#3a4049">
+    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+    <line x1="1" y1="10" x2="23" y2="10"/>
   </svg>
 );
