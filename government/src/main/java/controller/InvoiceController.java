@@ -4,12 +4,14 @@ import domain.Invoice;
 import domain.Ownership;
 import service.InvoiceService;
 import service.OwnershipService;
+import support.InvoiceCalculator;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
@@ -24,7 +26,8 @@ public class InvoiceController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addInvoice(Invoice invoice) {
-       Invoice added = service.create(invoice);
+        Invoice added = service.create(invoice);
+        invoice.createCurrentDateOfPayment();
 
         if (added == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -55,7 +58,11 @@ public class InvoiceController {
         }
 
         Ownership ownership = ownershipService.getLatestOwnership(invoice.getVehicle().getId());
-        return Response.ok(service.generateInvoicePdf(id, ownership), "application/pdf").build();
+
+        InputStream in = service.generateInvoicePdf(id, ownership);
+        if(in == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(in, "application/pdf").build();
     }
 
     @PUT

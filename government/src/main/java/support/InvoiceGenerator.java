@@ -1,28 +1,38 @@
 package support;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-import domain.Invoice;
-import domain.Owner;
-import domain.Ownership;
-import domain.Vehicle;
+import domain.*;
+import model.Movement;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class InvoiceGenerator {
     private Invoice invoiceToGenerate;
     private static SimpleDateFormat formatter;
     private static String resourcePath = "government/src/main/resources/images/";
     private Document document;
-    private double feePerMile;
+    private double feePerKm;
+    private Calendar calendar;
+
+//    private List<EmissionCategory> emissionCategories;
+//    private List<Region> regions;
+
+    private List<DrivenLine> drivenLines;
 
     public InvoiceGenerator() {
 
@@ -30,13 +40,14 @@ public class InvoiceGenerator {
 
     public InputStream objectToPdf(Invoice invoice, Ownership ownership) {
         this.invoiceToGenerate = invoice;
-        this.feePerMile = 0.44;
-        int noOfDays = 30; //30 days from now
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_YEAR, noOfDays);
-        Date date = calendar.getTime();
-        this.invoiceToGenerate.getConditions().add(0, "Payment must be done before " + new SimpleDateFormat("dd/MM/yyyy").format(date));
+        this.feePerKm = 0.44;
+        calendar = Calendar.getInstance();
+        calendar.setTime(invoiceToGenerate.getBillingDate());
+        this.invoiceToGenerate.getConditions().add(0,
+                "Payment must be done before " +
+                        calendar.getActualMaximum(Calendar.DAY_OF_MONTH) +
+                        "/" + (calendar.get(Calendar.MONTH) + 2) +
+                        "/" + calendar.get(Calendar.YEAR));
 
         formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date();
@@ -71,6 +82,10 @@ public class InvoiceGenerator {
             Chunk invoiceTitle = new Chunk("MONTHLY BILLED DRIVING INVOICE", font);
             document.add(invoiceTitle);
             addWhiteLines(1);
+
+            Chunk billingMonth = new Chunk((getMonth(calendar.get(Calendar.MONTH)).toUpperCase() + " " + calendar.get(Calendar.YEAR)), font);
+            document.add(billingMonth);
+
             addWhiteLines(1);
             addVehicleInformation(document, trackerId, currVehicle);
 
@@ -108,7 +123,7 @@ public class InvoiceGenerator {
         }});
         addRows(vehicleInfoTable, new ArrayList<String>() {{
             add(trackerId);
-            add(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+            add(new SimpleDateFormat("dd/MM/yyyy").format(invoiceToGenerate.getBillingDate()));
             add(currVehicle.getLicensePlate());
             add(String.valueOf(invoiceToGenerate.getId()));
         }});
@@ -206,10 +221,10 @@ public class InvoiceGenerator {
         billingInfoTable.setHorizontalAlignment(Element.ALIGN_LEFT);
         billingInfoTable.setWidthPercentage(100.0f);
         addTableHeader(billingInfoTable, new ArrayList<String>() {{
-            add("MILES");
+            add("KILOMETERS");
             add("EMISSION-CAT");
             add("MULTIPLIER (%)*");
-            add("FEE PER MI");
+            add("FEE PER KM");
             add("AMOUNT");
         }});
 
@@ -242,7 +257,7 @@ public class InvoiceGenerator {
             add(String.valueOf(invoiceToGenerate.getDistanceTravelled()));
             add(invoiceToGenerate.getEmissionCategory().toUpperCase());
             add(String.valueOf(String.valueOf(finalMultiplier)));
-            add("£ " + feePerMile);
+            add("£ " + feePerKm);
             add("£ " + invoiceToGenerate.getTotalAmount());
         }});
 
@@ -342,17 +357,60 @@ public class InvoiceGenerator {
     }
 
     public String getMonth(int month) {
-        return new DateFormatSymbols(Locale.UK).getMonths()[month - 1];
+//        return new DateFormatSymbols(Locale.UK).getMonths()[month - 1];
+        return new DateFormatSymbols(Locale.UK).getMonths()[month];
     }
 
-//    public static void main(String[] args) {
-//        Owner owner = new Owner("D.A.", "Janssen", "Dorpsstraat 4B", "5051CK", "Goirle", "0656453412", "danny.janssen@student.fontys.nl", new Date());
-//        Vehicle vehicle = new Vehicle("5455", "12-AB-333", "TomTom", "EURO 1");
-//        Invoice invoice = new Invoice("ENG1234", Invoice.PaymentStatus.OPEN, 178, 4, 200, "EURO 4", vehicle, new ArrayList<String>() {{
-//            add("testcondition2");
-//            add("testcondition3");
-//        }});
-//        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
-//        invoiceGenerator.objectToPdf(invoice,owner);
-//    }
+    public void calculateInvoice(Invoice invoice, List<Region> regions, List<EmissionCategory> emissionCategories){
+        List<Movement> movements = new ArrayList<>();
+        drivenLines = new ArrayList<>();
+        Gson gson = new Gson();
+        calendar = Calendar.getInstance();
+        invoiceToGenerate = invoice;
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String startDate = sdf.format(calendar.getTime());
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String endDate = sdf.format(calendar.getTime());
+
+        try {
+            movements = gson.fromJson(HttpHelper.get(String.format("http://192.168.24.36:9080/movement/api/movement/%s/%s/%s",
+                    this.invoiceToGenerate.getTrackerId(),
+                    startDate,
+                    endDate)),
+                    new TypeToken<List<Movement>>(){}.getType());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        List<Double> coordinateLat = movements.stream().map(Movement::getLatitude).collect(Collectors.toList());
+        List<Double> coordinateLong = movements.stream().map(Movement::getLongitude).collect(Collectors.toList());
+
+        double totalDistance = 0;
+        for(int i = 0; i < movements.size() - 1; i++) {
+            totalDistance += distance(coordinateLat.get(i), coordinateLong.get(i), coordinateLat.get(i+1), coordinateLong.get(i+1));
+        }
+        totalDistance = Double.valueOf(new DecimalFormat(".##").format(totalDistance).replace(',', '.'));
+    }
+
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        dist = dist * 1.609344;
+        return (dist);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
 }

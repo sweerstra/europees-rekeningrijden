@@ -1,9 +1,9 @@
 package service;
 
 import dao.IInvoiceDao;
-import domain.Invoice;
-import domain.Ownership;
-import domain.Vehicle;
+import domain.*;
+import support.HttpHelper;
+import support.InvoiceCalculator;
 import support.InvoiceGenerator;
 import domain.Invoice.PaymentStatus;
 
@@ -17,6 +17,12 @@ public class InvoiceService {
 
     @Inject
     private IInvoiceDao dao;
+
+    @Inject
+    private EmissionService emissionService;
+
+    @Inject
+    private RegionService regionService;
 
     private InvoiceGenerator invoiceGenerator;
 
@@ -42,7 +48,11 @@ public class InvoiceService {
 
     public InputStream generateInvoicePdf(long id, Ownership ownership) {
         Invoice invoice = findById(id);
+        List<Region> regions = regionService.findAll();
+        List<EmissionCategory> emissionCategories = emissionService.findAll();
 
+        if(regions.isEmpty() || emissionCategories.isEmpty()) return null;
+        invoiceGenerator.calculateInvoice(invoice, regions, emissionCategories);
         return invoiceGenerator.objectToPdf(invoice, ownership);
     }
 

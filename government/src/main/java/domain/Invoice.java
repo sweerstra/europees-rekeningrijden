@@ -21,7 +21,8 @@ public class Invoice {
     private String dateOfPayment;
     private PaymentStatus paid;
 
-    private String billingDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+    private Date billingDate;
     private double distanceTravelled;
     private String emissionCategory;
 
@@ -32,7 +33,7 @@ public class Invoice {
     @JsonIgnore
     private ArrayList<String> conditions;
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, String billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle) {
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, Date billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle) {
         this.trackerId = trackerId;
         this.paid = paid;
         this.totalAmount = totalAmount;
@@ -43,7 +44,7 @@ public class Invoice {
         conditions = new ArrayList<>();
     }
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, String billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle, ArrayList<String> conditions) {
+    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, Date billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle, ArrayList<String> conditions) {
         this.trackerId = trackerId;
         this.paid = paid;
         this.totalAmount = totalAmount;
@@ -97,7 +98,17 @@ public class Invoice {
         this.paid = paid;
     }
 
+    public void createCurrentDateOfPayment() {
+        this.dateOfPayment = new Timestamp(System.currentTimeMillis());
+    }
 
+    public Date getBillingDate() {
+        return billingDate;
+    }
+
+    public void setBillingDate(Date billingDate) {
+        this.billingDate = billingDate;
+    }
 
     public String getEmissionCategory() {
         return emissionCategory;
