@@ -29,13 +29,15 @@ class Map extends Component {
 
     // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
     static getDerivedStateFromProps(nextProps, prevState) {
-        const { movement: { id } } = nextProps;
+        const { movement } = nextProps;
         const { map } = prevState;
-        if (prevState.movementId === id) return null;
+        if (prevState.movementId === movement.id) return null;
 
         // https://developers.google.com/maps/documentation/javascript/reference/3/#Marker
-        var marker = new window.google.maps.Marker({
-            position: {lat: movement.latitude, lng: movement.longitude},
+        const position = { lat: movement.latitude, lng: movement.longitude };
+
+        const marker = new window.google.maps.Marker({
+            position,
             icon: {
                 path: window.google.maps.SymbolPath.CIRCLE,
                 strokeColor: '#3F51B5',
@@ -45,12 +47,14 @@ class Map extends Component {
             map
         });
 
-        return { movementId: id };
+        map.setCenter(position);
+
+        return { movementId: movement.id };
     }
 
     render() {
         return (
-            <div className="google-map stolen-vehicles-map" style={{height: '100%'}}></div>
+            <div className="google-map stolen-vehicles-map" style={{ height: '100%' }}></div>
         );
     }
 }

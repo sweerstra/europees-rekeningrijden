@@ -1,6 +1,11 @@
 .settings {
   padding-left: 40px;
   width: 400px;
+  display: flex;
+}
+
+.settings__emissions {
+  margin-right: 40px;
 }
 
 .settings__emission {
@@ -20,4 +25,19 @@
   margin-top: 10px;
   display: flex;
   justify-self: flex-end;
+}
+
+.settings__rate__btn {
+  margin-top: 10px;
+  display: flex;
+  justify-self: flex-end;
+}
+
+.settings__rate{
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.2em;
+  font-weight: bold;
+  display:inline-block;
 }

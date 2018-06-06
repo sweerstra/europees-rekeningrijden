@@ -16,6 +16,7 @@ class StolenVehicle extends Component {
             stolenVehicles: [],
             selectedRow: null,
             isModalOpen: false,
+            history: [],
             stolenVehicle: { trackerId: '', licencePlate: '', dateString: '' },
             trackerId: '',
             trackerNotFound: true,
@@ -66,10 +67,14 @@ class StolenVehicle extends Component {
     };
 
     trackStolenVehicle = (trackerId) => {
-        Api.stolenCar.getLatestMovement(trackerId)
-            .then(movement => this.setState({ movement }));
+        Api.vehicle.getLatestMovement(trackerId)
+            .then(movement => {
+                console.log(movement);
+                this.setState({ movement });
+            });
     };
-    
+
+
     onStolenVehicleChange = (e) => {
         const { name, value } = e.target;
         this.setState(state => ({
@@ -79,6 +84,11 @@ class StolenVehicle extends Component {
             }
         }));
     };
+
+    fetchOwnershipForTracker(trackerId) {
+        Api.ownership.getByTrackerId(trackerId)
+            .then(history => this.setState(state => ({ history })));
+    }
 
     render() {
         const columns = [
@@ -96,13 +106,14 @@ class StolenVehicle extends Component {
             }
         ];
 
-        const { stolenVehicles, selectedRow, isModalOpen, stolenVehicle, trackerId, trackerNotFound, movement } = this.state;
+        const { stolenVehicles, selectedRow, isModalOpen, history, stolenVehicle, trackerId, trackerNotFound, movement } = this.state;
 
         return (
             <div>
                 <div className={`stolen-vehicles ${isModalOpen ? 'modal-overlay' : ''}`}>
-                    <Navigation heading="Police Stolen Cars"/>
+                    <Navigation heading="Traxit Police"/>
                     <div className="stolen-vehicles__table">
+                        <h2>Stolen Cars</h2>
                         <ReactTable
                             data={stolenVehicles}
                             columns={columns}
@@ -111,9 +122,14 @@ class StolenVehicle extends Component {
 
                                 return {
                                     onClick: () => {
+                                        if (isSelected) {
+                                            return;
+                                        }
+
                                         const { trackerId } = rowInfo.original;
                                         this.setState({ selectedRow: trackerId });
                                         this.trackStolenVehicle(trackerId);
+                                        this.fetchOwnershipForTracker(trackerId);
                                     },
                                     style: {
                                         color: isSelected ? 'white' : 'black',
@@ -124,26 +140,52 @@ class StolenVehicle extends Component {
                             minRows="5"
                             showPagination={false}
                         />
+
                         <div className="stolen-vehicles__navigation__buttons">
-                            <button className="btn blue" onClick={this.toggleModal}>Report stolen car</button>
+                            <button className="btn blue" onClick={this.toggleModal}>Report Stolen Vehicle</button>
+                        </div>
+
+                        <div className="trackers__administration__history">
+                            <h2>Vehicle History</h2>
+                            <div className="tracker-history">
+                                {
+                                    history.length > 0
+                                        ? history.map(({ vehicle, owner, startDate, endDate }, index) => {
+                                            owner = owner || { firstName: '', lastName: '' };
+                                            vehicle = vehicle || { licensePlate: '' };
+
+                                            return <div className="history" key={index}><span>{vehicle.licensePlate}</span>
+                                                <span>{`${owner.firstName} ${owner.lastName}`}</span>
+                                                <span
+                                                    className="history__date">{new Date(startDate).toLocaleDateString()}</span>
+                                                <span
+                                                    className="history__date">{endDate ? new Date(endDate).toLocaleDateString() : 'Now'}</span>
+                                            </div>;
+                                        })
+                                        : <div>Select a vehicle to see it's history</div>
+                                }
+                            </div>
                         </div>
                     </div>
                     <Map movement={movement}/>
                 </div>
 
                 <Modal isOpen={isModalOpen}
-                       onModalClose={this.toggleModal}>
-                    <h1>Report stolen Vehicle</h1>
+                       onModalClose={this.toggleModal}
+                       className="stolen-vehicles__add-modal">
+                    <h1>Report Stolen Vehicle</h1>
                     <label>
                         License Plate
                         <input type="text" name="licencePlate"
                                className={trackerNotFound ? 'red' : 'green'}
                                onChange={this.onLicenseChange}
-                               value={stolenVehicle.licensePlate}/>
+                               value={stolenVehicle.licensePlate}
+                               placeholder="License Plate"
+                        />
                     </label>
                     <label>
                         Tracker ID
-                        <input type="text" name="trackerId" value={trackerId}/>
+                        <input type="text" name="trackerId" value={trackerId} placeholder="Tracker ID"/>
                     </label>
                     <label>
                         Date of Theft

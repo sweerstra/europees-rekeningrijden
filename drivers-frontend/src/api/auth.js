@@ -6,7 +6,7 @@ export const getLoggedInEmail = () => {
   const token = getToken();
 
   if (token) {
-    return decodeToken(getToken()).sub;
+    return decodeToken(getToken()).unique_name;
   } else {
     return null;
   }

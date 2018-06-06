@@ -20,6 +20,10 @@ public class OwnerService {
         return dao.findById(id);
     }
 
+    public Owner getByBSN(String citizenServiceNumber) {
+        return dao.findByBSN(citizenServiceNumber);
+    }
+
     public Owner create(Owner entity) {
         return dao.create(entity);
     }

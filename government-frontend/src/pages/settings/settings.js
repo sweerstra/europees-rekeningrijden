@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import './settings.css';
 import Api from '../../api';
+import Navigation from '../../components/Navigation/Navigation';
 
 class Settings extends Component {
   state = {
+    defaultRate: {
+      rate: 0
+    },
     emissions: [
+
       {
         name: 'Euro1',
         rate: 0.2
@@ -39,14 +44,29 @@ class Settings extends Component {
           this.setState({ emissions });
         }
       });
+
+    Api.defaultRate.getRate()
+      .then(defaultRates => {
+        if (!defaultRates || defaultRates.length === 0) return;
+
+        const defaultRate = defaultRates[defaultRates.length - 1];
+        this.setState({ defaultRate });
+      });
   }
 
-  onSave = (e) => {
-    // TODO: save emissions
+  onSave = () => {
     const { emissions } = this.state;
 
     console.log(emissions);
     Api.emissions.addEmissions(emissions);
+  };
+
+  onSaveDefaultRate = () => {
+    const { rate } = this.state.defaultRate;
+
+    if (rate) {
+      Api.defaultRate.add(parseFloat(rate));
+    }
   };
 
   onEmissionChange = (e, index) => {
@@ -55,26 +75,47 @@ class Settings extends Component {
     this.setState(state => {
       const { emissions } = state;
 
-      emissions[index].rate = value;
+      emissions[index].defaultRate = parseFloat(value);
 
       return ({ emissions });
     });
   };
 
+  onDefaultRateChange = (e) => {
+    const { target } = e;
+    this.setState({ defaultRate: target.value });
+  };
+
   render() {
+    const { defaultRate } = this.state;
+
     return (
-      <div className="settings">
-        <h1>Emission Category</h1>
-        <div className="settings__emissions">
-          {this.state.emissions.map(({ name, rate }, index) =>
-            <label className="settings__emission">
-              {name}
-              <input type="text" value={rate} onChange={e => this.onEmissionChange(e, index)}/>
-            </label>
-          )}
-          <button onClick={this.onSave} className="settings__emission__btn btn green">
-            Save
-          </button>
+      <div>
+        <Navigation heading="Traxit Trackers"
+                    onLogout={this.props.onLogout}/>
+
+        <div className="settings">
+          <div className="settings__emissions">
+            <h2>Emission Category</h2>
+            {this.state.emissions.map(({ name, rate }, index) =>
+              <label className="settings__emission" key={index}>
+                {name}
+                <input type="text" value={rate} onChange={e => this.onEmissionChange(e, index)}/>
+              </label>
+            )}
+            <button onClick={this.onSave} className="settings__emission__btn btn green">
+              Save
+            </button>
+          </div>
+
+          <div className="settings__rate">
+            <h2>Global England rate</h2>
+            <label>England Rate</label>
+            <input type="text" value={defaultRate.rate} onChange={this.onDefaultRateChange}/>
+            <button onClick={this.onSaveDefaultRate} className="settings__rate__btn btn blue">
+              Save
+            </button>
+          </div>
         </div>
       </div>
     );

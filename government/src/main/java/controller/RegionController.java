@@ -59,6 +59,10 @@ public class RegionController {
     public Response getAllRegions() {
         List<Region> regions = service.findAll();
 
+        for (Region region : regions) {
+            region.serialized();
+        }
+
         return Response.ok(regions).build();
     }
 }

@@ -22,6 +22,8 @@ class App extends Component {
   render() {
     const { isAuthenticated } = this.state;
 
+    console.log(isAuthenticated)
+
     return (
       <div className="App">
         <Switch>
@@ -31,9 +33,9 @@ class App extends Component {
               : <Login onAuthenticate={this.handleAuthentication}/>
           }/>
           <Route path="/register" component={Register}/>
-          <PrivateRoute path="/routes" component={RouteInvoices}/>
-          <PrivateRoute path="/vehicles" component={Vehicles}/>
-          <PrivateRoute exact path="/vehicles/sign-over" component={SignOverConfirmation}/>
+          <PrivateRoute path="/routes" authenticated={isAuthenticated} component={RouteInvoices}/>
+          <PrivateRoute exact path="/vehicles" authenticated={isAuthenticated} component={Vehicles}/>
+          <PrivateRoute exact path="/vehicles/sign-over" authenticated={isAuthenticated} component={SignOverConfirmation}/>
           <Redirect to="/login"/>
         </Switch>
       </div>

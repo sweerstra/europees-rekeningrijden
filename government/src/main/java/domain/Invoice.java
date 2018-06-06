@@ -18,8 +18,7 @@ public class Invoice {
     private String trackerId;
     private double totalAmount;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    private Date dateOfPayment;
+    private String dateOfPayment;
     private PaymentStatus paid;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
@@ -28,7 +27,7 @@ public class Invoice {
     private String emissionCategory;
 
     @OneToOne
-    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @JoinColumn(name ="vehicle_id", referencedColumnName = "id")
     private Vehicle vehicle;
 
     @JsonIgnore
@@ -99,14 +98,6 @@ public class Invoice {
         this.paid = paid;
     }
 
-    public Date getDateOfPayment() {
-        return dateOfPayment;
-    }
-
-    public void setDateOfPayment(Date dateOfPayment) {
-        this.dateOfPayment = dateOfPayment;
-    }
-
     public void createCurrentDateOfPayment() {
         this.dateOfPayment = new Timestamp(System.currentTimeMillis());
     }
@@ -141,6 +132,22 @@ public class Invoice {
 
     public void setConditions(ArrayList<String> conditions) {
         this.conditions = conditions;
+    }
+
+    public String getDateOfPayment() {
+        return dateOfPayment;
+    }
+
+    public void setDateOfPayment(String dateOfPayment) {
+        this.dateOfPayment = dateOfPayment;
+    }
+
+    public String getBillingDate() {
+        return billingDate;
+    }
+
+    public void setBillingDate(String billingDate) {
+        this.billingDate = billingDate;
     }
 
     public enum PaymentStatus {

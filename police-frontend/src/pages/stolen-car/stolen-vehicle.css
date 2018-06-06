@@ -8,7 +8,7 @@
 
 .stolen-vehicles__table {
     grid-area: stolen-vehicles;
-    padding: 40px;
+    padding: 20px 40px 40px;
 }
 
 .stolen-vehicles__navigation__buttons {
@@ -18,4 +18,29 @@
 .stolen-vehicles-map{
     height: 100%;
     grid-area: map;
+}
+
+.stolen-vehicles__add-modal label {
+    font-weight: bold;
+}
+
+.stolen-vehicles__add-modal input {
+    margin-top: 4px;
+}
+
+.stolen-vehicles__add-modal button {
+    margin-top: 10px;
+}
+
+.trackers__administration__history{
+    margin-top: 10px;
+}
+
+.history {
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border: 2px solid var(--color-tint);
+    border-radius: var(--border-radius);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }
