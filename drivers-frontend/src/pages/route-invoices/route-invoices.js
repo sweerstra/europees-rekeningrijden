@@ -12,13 +12,7 @@ class RouteInvoices extends Component {
     super(props);
 
     this.state = {
-      invoices: [{     trackerId: 1231,
-        licensePlate: 3211,
-        distanceTravelled: 3121,
-        totalAmount: 1,
-        paid: 1,
-        month: 1,
-        open: 'Tracker ID'}],
+      invoices: [],
       selectedInvoice: {
         id: 0,
         routes: []
