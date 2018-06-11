@@ -171,7 +171,7 @@ function sendToMovementsQueue(data) {
         body: JSON.stringify(data)
     };
 
-    const url = `http://localhost:8161/api/message?destination=queue://movements`;
+    const url = `http://192.168.24.36:8161/api/message?destination=queue://movements`;
 
     return fetch(url, options)
         .then(resp => resp.text());
