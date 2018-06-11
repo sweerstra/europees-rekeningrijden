@@ -1,12 +1,9 @@
 package domain;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import domain.classes.Movement;
-import domain.classes.Tracker;
 import domain.support.Coordinate;
 import domain.support.CoordinateGenerator;
-import domain.support.HttpHelper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -95,7 +92,6 @@ public class CoordinateGeneratorTest {
     @Test
     public void postMovementTest() {
         Gson gson = new Gson();
-        Tracker tracker = new Tracker(1);
         // Random coordinate generator
         final CountDownLatch latch = new CountDownLatch(PERIOD_COUNTER);
 
@@ -106,7 +102,7 @@ public class CoordinateGeneratorTest {
                 Coordinate newCoordinate = coordinateGenerator.generateRandomCoordinate(startPosition, RADIUS_IN_METERS);
 
                 // Creates a new movement
-                Movement newMovement = new Movement(tracker, newCoordinate.getLongitude(), newCoordinate.getLatitude());
+                Movement newMovement = new Movement("ENG", newCoordinate.getLongitude(), newCoordinate.getLatitude(), "2018-05-30 12:00");
 
                 // Convert to readable Json and post
                 String json = gson.toJson(newMovement);
