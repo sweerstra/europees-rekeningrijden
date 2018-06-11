@@ -127,13 +127,11 @@ function addSimulation(route, polyline, speed) {
 
             console.log(JSON.stringify(routeResult));
 
-            // make post request to save movement
-            /* post(MOVEMENT_API_URL, routeResult)
+            sendToMovementsQueue(routeResult)
                 .catch(err => {
                     console.error(err.message);
                     clearInterval(interval);
-                }); */
-            postToQueue('movements', routeResult);
+                });
         } else {
             clearInterval(interval);
             polyline.setMap(null);
@@ -167,13 +165,13 @@ function post(url, data) {
         .then(resp => resp.json())
 }
 
-function postToQueue(queue, data) {
+function sendToMovementsQueue(data) {
     const options = {
         method: 'post',
         body: JSON.stringify(data)
     };
 
-    const url = `http://localhost:8161/api/message?destination=queue://${queue}`;
+    const url = `http://localhost:8161/api/message?destination=queue://movements`;
 
     return fetch(url, options)
         .then(resp => resp.text());
