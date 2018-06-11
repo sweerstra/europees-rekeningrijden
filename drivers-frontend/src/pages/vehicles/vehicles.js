@@ -7,7 +7,6 @@ import { ShareIcon } from '../../icons';
 import Modal from '../../components/Modal/Modal';
 import { ClipboardIcon } from '../../icons/index';
 import { textToClipboard } from '../../utils/text-to-clipboard';
-import {getLoggedInEmail} from "../../api/auth";
 
 class Vehicles extends Component {
   constructor(props) {
@@ -16,9 +15,9 @@ class Vehicles extends Component {
     this.state = {
       vehicles: [],
       selectedVehicle: {},
-      email: '',
-      firstName: '',
-      lastName: '',
+      email: 'user@mail.com',
+      firstName: 'First',
+      lastName: 'Last',
       isModalOpen: false,
       generatedCode: '',
       isVerifiedSignOverDetails: null,
@@ -190,7 +189,7 @@ class Vehicles extends Component {
 
   onConfirmSignOver = () => {
     const { selectedVehicle, email: receiverEmail, password } = this.state;
-    const senderEmail = getLoggedInEmail();
+    const senderEmail = localStorage.getItem('user');
 
     const details = {
       licensePlate: selectedVehicle.licensePlate,
