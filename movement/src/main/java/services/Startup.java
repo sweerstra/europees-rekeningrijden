@@ -3,6 +3,7 @@ package services;
 import domain.Movement;
 import gateway.MovementAppGateway;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 
@@ -12,10 +13,13 @@ public class Startup {
     @Inject
     private MovementService movementService;
 
-    private MovementAppGateway movementAppGateway = new MovementAppGateway() {
-        @Override
-        protected void receiveMovement(Movement movement) {
-            movementService.addMovement(movement);
-        }
-    };
+    @PostConstruct
+    public void init() {
+        new MovementAppGateway() {
+            @Override
+            protected void receiveMovement(Movement movement) {
+                movementService.addMovement(movement);
+            }
+        };
+    }
 }

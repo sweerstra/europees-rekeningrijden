@@ -133,6 +133,7 @@ function addSimulation(route, polyline, speed) {
                     console.error(err.message);
                     clearInterval(interval);
                 }); */
+            postToQueue('movements', routeResult);
         } else {
             clearInterval(interval);
             polyline.setMap(null);
@@ -145,9 +146,6 @@ function addSimulation(route, polyline, speed) {
     currentTrackers.push(trackerId);
     simulationAmountText.textContent = currentTrackers.length.toString();
 }
-
-postToQueue('movements', { trackerId: 'ENG1111', latitude: 51.50986, longitude: -0.11812, time: '3-6-2018 13:52:37' })
-    .then(text => console.log(text));
 
 function get(url) {
     const options = {
