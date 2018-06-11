@@ -7,7 +7,7 @@ import { ShareIcon } from '../../icons';
 import Modal from '../../components/Modal/Modal';
 import { ClipboardIcon } from '../../icons/index';
 import { textToClipboard } from '../../utils/text-to-clipboard';
-import {getLoggedInEmail} from "../../api/auth";
+import { getLoggedInEmail } from '../../api/auth';
 
 class Vehicles extends Component {
   constructor(props) {

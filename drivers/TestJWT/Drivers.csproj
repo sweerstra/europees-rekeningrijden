@@ -77,6 +77,10 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Drawing.Design" />
@@ -135,6 +139,7 @@
   <ItemGroup>
     <Compile Include="Controllers\DriverController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\SecurityTestController.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\SignOverController.cs" />
@@ -147,6 +152,7 @@
     </Compile>
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\PaymentRequest.cs" />
     <Compile Include="Models\SignOver.cs" />
     <Compile Include="Models\SignOverRequest.cs" />
     <Compile Include="Models\SignOverVerification.cs" />
@@ -155,6 +161,7 @@
     <Compile Include="Security\SecurityAttribute.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Security\TokenValidationHandler.cs" />
+    <Compile Include="Service\PaypalConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

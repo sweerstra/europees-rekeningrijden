@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const UserIcon = ({onClick}) => (
+export const UserIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-user" color="#384047">
@@ -9,7 +9,7 @@ export const UserIcon = ({onClick}) => (
   </svg>
 );
 
-export const PasswordIcon = ({onClick}) => (
+export const PasswordIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-lock" color="#384047">
@@ -18,7 +18,7 @@ export const PasswordIcon = ({onClick}) => (
   </svg>
 );
 
-export const EmailIcon = ({onClick}) => (
+export const EmailIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-at-sign" color="#384047">
@@ -27,7 +27,7 @@ export const EmailIcon = ({onClick}) => (
   </svg>
 );
 
-export const DownloadIcon = ({onClick}) => (
+export const DownloadIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-download"
@@ -38,7 +38,7 @@ export const DownloadIcon = ({onClick}) => (
   </svg>
 );
 
-export const FileTextIcon = ({onClick}) => (
+export const FileTextIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-file-text"
@@ -51,7 +51,7 @@ export const FileTextIcon = ({onClick}) => (
   </svg>
 );
 
-export const ShareIcon = ({onClick}) => (
+export const ShareIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-share" color="#384047">
@@ -61,7 +61,7 @@ export const ShareIcon = ({onClick}) => (
   </svg>
 );
 
-export const ClipboardIcon = ({onClick}) => (
+export const ClipboardIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-clipboard"
@@ -72,12 +72,12 @@ export const ClipboardIcon = ({onClick}) => (
   </svg>
 );
 
-export const BackIcon = ({onClick}) => (
+export const CreditCardIcon = ({ onClick }) => (
   <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="currentColor"
-       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-arrow-left"
+       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-credit-card"
        color="#3a4049">
-    <line x1="19" y1="12" x2="5" y2="12"/>
-    <polyline points="12 19 5 12 12 5"/>
+    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+    <line x1="1" y1="10" x2="23" y2="10"/>
   </svg>
 );
