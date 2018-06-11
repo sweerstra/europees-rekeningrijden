@@ -9,7 +9,7 @@ public class MessageReceiverGateway {
 
     public MessageReceiverGateway(String channelName) {
         try {
-            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.24.36:61616");
 
             Connection connection = connectionFactory.createConnection();
             connection.start();
