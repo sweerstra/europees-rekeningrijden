@@ -15,8 +15,10 @@ public class Invoice {
     @Id
     @GeneratedValue
     private long id;
-    private String trackerId;
     private double totalAmount;
+
+    @ManyToOne
+    private Ownership ownership;
 
     private Date dateOfPayment;
     private PaymentStatus paid;
@@ -24,34 +26,25 @@ public class Invoice {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date billingDate;
     private double distanceTravelled;
-    private String emissionCategory;
-
-    @OneToOne
-    @JoinColumn(name ="vehicle_id", referencedColumnName = "id")
-    private Vehicle vehicle;
 
     @JsonIgnore
     private ArrayList<String> conditions;
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, Date billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle) {
-        this.trackerId = trackerId;
+    public Invoice(Ownership ownership, PaymentStatus paid, double totalAmount, Date billingDate, double distanceTravelled) {
+        this.ownership = ownership;
         this.paid = paid;
         this.totalAmount = totalAmount;
         this.billingDate = billingDate;
         this.distanceTravelled = distanceTravelled;
-        this.emissionCategory = emissionCategory;
-        this.vehicle = vehicle;
         conditions = new ArrayList<>();
     }
 
-    public Invoice(String trackerId, PaymentStatus paid, double totalAmount, Date billingDate, double distanceTravelled, String emissionCategory, Vehicle vehicle, ArrayList<String> conditions) {
-        this.trackerId = trackerId;
+    public Invoice(Ownership ownership, PaymentStatus paid, double totalAmount, Date billingDate, double distanceTravelled, ArrayList<String> conditions) {
+        this.ownership = ownership;
         this.paid = paid;
         this.totalAmount = totalAmount;
         this.billingDate = billingDate;
         this.distanceTravelled = distanceTravelled;
-        this.emissionCategory = emissionCategory;
-        this.vehicle = vehicle;
         this.conditions = conditions;
     }
 
@@ -64,14 +57,6 @@ public class Invoice {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getTrackerId() {
-        return trackerId;
-    }
-
-    public void setTrackerId(String trackerId) {
-        this.trackerId = trackerId;
     }
 
     public double getTotalAmount() {
@@ -110,22 +95,6 @@ public class Invoice {
         this.billingDate = billingDate;
     }
 
-    public String getEmissionCategory() {
-        return emissionCategory;
-    }
-
-    public void setEmissionCategory(String emissionCategory) {
-        this.emissionCategory = emissionCategory;
-    }
-
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
     public ArrayList<String> getConditions() {
         return conditions;
     }
@@ -140,6 +109,14 @@ public class Invoice {
 
     public void setDateOfPayment(Date dateOfPayment) {
         this.dateOfPayment = dateOfPayment;
+    }
+
+    public Ownership getOwnership() {
+        return ownership;
+    }
+
+    public void setOwnership(Ownership ownership) {
+        this.ownership = ownership;
     }
 
     public enum PaymentStatus {

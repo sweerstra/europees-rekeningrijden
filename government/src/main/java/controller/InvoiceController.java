@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
+import java.util.Calendar;
 
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
@@ -50,16 +51,24 @@ public class InvoiceController {
 
     @GET
     @Path("/generate/{id}")
-    public Response generateInvoicePdf(@PathParam("id") long id) {
-        Invoice invoice = service.findById(id);
+    public Response generateInvoicePdf(@PathParam("id") long vehicleId) {
+        Ownership ownership = ownershipService.getLatestOwnership(vehicleId);
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
 
-        if (invoice == null) {
+        InputStream in = service.generateInvoicePdf(vehicleId, ownership, month, year);
+        if(in == null)
             return Response.status(Response.Status.NOT_FOUND).build();
-        }
+        return Response.ok(in, "application/pdf").build();
+    }
 
-        Ownership ownership = ownershipService.getLatestOwnership(invoice.getVehicle().getId());
+    @GET
+    @Path("/regenerate/{id}/{month}/{year}")
+    public Response generateInvoicePdfForMonth(@PathParam("id") long vehicleId, @PathParam("month") int month, @PathParam("year") int year) {
+        Ownership ownership = ownershipService.getLatestOwnership(vehicleId);
 
-        InputStream in = service.generateInvoicePdf(id, ownership);
+        InputStream in = service.generateInvoicePdf(vehicleId, ownership, month, year);
         if(in == null)
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(in, "application/pdf").build();

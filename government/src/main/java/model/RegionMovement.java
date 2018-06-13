@@ -6,11 +6,12 @@ import java.util.List;
 
 public class RegionMovement {
     private Region region;
-    private List<Movement> movements;
+    private Movement movement;
+    private double distance;
 
-    public RegionMovement(Region region, List<Movement> movements) {
+    public RegionMovement(Region region, Movement movements) {
         this.region = region;
-        this.movements = movements;
+        this.movement = movements;
     }
 
     public RegionMovement() {
@@ -24,11 +25,19 @@ public class RegionMovement {
         this.region = region;
     }
 
-    public List<Movement> getMovements() {
-        return movements;
+    public Movement getMovement() {
+        return movement;
     }
 
-    public void setMovements(List<Movement> movements) {
-        this.movements = movements;
+    public void setMovement(Movement movement) {
+        this.movement = movement;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double totalDistance) {
+        this.distance = totalDistance;
     }
 }

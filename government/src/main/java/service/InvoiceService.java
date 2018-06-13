@@ -24,6 +24,12 @@ public class InvoiceService {
     @Inject
     private RegionService regionService;
 
+    @Inject
+    private VehicleService vehicleService;
+
+    @Inject
+    private OwnershipService ownershipService;
+
     private InvoiceGenerator invoiceGenerator;
 
     public InvoiceService() {
@@ -46,14 +52,22 @@ public class InvoiceService {
         return dao.findAll();
     }
 
-    public InputStream generateInvoicePdf(long id, Ownership ownership) {
-        Invoice invoice = findById(id);
+    public InputStream generateInvoicePdf(long vehicleId, Ownership ownership, int month, int year) {
+        Vehicle vehicle = vehicleService.findById(vehicleId);
+        List<Ownership> ownerships = ownershipService.getOwnershipsByVehicleOrTrackerId(vehicleId, null);
         List<Region> regions = regionService.findAll();
         List<EmissionCategory> emissionCategories = emissionService.findAll();
 
-        if(regions.isEmpty() || emissionCategories.isEmpty()) return null;
-        invoiceGenerator.calculateInvoice(invoice, regions, emissionCategories);
-        return invoiceGenerator.objectToPdf(invoice, ownership);
+        if(regions.isEmpty() || emissionCategories.isEmpty() || ownerships.isEmpty()) return null;
+
+        vehicle.setOwnerships(ownerships);
+
+        List<Invoice> invoices = invoiceGenerator.calculateInvoice(vehicle, regions, emissionCategories, month, year);
+        for(Invoice invoice : invoices) {
+            dao.create(invoice);
+            return invoiceGenerator.objectToPdf(invoice, ownership);
+        }
+        return null;
     }
 
     public Invoice changePaymentStatus(Invoice invoice, PaymentStatus status) {
