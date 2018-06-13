@@ -52,4 +52,16 @@ public class OwnerController {
 
         return Response.ok(owners).build();
     }
+
+    @GET
+    @Path("/email/{email}")
+    public Response getOwnerByEmail(@PathParam("email") String email) {
+        Owner owner = service.getByEmail(email);
+
+        if (owner == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(owner).build();
+    }
 }

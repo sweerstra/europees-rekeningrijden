@@ -27,12 +27,20 @@ public class JPAOwnerDao extends DaoFacade<Owner> implements IOwnerDao {
 
     @Override
     public List<Owner> findByName(String name) {
-            return  em.createQuery("SELECT o from Owner o " +
-                    "WHERE LOWER(o.firstName) LIKE LOWER(:name) OR" +
-                    " LOWER(o.lastName) LIKE LOWER(:name)")
-                    .setParameter("name", "%" + name + "%")
-                    .getResultList();
+        return em.createQuery("SELECT o from Owner o " +
+                "WHERE LOWER(o.firstName) LIKE LOWER(:name) OR" +
+                " LOWER(o.lastName) LIKE LOWER(:name)")
+                .setParameter("name", "%" + name + "%")
+                .getResultList();
 
     }
 
+    @Override
+    public Owner findByEmail(String email) {
+        try {
+            return (Owner) em.createQuery("SELECT o from Owner o WHERE o.email = :email")
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (Exception e) {return null;}
+    }
 }
