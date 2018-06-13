@@ -1,29 +1,15 @@
-.route-invoices {
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 6fr 4fr;
-  grid-template-rows: 80px 1fr 1fr;
-  grid-template-areas: "nav nav" "invoices route-map" "invoices route-map";
-}
-
-.route-invoices__table {
+.acount-details__form {
   grid-area: invoices;
   padding: 20px;
+width: 25%
+
 }
 
 .acount-details__form fieldset {
   border: 0;
 }
 
-.route-invoices .feather:hover { stroke: var(--color-primary); }
-
-.route-invoices__table [role="row"].active a { color: white; }
-
-.route-invoices__table [role="row"].active .feather:hover { stroke: white; }
-
-.route-invoices__map { grid-area: route-map; }
-
-/* react-table */
-.route-invoices [role="rowgroup"] {
-  cursor: pointer;
+.acount-details__form .namer {
+  font-weight: bold;
 }
+

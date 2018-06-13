@@ -4,6 +4,7 @@ import './register.css';
 import Api from '../../api';
 import { PasswordIcon, EmailIcon } from "../../icons";
 import { debounce } from '../../utils/debounce';
+import { logout } from '../../api/auth';
 
 class Register extends Component {
   state = {
@@ -88,6 +89,7 @@ class Register extends Component {
     } else if (password === confirmPassword) {
       Api.auth.register({ email, password, firstName: owner.firstName, lastName: owner.lastName, ownerId: owner.id })
         .then(() => {
+          logout();
           this.props.history.push('/login');
         });
     } else {
