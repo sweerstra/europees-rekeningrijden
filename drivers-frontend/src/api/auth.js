@@ -12,6 +12,16 @@ export const getLoggedInEmail = () => {
   }
 };
 
+export const getLoggedInProperty = (prop) => {
+  const token = getToken();
+
+  if (token) {
+    return decodeToken(getToken())[prop];
+  } else {
+    return null;
+  }
+};
+
 export const isLoggedIn = () => {
   return Boolean(getToken() && !isExpiredToken(getToken()));
 };

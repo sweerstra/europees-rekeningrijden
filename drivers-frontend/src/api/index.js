@@ -12,7 +12,8 @@ export default {
     register: (driver) => Request.post(`${API_URL}/driver`, driver)
   },
   user: {
-    verifyUserDetails: (details) => Request.post(`${API_URL}/driver/verify`, details)
+    verifyUserDetails: (details) => Request.post(`${API_URL}/driver/verify`, details),
+    getUserDetails: (id) =>  Request.get(`${GOVERNMENT_API_URL}/owner/${id}`)
   },
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
@@ -34,7 +35,6 @@ export default {
   },
   signOver: {
     createRequest: (details) => Request.post(`${API_URL}/sign-over/request`, details),
-    // createCode: (licensePlate, sender, receiver, password) => Request,
     confirmRequest: (verification) => Request.post(`${API_URL}/sign-over/confirm`, verification),
     getDetailsForCode: code => {
       return new Promise((resolve, reject) => resolve({
