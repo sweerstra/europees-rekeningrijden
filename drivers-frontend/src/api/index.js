@@ -12,7 +12,7 @@ export default {
     register: (driver) => Request.post(`${API_URL}/driver`, driver)
   },
   user: {
-    verifyUserDetails: (details) => Request.post(`${API_URL}/driver`, details)
+    verifyUserDetails: (details) => Request.post(`${API_URL}/driver/verify`, details)
   },
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
