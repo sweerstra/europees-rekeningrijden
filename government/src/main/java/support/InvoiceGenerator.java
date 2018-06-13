@@ -6,6 +6,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import domain.*;
 import model.Movement;
+import model.RegionMovement;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,12 +14,8 @@ import java.io.InputStream;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class InvoiceGenerator {
@@ -26,13 +23,13 @@ public class InvoiceGenerator {
     private static SimpleDateFormat formatter;
     private static String resourcePath = "government/src/main/resources/images/";
     private Document document;
-    private double feePerKm;
     private Calendar calendar;
+    private Gson gson = new Gson();
 
-//    private List<EmissionCategory> emissionCategories;
+    //    private List<EmissionCategory> emissionCategories;
 //    private List<Region> regions;
-
-    private List<DrivenLine> drivenLines;
+    private double totalPrice = 0;
+    private double totalDistance = 0;
 
     public InvoiceGenerator() {
 
@@ -40,7 +37,6 @@ public class InvoiceGenerator {
 
     public InputStream objectToPdf(Invoice invoice, Ownership ownership) {
         this.invoiceToGenerate = invoice;
-        this.feePerKm = 0.44;
         calendar = Calendar.getInstance();
         calendar.setTime(invoiceToGenerate.getBillingDate());
         this.invoiceToGenerate.getConditions().add(0,
@@ -56,7 +52,7 @@ public class InvoiceGenerator {
 //        Owner currOwner = invoiceToGenerate.getVehicle().getOwner();
         Owner currOwner = ownership.getOwner();
         String trackerId = ownership.getTrackerId();
-        Vehicle currVehicle = invoiceToGenerate.getVehicle();
+        Vehicle currVehicle = ownership.getVehicle();
 
         //TODO: Use the below 'fileName' to get user's licenseplate
         //String fileName = formatter.format(today) + " " + invoiceToGenerate.getVehicle().getlicensePlate() + ".pdf";
@@ -93,7 +89,7 @@ public class InvoiceGenerator {
             addPaymentInformation(document);
 
             addWhiteLines(2);
-            addBillingInformation(document);
+            addBillingInformation(document, ownership);
 
             //TODO: Remove these white lines and fill up the space with billing-lines according to the miles, days or region
             addWhiteLines(2);
@@ -216,49 +212,35 @@ public class InvoiceGenerator {
         document.add(paymentInfoTable);
     }
 
-    private void addBillingInformation(Document document) throws DocumentException {
-        PdfPTable billingInfoTable = new PdfPTable(5);
+    private void addBillingInformation(Document document, final Ownership ownership) throws DocumentException {
+        PdfPTable billingInfoTable = new PdfPTable(4);
         billingInfoTable.setHorizontalAlignment(Element.ALIGN_LEFT);
         billingInfoTable.setWidthPercentage(100.0f);
         addTableHeader(billingInfoTable, new ArrayList<String>() {{
             add("KILOMETERS");
             add("EMISSION-CAT");
-            add("MULTIPLIER (%)*");
-            add("FEE PER KM");
+            add("DEFAULT RATE");
             add("AMOUNT");
         }});
 
-        double multiplier;
-        switch (invoiceToGenerate.getEmissionCategory()) {
-            case "EURO 1":
-                multiplier = 21;
-                break;
-            case "EURO 2":
-                multiplier = 34;
-                break;
-            case "EURO 3":
-                multiplier = 54;
-                break;
-            case "EURO 4":
-                multiplier = 68;
-                break;
-            case "EURO 5":
-                multiplier = 77;
-                break;
-            case "EURO 6":
-                multiplier = 92;
-                break;
-            default:
-                multiplier = 50;
-                break;
+        List<DefaultRate> defaultRates =
+                gson.fromJson(
+                        HttpHelper.get("http://192.168.24.36:11080/government/api/rate/all"
+                        ),
+                        new TypeToken<List<DefaultRate>>() {
+                        }.getType());
+
+        DefaultRate defaultRate = new DefaultRate(0);
+        if (!defaultRates.isEmpty()) {
+            defaultRate = defaultRates.get(defaultRates.size() - 1);
         }
-        final double finalMultiplier = multiplier;
+
+        DefaultRate finalDefaultRate = defaultRate;
         addRows(billingInfoTable, new ArrayList<String>() {{
-            add(String.valueOf(invoiceToGenerate.getDistanceTravelled()));
-            add(invoiceToGenerate.getEmissionCategory().toUpperCase());
-            add(String.valueOf(String.valueOf(finalMultiplier)));
-            add("£ " + feePerKm);
-            add("£ " + invoiceToGenerate.getTotalAmount());
+            add(String.valueOf(totalDistance));
+            add(ownership.getVehicle().getEmissionCategory().toUpperCase());
+            add("£ " + finalDefaultRate.getRate());
+            add("£ " + totalPrice);
         }});
 
         document.add(billingInfoTable);
@@ -361,39 +343,102 @@ public class InvoiceGenerator {
         return new DateFormatSymbols(Locale.UK).getMonths()[month];
     }
 
-    public void calculateInvoice(Invoice invoice, List<Region> regions, List<EmissionCategory> emissionCategories){
-        List<Movement> movements = new ArrayList<>();
-        drivenLines = new ArrayList<>();
-        Gson gson = new Gson();
+    public List<Invoice> calculateInvoice(Vehicle vehicle, List<Region> regions, List<EmissionCategory> emissionCategories, int month, int year) {
+        List<Invoice> invoices = new ArrayList<>();
         calendar = Calendar.getInstance();
-        invoiceToGenerate = invoice;
+
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+        List<Ownership> ownerships = new ArrayList<>();
+
+        Calendar ownershipCalendar = Calendar.getInstance();
+        for (Ownership ownership : vehicle.getOwnerships()) {
+            ownershipCalendar.setTime(ownership.getStartDate());
+            if (ownership.getStartDate().before(calendar.getTime())) {
+
+                calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+                if (ownership.getEndDate() == null || ownership.getEndDate().after(calendar.getTime())) {
+                    ownerships.add(ownership);
+                }
+
+            }
+        }
+        for(Ownership ownership : ownerships) {
+            Invoice invoice = calculateInvoice(ownership, regions, emissionCategories, month, year);
+            invoices.add(invoice);
+        }
+        return invoices;
+    }
+
+    public Invoice calculateInvoice(Ownership ownership, List<Region> regions, List<EmissionCategory> emissionCategories, int month, int year){
+        Invoice invoice = new Invoice();
+
+        Vehicle vehicle = ownership.getVehicle();
+        List<Movement> movements = new ArrayList<>();
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String startDate = sdf.format(calendar.getTime());
 
+        if(ownership.getStartDate().after(calendar.getTime())){
+            startDate = sdf.format(ownership.getStartDate());
+        }
+
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         String endDate = sdf.format(calendar.getTime());
 
+        if(ownership.getEndDate() != null && ownership.getEndDate().before(calendar.getTime())){
+            endDate = sdf.format(ownership.getEndDate());
+        }
+
         try {
             movements = gson.fromJson(HttpHelper.get(String.format("http://192.168.24.36:9080/movement/api/movement/%s/%s/%s",
-                    this.invoiceToGenerate.getTrackerId(),
+                    ownership.getTrackerId(),
                     startDate,
                     endDate)),
-                    new TypeToken<List<Movement>>(){}.getType());
-        }
-        catch (Exception e){
+                    new TypeToken<List<Movement>>() {
+                    }.getType());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        List<Double> coordinateLat = movements.stream().map(Movement::getLatitude).collect(Collectors.toList());
-        List<Double> coordinateLong = movements.stream().map(Movement::getLongitude).collect(Collectors.toList());
-
         double totalDistance = 0;
-        for(int i = 0; i < movements.size() - 1; i++) {
-            totalDistance += distance(coordinateLat.get(i), coordinateLong.get(i), coordinateLat.get(i+1), coordinateLong.get(i+1));
+        List<RegionMovement> movementsList = new ArrayList<>();
+
+        for (int i = 0; i < movements.size() - 1; i++) {
+            Movement mv = movements.get(i);
+            Region region = regions.stream().filter(r ->
+                    RegionUtil.coordinateInRegion(r, new Coordinate(mv.getLatitude(), mv.getLongitude()))).findFirst().orElse(null);
+            RegionMovement rm = new RegionMovement(region, mv);
+
+            Movement nextMovement = movements.get(i + 1);
+            rm.setDistance(distance(mv.getLatitude(), mv.getLongitude(), nextMovement.getLatitude(), nextMovement.getLongitude()));
+
+            movementsList.add(rm);
         }
+
+        totalDistance = movementsList.stream().mapToDouble(RegionMovement::getDistance).sum();
         totalDistance = Double.valueOf(new DecimalFormat(".##").format(totalDistance).replace(',', '.'));
+
+        double defaultTotalPrice = calculatePrice(movementsList);
+
+        EmissionCategory emissionCategory = emissionCategories.stream().filter(e -> e.getName().replace(" ", "").toUpperCase().equals(vehicle.getEmissionCategory().replace(" ", "").toUpperCase())).findFirst().orElse(null);
+        if(emissionCategory != null){
+            defaultTotalPrice = defaultTotalPrice * emissionCategory.getRate();
+        }
+        this.totalDistance = totalDistance;
+        this.totalPrice = Double.valueOf(new DecimalFormat(".##").format(defaultTotalPrice).replace(',', '.'));
+
+        invoice.setOwnership(ownership);
+        invoice.setPaid(Invoice.PaymentStatus.OPEN);
+        invoice.setConditions(new ArrayList<>());
+        invoice.setBillingDate(new Date());
+        invoice.setTotalAmount(this.totalPrice);
+        invoice.setDistanceTravelled(this.totalDistance);
+
+        return invoice;
     }
 
     private double distance(double lat1, double lon1, double lat2, double lon2) {
@@ -412,5 +457,53 @@ public class InvoiceGenerator {
 
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
+    }
+
+    private double calculatePrice(List<RegionMovement> movementList) {
+        double totalPrice = 0;
+        if (movementList.isEmpty()) return totalPrice;
+
+        List<DefaultRate> defaultRates =
+                gson.fromJson(
+                        HttpHelper.get("http://192.168.24.36:11080/government/api/rate/all"
+                        ),
+                        new TypeToken<List<DefaultRate>>() {
+                        }.getType());
+
+        DefaultRate defaultRate = new DefaultRate(0);
+        if (!defaultRates.isEmpty()) {
+            defaultRate = defaultRates.get(defaultRates.size() - 1);
+        }
+        for (RegionMovement regionMovement : movementList) {
+            if (regionMovement.getRegion() == null) {
+                totalPrice += regionMovement.getDistance() * defaultRate.getRate();
+                continue;
+            }
+
+            Movement movement = regionMovement.getMovement();
+            Date movementTime = getTimeOnly(movement.getDateTime());
+
+            boolean inTimeZone = false;
+            for (RegionTime rt : regionMovement.getRegion().getRegionTimes()) {
+                if (movementTime.after(getTimeOnly(rt.getStartTimeAsDate())) && movementTime.before(getTimeOnly(rt.getEndTimeAsDate()))) {
+                    totalPrice += rt.getRate() * regionMovement.getDistance();
+                    inTimeZone = true;
+                    break;
+                }
+            }
+            if(!inTimeZone){
+                totalPrice += regionMovement.getRegion().getDefaultRate() * regionMovement.getDistance();
+            }
+        }
+        return totalPrice;
+    }
+
+    private Date getTimeOnly(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DAY_OF_MONTH, 0);
+        calendar.set(Calendar.MONTH, 0);
+        calendar.set(Calendar.YEAR, 0);
+        return calendar.getTime();
     }
 }
