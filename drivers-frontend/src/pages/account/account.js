@@ -13,7 +13,7 @@ class Account extends Component {
     super(props);
 
     this.state = {
-      account: null,
+      account: {},
       selectedInvoice: {
         id: 0,
         routes: []
@@ -25,18 +25,33 @@ class Account extends Component {
     const ownerId = getLoggedInProperty('ownerId');
     Api.user.getUserDetails(ownerId)
       .then(account => this.setState({ account }));
-    
   }
 
 
-  /*  private String firstName;
-    private String lastName;
-    private String address;
-    private String postalCode;
-    private String city;
-    private String phone;
-    private String email;
-    private Date dateOfBirth;*/
+  /* address
+:
+"Troefweg 89c"
+citizenServiceNumber
+:
+"ENG11554234"
+city
+:
+"Goirle"
+dateOfBirth
+:
+"2018-06-13T12:02:33Z[UTC]"
+email
+:
+"d.vangils@student.fontys.nl"
+firstName
+:
+"Dennis"
+id
+:
+3
+lastName
+:
+"van Gils"*/
 
   render() {
 
@@ -48,22 +63,41 @@ class Account extends Component {
         <Navigation heading="Account Details"/>
 
         <form class="acount-details__form">
+
+
           <fieldset>
-            <label>First Name:</label>
-            <label></label>
+            <label class="namer">First Name:</label>
+            <label> {account.firstName}</label>
           </fieldset>
           <fieldset>
-            <label>Last Name:</label>
-            <label> </label>
+            <label class="namer">Last Name:</label>
+            <label> {account.lastName}</label>
           </fieldset>
           <fieldset>
-            <label>Address:</label>
-            <label> </label>
+            <label class="namer">Birthday:</label>
+            <label> {account.dateOfBirth}</label>
           </fieldset>
           <fieldset>
-            <label>City:</label>
-            <label> </label>
+            <label class="namer">Address:</label>
+            <label>  {account.address}</label>
           </fieldset>
+          <fieldset>
+            <label class="namer">City:</label>
+            <label> {account.city}</label>
+          </fieldset>
+          <fieldset>
+            <label class="namer">PostalCode:</label>
+            <label> {account.postalCode}</label>
+          </fieldset>
+          <fieldset>
+            <label class="namer">Phone:</label>
+            <label> {account.phone}</label>
+          </fieldset>
+          <fieldset>
+            <label class="namer">Email:</label>
+            <label> {account.email}</label>
+          </fieldset>
+     
       </form>
 
       <div className="route-account__map">
