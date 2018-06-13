@@ -5,6 +5,8 @@ import Login from '../../pages/login/login';
 import Register from "../../pages/register/register";
 import RouteInvoices from '../../pages/route-invoices/route-invoices';
 import Vehicles from '../../pages/vehicles/vehicles';
+import Account from '../../pages/account/account';
+import Payment from '../../pages/payment/payment';
 import SignOverConfirmation from '../../pages/sign-over-confirmation/sign-over-confirmation';
 import { getLoggedInEmail, isLoggedIn, setToken } from '../../api/auth';
 import './App.css';
@@ -22,8 +24,6 @@ class App extends Component {
   render() {
     const { isAuthenticated } = this.state;
 
-    console.log(isAuthenticated)
-
     return (
       <div className="App">
         <Switch>
@@ -33,9 +33,12 @@ class App extends Component {
               : <Login onAuthenticate={this.handleAuthentication}/>
           }/>
           <Route path="/register" component={Register}/>
-          <PrivateRoute path="/routes" authenticated={isAuthenticated} component={RouteInvoices}/>
-          <PrivateRoute exact path="/vehicles" authenticated={isAuthenticated} component={Vehicles}/>
-          <PrivateRoute exact path="/vehicles/sign-over" authenticated={isAuthenticated} component={SignOverConfirmation}/>
+          <PrivateRoute path="/routes" component={RouteInvoices}/>
+          <PrivateRoute path="/vehicles" authenticated={isAuthenticated} component={Vehicles}/>
+          <PrivateRoute path="/account" authenticated={isAuthenticated} component={Account}/>
+          <PrivateRoute exact path="/vehicles/sign-over" component={SignOverConfirmation}/>
+          <Route path="/payment/:invoiceId" render={routeProps => <Payment isSuccessful={true} {...routeProps}/>}/>
+          <Route path="/payment-failed" render={routeProps => <Payment isSuccessful={false} {...routeProps}/>}/>
           <Redirect to="/login"/>
         </Switch>
       </div>

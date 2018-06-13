@@ -4,11 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @XmlRootElement
-public class Movement implements Comparable<Movement>{
+public class Movement implements Serializable, Comparable<Movement> {
     @Id
     @GeneratedValue
     private long id;

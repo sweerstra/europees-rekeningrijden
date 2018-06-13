@@ -1,0 +1,15 @@
+.acount-details__form {
+  grid-area: invoices;
+  padding: 20px;
+width: 25%
+
+}
+
+.acount-details__form fieldset {
+  border: 0;
+}
+
+.acount-details__form .namer {
+  font-weight: bold;
+}
+

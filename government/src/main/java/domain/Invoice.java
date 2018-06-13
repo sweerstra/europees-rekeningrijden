@@ -118,7 +118,7 @@ public class Invoice {
     public void setOwnership(Ownership ownership) {
         this.ownership = ownership;
     }
-
+  
     public enum PaymentStatus {
         PAID,
         OPEN,

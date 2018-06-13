@@ -19,6 +19,10 @@ class Navigation extends Component {
           <NavLink to="/vehicles">Vehicles</NavLink>
         </div>
 
+        <div>
+          <NavLink to="/account">Account</NavLink>
+        </div>
+
         <div>Logged in as <b>{getLoggedInEmail()}</b></div>
 
         <div className="nav__logout">

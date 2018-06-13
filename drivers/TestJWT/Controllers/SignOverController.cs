@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -63,30 +63,11 @@ namespace Drivers.Controllers
                 {
                     return BadRequest("Already accepted");
                 }
-
-                return Ok(_manager.AcceptSignOverRequest(signOver.Id));
-            }
-            else if (verifiedDriver.Id == signOver.sender_id)
-            {
-                //tweede verificatie van verzender
-                if (!signOver.AcceptDate.HasValue)
+                
+                if (_manager.AcceptSignOverRequest(signOver.Id))
                 {
-                    //ontvanger heeft nog niet bevestigd
-                    return BadRequest("SignOver not accepted by receiver yet");
+                    return Ok(_manager.VerifySignOverRequest(signOver.Id));
                 }
-
-
-                if (signOver.ConfirmDate.HasValue)
-                {
-                    return BadRequest("Already confirmed");
-                }
-
-                if (DateTime.UtcNow.Subtract(signOver.AcceptDate.Value).TotalMinutes > SIGNOVER_EXPIRATION_MINUTES)
-                {
-                    return BadRequest("SignOver request expired");
-                }
-
-                return Ok(_manager.VerifySignOverRequest(signOver.Id));
             }
 
             return BadRequest("Data supplied was invalid");

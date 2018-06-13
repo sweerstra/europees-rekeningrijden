@@ -55,12 +55,10 @@ public class MovementService {
     public Movement getLatestMovement(String trackerId) {
         List<Movement> movements = movementDao.findByTrackerId(trackerId);
 
-        if(!movements.isEmpty()) {
+        if (!movements.isEmpty()) {
             Collections.sort(movements);
-
             return movements.get(movements.size() - 1);
-        }
-        else{
+        } else {
             return null;
         }
 

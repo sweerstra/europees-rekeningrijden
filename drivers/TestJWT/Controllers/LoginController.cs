@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Http;
 using Drivers.Security;
 using System.Web.Http.Cors;
+using System.Web.Http.Routing.Constraints;
 using Drivers.Database;
 using Drivers.Models;
 
@@ -27,13 +28,11 @@ namespace Drivers.Controllers
             Request.Properties.TryGetValue("email", out email);
             Request.Properties.TryGetValue("password", out password);
 
-            //check here in db if user can be found!! 
-            //  if (SecurityManager.VerifyHash(password as string, hashedpassword))
             DriverManager driverManager = new DriverManager();
             Driver verifiedSender = driverManager.Verify(email as string, password as string);
             if (verifiedSender != null)
             {
-                string token = createToken(email.ToString());
+                string token = createToken(email.ToString(), verifiedSender.Id , verifiedSender.OwnerId);
 
                 return Ok(token);
             }
@@ -41,7 +40,7 @@ namespace Drivers.Controllers
             return Unauthorized();
         }
 
-        private string createToken(string email)
+        private string createToken(string email, long id, long ownerId)
         {
             DateTime issuedAt = DateTime.UtcNow;
             DateTime expires = DateTime.UtcNow.AddDays(1);
@@ -50,7 +49,9 @@ namespace Drivers.Controllers
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, email)
+                new Claim(ClaimTypes.Name, email),
+                new Claim("id", id.ToString()),
+                new Claim("ownerId", ownerId.ToString())
             });
 
             const string sec = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
