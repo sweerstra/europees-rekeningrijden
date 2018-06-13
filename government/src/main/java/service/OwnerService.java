@@ -26,6 +26,10 @@ public class OwnerService {
 
     public List<Owner> getByName(String name){return dao.findByName(name);}
 
+    public Owner getByEmail(String email) {
+        return dao.findByEmail(email);
+    }
+
     public Owner create(Owner entity) {
         return dao.create(entity);
     }
