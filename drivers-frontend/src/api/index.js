@@ -19,7 +19,8 @@ export default {
     }
   },
   user: {
-    verifyUserDetails: (details) => Request.post(`${API_URL}/driver`, details)
+    verifyUserDetails: (details) => Request.post(`${API_URL}/driver`, details),
+    getUserDetails: (id) =>  Request.get(`${GOVERNMENT_API_URL}/owner/${id}`)
     /* verifyUserDetails: (details) => new Promise((resolve, reject) => {
       if (Math.random() > 0.5) {
         resolve();

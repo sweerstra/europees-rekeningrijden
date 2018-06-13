@@ -13,7 +13,6 @@ namespace Drivers.Database
     {
         public DriverManager()
         {
-           
         }
 
         public bool VerifyDriverDetails(Driver driver)
@@ -21,9 +20,9 @@ namespace Drivers.Database
             List<Driver> drivers = GetAllDrivers();
 
             return drivers
-                .Any(d => d.Email == driver.Email 
-                && d.FirstName == driver.FirstName 
-                && d.LastName == driver.LastName);
+                .Any(d => d.Email == driver.Email
+                          && d.FirstName == driver.FirstName
+                          && d.LastName == driver.LastName);
         }
 
         public List<Driver> GetAllDrivers()
@@ -96,29 +95,33 @@ namespace Drivers.Database
             return null;
         }
 
-        public Driver Register(string email, string password)
+        public Driver Register(DriverRequest driver)
         {
             using (ManagedConnection connection = new ManagedConnection())
             {
                 string query = "SELECT * FROM Driver where email = @email";
                 var cmd = new MySqlCommand(query, connection.Connection);
-                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@email", driver.Email);
                 var reader = cmd.ExecuteReader();
                 if (reader.AutoMap<Driver>().Count > 0)
                 {
-                    throw new ArgumentException($"Account with email {email} already exists");
+                    return null;
                 }
                 reader.Dispose();
                 cmd.Dispose();
 
-                query = "INSERT INTO Driver ('email', 'hashedpassword') VALUES ('@email', '@hashedPassword')";
-                string hashedPassword = SecurityManager.CreateHash(password);
+                query =
+                    "INSERT INTO `drivers`.`Driver` (`Email`, `Hashedpassword`, `Firstname`, `LastName`, `OwnerId`) VALUES (@email, @hashedPassword, @firstName, @lastName, @ownerId)";
+                string hashedPassword = SecurityManager.CreateHash(driver.Password);
                 cmd = new MySqlCommand(query, connection.Connection);
-                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@email", driver.Email);
                 cmd.Parameters.AddWithValue("@hashedPassword", hashedPassword);
+                cmd.Parameters.AddWithValue("@firstName", driver.FirstName);
+                cmd.Parameters.AddWithValue("@lastName", driver.LastName);
+                cmd.Parameters.AddWithValue("@ownerId", driver.OwnerId);
                 if (cmd.ExecuteNonQuery() > 0)
                 {
-                    return GetDriver(email);
+                    return GetDriver(driver.Email);
                 }
                 return null;
             }
