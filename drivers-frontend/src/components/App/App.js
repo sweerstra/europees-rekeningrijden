@@ -46,8 +46,10 @@ class App extends Component {
   }
 
   handleAuthentication = (token) => {
-    setToken(token);
-    this.setState({ isAuthenticated: true, loggedInEmail: getLoggedInEmail() });
+    if (!token.message) {
+      setToken(token);
+      this.setState({ isAuthenticated: true, loggedInEmail: getLoggedInEmail() });
+    }
   };
 }
 
