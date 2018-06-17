@@ -13,7 +13,7 @@ export default {
   },
   user: {
     verifyUserDetails: (details) => Request.post(`${API_URL}/driver/verify`, details),
-    getUserDetails: (id) =>  Request.get(`${GOVERNMENT_API_URL}/owner/${id}`)
+    getUserDetails: (id) => Request.get(`${GOVERNMENT_API_URL}/owner/${id}`)
   },
   invoice: {
     getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
@@ -33,18 +33,11 @@ export default {
   owner: {
     getByEmail: (email) => Request.get(`${GOVERNMENT_API_URL}/owner/email/${email}`)
   },
+  ownership: {
+    update: (ownership) => Request.put(`${GOVERNMENT_API_URL}/ownership`, ownership)
+  },
   signOver: {
     createRequest: (details) => Request.post(`${API_URL}/sign-over/request`, details),
-    confirmRequest: (verification) => Request.post(`${API_URL}/sign-over/confirm`, verification),
-    getDetailsForCode: code => {
-      return new Promise((resolve, reject) => resolve({
-        licensePlate: 'LG-976-TR',
-        sender: {
-          firstName: 'Dennis',
-          lastName: 'van Gils'
-        },
-        receiver: {}
-      }));
-    }
+    confirmRequest: (verification) => Request.post(`${API_URL}/sign-over/confirm`, verification)
   }
 };

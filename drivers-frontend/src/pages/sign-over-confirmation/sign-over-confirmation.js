@@ -5,28 +5,12 @@ import { getLoggedInEmail } from '../../api/auth';
 
 class SignOverConfirmation extends Component {
   state = {
-    details: {
-      licensePlate: '',
-      sender: {
-        firstName: '',
-        lastName: ''
-      }
-    },
     invalidCredentials: false,
     requestConfirmed: false
   };
 
-  componentDidMount() {
-    /* Api.signOver.getDetailsForCode(code)
-      .then(details => this.setState({ details }))
-      .catch(err => {
-        // code not available or already confirmed
-
-      }); */
-  }
-
   render() {
-    const { details: { licensePlate, sender: { firstName, lastName } }, invalidCredentials, requestConfirmed } = this.state;
+    const { invalidCredentials, requestConfirmed } = this.state;
 
     return (
       <form className="sign-over-confirmation"
@@ -64,21 +48,15 @@ class SignOverConfirmation extends Component {
   onConfirm = e => {
     e.preventDefault();
 
-    this.setState({requestConfirmed: true});
-
-    return;
-
     const { target } = e;
-    const email = localStorage.getItem('user');
+    const email = getLoggedInEmail();
     const token = target.token.value;
     const password = target.password.value;
 
     Api.signOver.confirmRequest({ email, token, password })
       .then(() => {
+        this.setState({ requestConfirmed: true });
         // TODO: in backend make request for changing the vehicle ownership
-
-        this.setState({requestConfirmed: true});
-        this.props.history.push('/vehicles');
       })
       .catch(() => this.setState({ invalidCredentials: true }));
   };

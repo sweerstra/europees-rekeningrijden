@@ -6,7 +6,10 @@ export const getLoggedInEmail = () => {
   const token = getToken();
 
   if (token) {
-    return decodeToken(getToken()).unique_name;
+    const decodedToken = decodeToken(token);
+    if (decodedToken) {
+      return decodedToken.unique_name;
+    }
   } else {
     return null;
   }
@@ -16,7 +19,8 @@ export const getLoggedInProperty = (prop) => {
   const token = getToken();
 
   if (token) {
-    return decodeToken(getToken())[prop];
+    const decodedToken = decodeToken(token);
+    return decodedToken && decodedToken[prop];
   } else {
     return null;
   }
@@ -41,6 +45,8 @@ export const logout = () => {
 export const isExpiredToken = (token) => {
   try {
     const jwt = decodeToken(token);
+    if (!jwt) return true;
+
     const currentTime = Date.now() / 1000;
     return jwt.exp < currentTime;
   } catch (e) {
