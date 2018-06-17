@@ -1,7 +1,7 @@
 import Request from './Request';
 import { API_URL, GOVERNMENT_API_URL } from '../config';
 
-const ROUTE_URL = 'https://i321720.iris.fhict.nl/traxit/routes/data.php?id=';
+const MOVEMENTS_URL = 'http://192.168.24.36:9080/movement/api/movement/';
 
 export default {
   auth: {
@@ -16,7 +16,7 @@ export default {
     getUserDetails: (id) => Request.get(`${GOVERNMENT_API_URL}/owner/${id}`)
   },
   invoice: {
-    getInvoices: () => Request.get(`${GOVERNMENT_API_URL}/invoices`),
+    getInvoicesByOwner: (ownerId) => Request.get(`${GOVERNMENT_API_URL}/invoices/${ownerId}`),
     downloadInvoice: (id) => Request.get(`${GOVERNMENT_API_URL}/invoice/generate/${id}`),
     getDownloadUrl: (id) => `${GOVERNMENT_API_URL}/invoice/generate/${id}`,
     getPaypalUrl: (invoiceId, price) => Request.post(`${API_URL}/payment?returnUri=${API_URL}/payment/complete&cancelUri=${window.location.origin}/payment-failed`, {
@@ -25,7 +25,7 @@ export default {
     })
   },
   route: {
-    getRoute: (id) => Request.get(ROUTE_URL + id)
+    getMovementsFromTracker: (trackerId) => Request.get(MOVEMENTS_URL + trackerId)
   },
   vehicle: {
     getCurrentTrackersWithVehicleByOwner: (id) => Request.get(`${GOVERNMENT_API_URL}/vehicles/owner/${id}`)
