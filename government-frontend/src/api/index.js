@@ -25,6 +25,9 @@ export default {
     getByCitizenServiceNumber: (bsn) => Request.get(`${API_URL}/owner/bsn/${bsn}`),
     searchByName: (name) => Request.get(`${API_URL}/owner/search/${name}`)
   },
+  invoices: {
+    getAll: () => Request.get(`${API_URL}/invoices`)
+  },
   vehicle: {
     getByLicensePlate: (licensePlate) => Request.get(`${API_URL}/vehicle/${licensePlate}`),
   },

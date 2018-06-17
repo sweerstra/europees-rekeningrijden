@@ -59,6 +59,8 @@ hr {
 }
 
 /* react-table */
+.trackers__table [role="row"].active .feather:hover { stroke: white; }
+
 [role="rowgroup"] {
   cursor: pointer;
 }

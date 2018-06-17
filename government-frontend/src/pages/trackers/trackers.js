@@ -182,6 +182,7 @@ class Trackers extends Component {
                   this.fetchOwnershipForTracker(trackerId);
                   this.setState({ selectedRow: trackerId });
                 },
+                className: isSelected ? 'active' : '',
                 style: {
                   color: isSelected ? 'white' : 'black',
                   backgroundColor: isSelected ? '#3F51B5' : 'white'
@@ -216,8 +217,9 @@ class Trackers extends Component {
 
                     return <div className="history" key={index}><span>{vehicle.licensePlate}</span>
                       <span>{`${owner.firstName} ${owner.lastName}`}</span>
-                      <span className="history__date">{new Date(startDate).toLocaleDateString()}</span>
-                      <span className="history__date">{endDate ? new Date(endDate).toLocaleDateString() : 'Now'}</span>
+                      <span
+                        className="history__date">{new Date(isNaN(startDate) ? startDate.slice(0, -5) : startDate).toLocaleDateString()}</span>
+                      <span className="history__date">{endDate ? new Date(endDate).toLocaleDateString() : 'Active'}</span>
                     </div>;
                   })
                   : <div>Select a tracker to see it's vehicle history</div>

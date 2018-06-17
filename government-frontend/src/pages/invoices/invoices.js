@@ -1,79 +1,63 @@
 import React, { Component } from 'react';
 import './invoices.css';
 import ReactTable from 'react-table';
-import Navigation from "../../components/Navigation/Navigation";
+import Navigation from '../../components/Navigation/Navigation';
+import Api from '../../api';
 
 class Invoices extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      invoices: [
-        {
-          invoiceId: 1,
-          vehicleId: 1,
-          name: 'H. Thompson',
-          totalAmount: 110.22,
-          paid: true
-        },
-        {
-          invoiceId: 2,
-          vehicleId: 2,
-          name: 'J. Smith',
-          totalAmount: 60,
-          paid: false
-        }
-      ],
-      logs: [
-        {
-          id: 3,
-          type: 'error'
-        },
-        {
-          id: 4,
-          type: 'error'
-        },
-        {
-          id: 5,
-          type: 'error'
-        },
-        {
-          id: 6,
-          type: 'error'
-        },
-      ]
+      invoices: [],
+      logs: []
     };
+  }
+
+  componentDidMount() {
+    Api.invoices.getAll()
+      .then(invoices => this.setState({ invoices }));
   }
 
   render() {
     const columns = [
       {
-        Header: 'Invoice ID',
-        accessor: 'invoiceId',
-        id: 'invoiceId'
+        Header: 'Tracker ID',
+        id: 'trackerId',
+        accessor: d => d.ownership ? d.ownership.trackerId : undefined
       },
       {
-        Header: 'Vehicle ID',
-        accessor: 'vehicleId',
-        id: 'vehicleId'
+        Header: 'Owner',
+        id: 'owner',
+        accessor: d => d.ownership ? d.ownership.owner.firstName + ' ' + d.ownership.owner.lastName : undefined
       },
       {
-        Header: 'Person name',
-        accessor: 'name'
+        Header: 'License Plate',
+        id: 'licensePlate',
+        accessor: d => d.ownership ? d.ownership.vehicle.licensePlate : undefined
+      },
+      {
+        Header: 'Distance',
+        id: 'distanceTravelled',
+        accessor: d => <span>{d.distanceTravelled} km</span>
       },
       {
         Header: 'Total Amount',
-        accessor: 'totalAmount'
+        id: 'totalAmount',
+        accessor: d => <span>&#163; {d.totalAmount.toFixed(2)}</span>
       },
       {
-        Header: 'Paid',
+        Header: 'Status',
         id: 'paid',
-        accessor: d => d.paid ? <span>&#x2713;</span> : undefined
+        accessor: 'paid'
       },
       {
-        Header: 'Action',
-        id: 'recalculate',
-        accessor: d => <a href="#">Recalculate</a>
+        Header: 'Billing Month',
+        id: 'month',
+        accessor: d => <span>{new Date(d.billingDate.slice(0, -5)).toLocaleString('en-GB', {
+          month: 'long',
+          year: 'numeric'
+        })}</span>
       }
     ];
 
@@ -87,15 +71,6 @@ class Invoices extends Component {
             columns={columns}
             showPagination={false}
           />
-        </div>
-        <div className="invoices__logs">
-          <h2>Generated invoices</h2>
-          {this.state.logs.map(({ id, type }, index) =>
-            <div className="invoices__log" key={index}>
-              <span>{`Error generating invoice with id ${id}`}</span>
-              <a href="#">Recalculate</a>
-            </div>
-          )}
         </div>
       </div>
     );

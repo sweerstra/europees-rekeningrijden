@@ -32,13 +32,13 @@ class RouteInvoices extends Component {
     const columns = [
       {
         Header: 'Tracker ID',
-        accessor: 'trackerId',
-        id: 'trackerId'
+        id: 'trackerId',
+        accessor: d => d.ownership ? d.ownership.trackerId : undefined
       },
       {
         Header: 'License Plate',
         id: 'licensePlate',
-        accessor: d => d.vehicle ? d.vehicle.licensePlate : undefined
+        accessor: d => d.ownership ? d.ownership.vehicle.licensePlate : undefined
       },
       {
         Header: 'Distance',
@@ -58,7 +58,7 @@ class RouteInvoices extends Component {
       {
         Header: 'Billing Month',
         id: 'month',
-        accessor: d => <span>{new Date(`2018-${d.billingMonth}-01`).toLocaleString('en-GB', {
+        accessor: d => <span>{new Date(d.billingDate.slice(0, -5)).toLocaleString('en-GB', {
           month: 'long',
           year: 'numeric'
         })}</span>
