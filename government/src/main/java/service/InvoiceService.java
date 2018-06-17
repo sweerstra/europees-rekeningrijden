@@ -49,7 +49,7 @@ public class InvoiceService {
         return dao.findById(id);
     }
 
-    public List<Invoice> findByOwnership (Ownership ownership) {
+    public List<Invoice> findByOwnership(Ownership ownership) {
         return findAll().stream().filter(i -> i.getOwnership().getId() == ownership.getId()).collect(Collectors.toList());
     }
 
@@ -63,12 +63,10 @@ public class InvoiceService {
         List<Region> regions = regionService.findAll();
         List<EmissionCategory> emissionCategories = emissionService.findAll();
 
-        if(regions.isEmpty() || emissionCategories.isEmpty() || ownerships.isEmpty()) return null;
+        if (regions.isEmpty() || emissionCategories.isEmpty() || ownerships.isEmpty()) return null;
 
-        vehicle.setOwnerships(ownerships);
-
-        List<Invoice> invoices = invoiceGenerator.calculateInvoice(vehicle, regions, emissionCategories, month, year);
-        for(Invoice invoice : invoices) {
+        List<Invoice> invoices = invoiceGenerator.calculateInvoice(vehicle, regions, ownerships, emissionCategories, month, year);
+        for (Invoice invoice : invoices) {
             dao.create(invoice);
             return invoiceGenerator.objectToPdf(invoice, ownership);
         }

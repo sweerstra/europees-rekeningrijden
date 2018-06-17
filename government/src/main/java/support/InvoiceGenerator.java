@@ -343,7 +343,7 @@ public class InvoiceGenerator {
         return new DateFormatSymbols(Locale.UK).getMonths()[month];
     }
 
-    public List<Invoice> calculateInvoice(Vehicle vehicle, List<Region> regions, List<EmissionCategory> emissionCategories, int month, int year) {
+    public List<Invoice> calculateInvoice(Vehicle vehicle, List<Region> regions, List<Ownership> vehicleOwnerships, List<EmissionCategory> emissionCategories, int month, int year) {
         List<Invoice> invoices = new ArrayList<>();
         calendar = Calendar.getInstance();
 
@@ -354,7 +354,7 @@ public class InvoiceGenerator {
         List<Ownership> ownerships = new ArrayList<>();
 
         Calendar ownershipCalendar = Calendar.getInstance();
-        for (Ownership ownership : vehicle.getOwnerships()) {
+        for (Ownership ownership : vehicleOwnerships) {
             ownershipCalendar.setTime(ownership.getStartDate());
             if (ownership.getStartDate().before(calendar.getTime())) {
 
@@ -365,14 +365,14 @@ public class InvoiceGenerator {
 
             }
         }
-        for(Ownership ownership : ownerships) {
+        for (Ownership ownership : ownerships) {
             Invoice invoice = calculateInvoice(ownership, regions, emissionCategories, month, year);
             invoices.add(invoice);
         }
         return invoices;
     }
 
-    public Invoice calculateInvoice(Ownership ownership, List<Region> regions, List<EmissionCategory> emissionCategories, int month, int year){
+    public Invoice calculateInvoice(Ownership ownership, List<Region> regions, List<EmissionCategory> emissionCategories, int month, int year) {
         Invoice invoice = new Invoice();
 
         Vehicle vehicle = ownership.getVehicle();
@@ -382,14 +382,14 @@ public class InvoiceGenerator {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String startDate = sdf.format(calendar.getTime());
 
-        if(ownership.getStartDate().after(calendar.getTime())){
+        if (ownership.getStartDate().after(calendar.getTime())) {
             startDate = sdf.format(ownership.getStartDate());
         }
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         String endDate = sdf.format(calendar.getTime());
 
-        if(ownership.getEndDate() != null && ownership.getEndDate().before(calendar.getTime())){
+        if (ownership.getEndDate() != null && ownership.getEndDate().before(calendar.getTime())) {
             endDate = sdf.format(ownership.getEndDate());
         }
 
@@ -425,7 +425,7 @@ public class InvoiceGenerator {
         double defaultTotalPrice = calculatePrice(movementsList);
 
         EmissionCategory emissionCategory = emissionCategories.stream().filter(e -> e.getName().replace(" ", "").toUpperCase().equals(vehicle.getEmissionCategory().replace(" ", "").toUpperCase())).findFirst().orElse(null);
-        if(emissionCategory != null){
+        if (emissionCategory != null) {
             defaultTotalPrice = defaultTotalPrice * emissionCategory.getRate();
         }
         this.totalDistance = totalDistance;
@@ -491,7 +491,7 @@ public class InvoiceGenerator {
                     break;
                 }
             }
-            if(!inTimeZone){
+            if (!inTimeZone) {
                 totalPrice += regionMovement.getRegion().getDefaultRate() * regionMovement.getDistance();
             }
         }
