@@ -18,4 +18,6 @@ public interface IOwnerDao {
     Owner create(Owner entity);
 
     void delete(Owner entity);
+
+    Owner update(Owner entity);
 }

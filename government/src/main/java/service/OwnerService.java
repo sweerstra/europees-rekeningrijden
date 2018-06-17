@@ -37,4 +37,9 @@ public class OwnerService {
     public List<Owner> getAllOwners() {
         return dao.findAll();
     }
+
+    public Owner setUsesBillrider(Owner owner) {
+        owner.setUsesBillriderWebsite(true);
+        return dao.update(owner);
+    }
 }
