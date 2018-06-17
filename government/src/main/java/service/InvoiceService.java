@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class InvoiceService {
@@ -46,6 +47,10 @@ public class InvoiceService {
 
     public Invoice findById(long id) {
         return dao.findById(id);
+    }
+
+    public List<Invoice> findByOwnership (Ownership ownership) {
+        return findAll().stream().filter(i -> i.getOwnership().getId() == ownership.getId()).collect(Collectors.toList());
     }
 
     public List<Invoice> findAll() {
