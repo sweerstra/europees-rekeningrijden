@@ -6,6 +6,7 @@ import 'react-table/react-table.css';
 import RouteMap from '../../components/RouteMap/RouteMap';
 import { CreditCardIcon, FileTextIcon } from '../../icons';
 import Api from '../../api';
+import { getLoggedInProperty } from '../../api/auth';
 
 class RouteInvoices extends Component {
   constructor(props) {
@@ -21,7 +22,9 @@ class RouteInvoices extends Component {
   }
 
   componentDidMount() {
-    Api.invoice.getInvoices()
+    const ownerId = getLoggedInProperty('ownerId');
+
+    Api.invoice.getInvoicesByOwner(ownerId)
       .then(invoices => this.setState({ invoices }));
   }
 
@@ -102,8 +105,8 @@ class RouteInvoices extends Component {
                 onClick: () => {
                   if (id === null) return;
 
-                  Api.route.getRoute(id)
-                    .then(({ routes }) => this.setState(state => ({
+                  Api.route.getMovementsFromTracker(rowInfo.original.ownership.trackerId)
+                    .then(routes => this.setState(state => ({
                       selectedInvoice: { id, routes }
                     })));
                 },
