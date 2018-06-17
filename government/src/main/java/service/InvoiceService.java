@@ -70,6 +70,10 @@ public class InvoiceService {
         return null;
     }
 
+    public InputStream generateInvoicePdf(Invoice invoice) {
+        return invoiceGenerator.objectToPdf(invoice, invoice.getOwnership());
+    }
+
     public Invoice changePaymentStatus(Invoice invoice, PaymentStatus status) {
         invoice.setPaid(status);
 

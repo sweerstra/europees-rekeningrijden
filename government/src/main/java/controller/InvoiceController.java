@@ -50,6 +50,20 @@ public class InvoiceController {
     }
 
     @GET
+    @Path("/pdf/{id}")
+    public Response getInvoicePdf(@PathParam("id") long invoiceId) {
+        Invoice invoice = service.findById(invoiceId);
+        if (invoice == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        InputStream in = service.generateInvoicePdf(invoice);
+        if(in == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(in, "application/pdf").build();
+    }
+
+    @GET
     @Path("/generate/{id}")
     public Response generateInvoicePdf(@PathParam("id") long vehicleId) {
         Ownership ownership = ownershipService.getLatestOwnership(vehicleId);
