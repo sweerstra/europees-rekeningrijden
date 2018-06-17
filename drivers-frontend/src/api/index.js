@@ -18,7 +18,7 @@ export default {
   invoice: {
     getInvoicesByOwner: (ownerId) => Request.get(`${GOVERNMENT_API_URL}/invoices/${ownerId}`),
     downloadInvoice: (id) => Request.get(`${GOVERNMENT_API_URL}/invoice/generate/${id}`),
-    getDownloadUrl: (id) => `${GOVERNMENT_API_URL}/invoice/generate/${id}`,
+    getDownloadUrl: (id) => `${GOVERNMENT_API_URL}/invoice/pdf/${id}`,
     getPaypalUrl: (invoiceId, price) => Request.post(`${API_URL}/payment?returnUri=${API_URL}/payment/complete&cancelUri=${window.location.origin}/payment-failed`, {
       invoiceId,
       price

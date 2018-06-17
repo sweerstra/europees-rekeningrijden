@@ -7,7 +7,7 @@ class Navigation extends Component {
   render() {
     return (
       <nav className="nav">
-        <h1 className="nav__heading">{this.props.heading}</h1>
+        <h1 className="nav__heading"><a href="/">{this.props.heading}</a></h1>
         <div>Logged in as <b>{getLoggedInEmail()}</b></div>
         <div className="nav__logout">
           <Link to="/login" className="btn red" onClick={this.onLogout}>

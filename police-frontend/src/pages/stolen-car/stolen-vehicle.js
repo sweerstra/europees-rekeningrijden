@@ -157,7 +157,7 @@ class StolenVehicle extends Component {
                                             return <div className="history" key={index}><span>{vehicle.licensePlate}</span>
                                                 <span>{`${owner.firstName} ${owner.lastName}`}</span>
                                                 <span
-                                                    className="history__date">{new Date(startDate).toLocaleDateString()}</span>
+                                                    className="history__date">{new Date(isNaN(startDate) ? startDate.slice(0, -5) : startDate).toLocaleDateString()}</span>
                                                 <span
                                                     className="history__date">{endDate ? new Date(endDate).toLocaleDateString() : 'Now'}</span>
                                             </div>;
