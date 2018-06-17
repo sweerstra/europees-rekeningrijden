@@ -4,10 +4,14 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Drivers.Models;
 using Drivers.Service;
+using Google.Protobuf.WellKnownTypes;
+using Newtonsoft.Json.Linq;
 using PayPal;
 using PayPal.Api;
 
@@ -17,6 +21,9 @@ namespace Drivers.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PaymentController : ApiController
     {
+
+        private const String invoiceURL = "http://192.168.24.36:11080/government/api/invoice/";
+
         [HttpPost]
         [Route("{returnUri=returnUri}/{cancelUri=cancelUri}")]
         public IHttpActionResult Pay(PaymentRequest request, string returnUri, string cancelUri)
@@ -106,12 +113,27 @@ namespace Drivers.Controllers
             var paymentExecution = new PaymentExecution() { payer_id = payerId };
             var payment = new Payment { id = paymentId };
 
-            // Execute the payment.
             var executedPayment = payment.Execute(apiContext, paymentExecution);
 
-            var transaction = executedPayment.transactions.First();
+            Transaction transaction = executedPayment.transactions.First();
+
+            InvoiceToPaid(Convert.ToInt32(transaction.invoice_number));
 
             return Redirect(new Uri($"{"http://localhost:3000/payment/" + paymentId}?invoiceId={transaction.invoice_number}"));
         }
+
+        public async Task InvoiceToPaid(int invoiceId)
+        {
+            string url = invoiceURL + invoiceId + "/paid";
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            StringContent content = new System.Net.Http.StringContent("", Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PutAsync(url, content);
+        }
+
+    
+
+
     }
 }
